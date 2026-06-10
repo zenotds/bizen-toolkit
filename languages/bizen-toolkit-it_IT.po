@@ -1,0 +1,238 @@
+# Italian translation for Bizen Toolkit
+# Copyright (C) 2024 Bizen
+# This file is distributed under the same license as the Bizen Toolkit plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Bizen Toolkit 1.0.0\n"
+"Report-Msgid-Bugs-To: dev@bizen.it\n"
+"POT-Creation-Date: 2026-06-10\n"
+"PO-Revision-Date: 2026-06-10\n"
+"Last-Translator: Bizen <dev@bizen.it>\n"
+"Language-Team: Italian\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Bizen Toolkit\n"
+"X-Domain: bizen-toolkit\n"
+
+#: includes/class-admin-panel.php
+msgid "Bizen Toolkit"
+msgstr "Bizen Toolkit"
+
+#: includes/class-admin-panel.php
+msgid "Settings saved."
+msgstr "Impostazioni salvate."
+
+#: includes/class-admin-panel.php
+msgid "Version check completed."
+msgstr "Controllo versioni completato."
+
+#: includes/class-admin-panel.php
+msgid "Modules"
+msgstr "Moduli"
+
+#: includes/class-admin-panel.php
+msgid "Enable or disable individual modules. Modules with unmet dependencies are shown but cannot be booted."
+msgstr "Abilita o disabilita i singoli moduli. I moduli con dipendenze mancanti vengono mostrati ma non possono essere avviati."
+
+#: includes/class-admin-panel.php
+msgid "Active"
+msgstr "Attivo"
+
+#: includes/class-admin-panel.php
+msgid "Module"
+msgstr "Modulo"
+
+#: includes/class-admin-panel.php
+msgid "Dependencies"
+msgstr "Dipendenze"
+
+#: includes/class-admin-panel.php
+msgid "Upstream version"
+msgstr "Versione upstream"
+
+#: includes/class-admin-panel.php
+msgid "No modules found."
+msgstr "Nessun modulo trovato."
+
+#: includes/class-admin-panel.php
+msgid "CONFLICT"
+msgstr "CONFLITTO"
+
+#: includes/class-admin-panel.php
+#. translators: 1: plugin slug, 2: version number
+msgid "Based on %1$s v%2$s (WP.org)"
+msgstr "Basato su %1$s v%2$s (WP.org)"
+
+#: includes/class-admin-panel.php
+#. translators: 1: GitHub repo, 2: version number
+msgid "Based on %1$s v%2$s (GitHub)"
+msgstr "Basato su %1$s v%2$s (GitHub)"
+
+#: includes/class-admin-panel.php
+msgid "Loaded"
+msgstr "Caricate"
+
+#: includes/class-admin-panel.php
+msgid "Missing"
+msgstr "Mancanti"
+
+#: includes/class-admin-panel.php
+#. translators: 1: upstream version, 2: vendored version
+msgid "Upstream: %s — Vendored: %s"
+msgstr "Upstream: %s — Vendorato: %s"
+
+#: includes/class-admin-panel.php
+msgid "Update available"
+msgstr "Aggiornamento disponibile"
+
+#: includes/class-admin-panel.php
+msgid "Up to date"
+msgstr "Aggiornato"
+
+#: includes/class-admin-panel.php
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+#: includes/class-admin-panel.php
+msgid "Version Monitor"
+msgstr "Monitor versioni"
+
+#: includes/class-admin-panel.php
+msgid "Weekly background check against the WordPress.org plugin API. When an upstream version is newer than the vendored one, a flag appears in the table above."
+msgstr "Controllo settimanale in background tramite le API di WordPress.org. Quando una versione upstream è più recente di quella vendorata, viene mostrato un avviso nella tabella."
+
+#: includes/class-admin-panel.php
+#. translators: %s: human-readable time
+msgid "Next scheduled check: %s"
+msgstr "Prossimo controllo programmato: %s"
+
+#: includes/class-admin-panel.php
+msgid "from now"
+msgstr "da ora"
+
+#: includes/class-admin-panel.php
+msgid "Cron not scheduled — deactivate and reactivate the plugin to fix this."
+msgstr "Cron non programmato — disattiva e riattiva il plugin per risolvere."
+
+#: includes/class-admin-panel.php
+#. translators: %s: date and time of last check
+msgid "Last checked: %s"
+msgstr "Ultimo controllo: %s"
+
+#: includes/class-admin-panel.php
+msgid "Check now"
+msgstr "Controlla ora"
+
+#: includes/class-admin-panel.php
+#. translators: 1: plugin name, 2: deactivation URL
+msgid "Conflicts with active plugin: <strong>%1$s</strong>. <a href=\"%2$s\">Deactivate it</a> to enable this module."
+msgstr "Conflitto con il plugin attivo: <strong>%1$s</strong>. <a href=\"%2$s\">Disattivalo</a> per abilitare questo modulo."
+
+#: includes/class-conflict-checker.php
+#. translators: 1: plugin name, 2: deactivation URL
+msgid "<strong>Bizen Toolkit:</strong> The plugin <strong>%1$s</strong> conflicts with an active module. Please deactivate it to avoid duplicated functionality. <a href=\"%2$s\">Deactivate %1$s</a>"
+msgstr "<strong>Bizen Toolkit:</strong> Il plugin <strong>%1$s</strong> è in conflitto con un modulo attivo. Disattivalo per evitare funzionalità duplicate. <a href=\"%2$s\">Disattiva %1$s</a>"
+
+#: includes/class-module-loader.php
+#. translators: %s: comma-separated list of plugin files
+msgid "Required plugin(s) not active: %s"
+msgstr "Plugin richiesti non attivi: %s"
+
+#: modules/menu-enhancer/module.php
+msgid "Menu Management Enhancer"
+msgstr "Menu Management Enhancer"
+
+#: modules/menu-enhancer/module.php
+msgid "Expand/collapse menu trees, jump between top-level items, and highlight item groups in Appearance → Menus."
+msgstr "Espandi/comprimi i menu, naviga tra le voci principali ed evidenzia i gruppi di voci in Aspetto → Menu."
+
+#: modules/cf7-html-editor/module.php
+msgid "HTML Editor for CF7"
+msgstr "HTML Editor per CF7"
+
+#: modules/cf7-html-editor/module.php
+msgid "Adds a CodeMirror HTML editor, test mode, redirect after submit, GA/GTM events, auto-hide message, and more to Contact Form 7."
+msgstr "Aggiunge un editor HTML CodeMirror, modalità test, reindirizzamento post-invio, eventi GA/GTM, nascondimento automatico del messaggio e altro a Contact Form 7."
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Test Mode"
+msgstr "Modalità test"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Remove Auto tags p and br"
+msgstr "Rimuovi i tag automatici p e br"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Enable dark theme (Material)"
+msgstr "Abilita tema scuro (Material)"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Load scripts only on pages with shortcode"
+msgstr "Carica gli script solo nelle pagine con lo shortcode"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Redirect after submit"
+msgstr "Reindirizza dopo l'invio"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Open in new tab"
+msgstr "Apri in nuova scheda"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Force download"
+msgstr "Forza il download"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Hide form after submit"
+msgstr "Nascondi il form dopo l'invio"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Remove refill"
+msgstr "Rimuovi il ripristino dei campi"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Disable submit button while sending"
+msgstr "Disabilita il pulsante durante l'invio"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Pre-fill fields from URL"
+msgstr "Pre-compila i campi dall'URL"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "GA/GTM Event on submit"
+msgstr "Evento GA/GTM all'invio"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Scroll to message after submit"
+msgstr "Scorri al messaggio dopo l'invio"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Auto-hide success message"
+msgstr "Nascondi automaticamente il messaggio di successo"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "seconds"
+msgstr "secondi"
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Sending..."
+msgstr "Invio in corso..."
+
+#: modules/cf7-email-template/module.php
+msgid "HTML Template for CF7"
+msgstr "HTML Template per CF7"
+
+#: modules/cf7-email-template/module.php
+msgid "Wraps Contact Form 7 emails in a custom HTML header/footer template with a live Ace editor preview."
+msgstr "Racchiude le email di Contact Form 7 in un template HTML personalizzato (header/footer) con anteprima live nell'editor Ace."
+
+#: modules/acfml-sync-fix/module.php
+msgid "Disable Sync Repeater for ACFML"
+msgstr "Disabilita Sync Repeater per ACFML"
+
+#: modules/acfml-sync-fix/module.php
+msgid "Disables the ACFML repeater sync checkbox and its stored option — prevents accidental field sync across languages."
+msgstr "Disabilita il checkbox di sincronizzazione repeater di ACFML e la relativa opzione salvata — previene sincronizzazioni accidentali dei campi tra le lingue."

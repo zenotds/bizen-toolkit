@@ -1,0 +1,24 @@
+# Files and directories excluded from the distributable ZIP.
+# Uses rsync filter syntax: leading / anchors to the project root.
+
+# Dev tooling
+/.git
+/.claude
+/.gitignore
+/.buildignore
+/Makefile
+
+# Build output (avoid nesting)
+/dist
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.env
+.env.*
+
+# Future-proofing
+/node_modules

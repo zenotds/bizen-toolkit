@@ -1,0 +1,235 @@
+# Copyright (C) 2024 Bizen
+# This file is distributed under the same license as the Bizen Toolkit plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Bizen Toolkit 1.0.0\n"
+"Report-Msgid-Bugs-To: dev@bizen.it\n"
+"POT-Creation-Date: 2026-06-10\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Bizen Toolkit\n"
+"X-Domain: bizen-toolkit\n"
+
+#: includes/class-admin-panel.php
+msgid "Bizen Toolkit"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Settings saved."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Version check completed."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Modules"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Enable or disable individual modules. Modules with unmet dependencies are shown but cannot be booted."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Active"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Module"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Dependencies"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Upstream version"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "No modules found."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "CONFLICT"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: 1: plugin slug, 2: version number
+msgid "Based on %1$s v%2$s (WP.org)"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: 1: GitHub repo, 2: version number
+msgid "Based on %1$s v%2$s (GitHub)"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Loaded"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Missing"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: 1: upstream version, 2: vendored version
+msgid "Upstream: %s — Vendored: %s"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Update available"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Up to date"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Save settings"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Version Monitor"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Weekly background check against the WordPress.org plugin API. When an upstream version is newer than the vendored one, a flag appears in the table above."
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: human-readable time
+msgid "Next scheduled check: %s"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "from now"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Cron not scheduled — deactivate and reactivate the plugin to fix this."
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: date and time of last check
+msgid "Last checked: %s"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Check now"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: 1: plugin name, 2: deactivation URL
+msgid "Conflicts with active plugin: <strong>%1$s</strong>. <a href=\"%2$s\">Deactivate it</a> to enable this module."
+msgstr ""
+
+#: includes/class-conflict-checker.php
+#. translators: 1: plugin name, 2: deactivation URL
+msgid "<strong>Bizen Toolkit:</strong> The plugin <strong>%1$s</strong> conflicts with an active module. Please deactivate it to avoid duplicated functionality. <a href=\"%2$s\">Deactivate %1$s</a>"
+msgstr ""
+
+#: includes/class-module-loader.php
+#. translators: %s: comma-separated list of plugin files
+msgid "Required plugin(s) not active: %s"
+msgstr ""
+
+#: modules/menu-enhancer/module.php
+msgid "Menu Management Enhancer"
+msgstr ""
+
+#: modules/menu-enhancer/module.php
+msgid "Expand/collapse menu trees, jump between top-level items, and highlight item groups in Appearance → Menus."
+msgstr ""
+
+#: modules/cf7-html-editor/module.php
+msgid "HTML Editor for CF7"
+msgstr ""
+
+#: modules/cf7-html-editor/module.php
+msgid "Adds a CodeMirror HTML editor, test mode, redirect after submit, GA/GTM events, auto-hide message, and more to Contact Form 7."
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Test Mode"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Remove Auto tags p and br"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Enable dark theme (Material)"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Load scripts only on pages with shortcode"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Redirect after submit"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Open in new tab"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Force download"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Hide form after submit"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Remove refill"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Disable submit button while sending"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Pre-fill fields from URL"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "GA/GTM Event on submit"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Scroll to message after submit"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Auto-hide success message"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "seconds"
+msgstr ""
+
+#: modules/cf7-html-editor/class-cf7-coder.php
+msgid "Sending..."
+msgstr ""
+
+#: modules/cf7-email-template/module.php
+msgid "HTML Template for CF7"
+msgstr ""
+
+#: modules/cf7-email-template/module.php
+msgid "Wraps Contact Form 7 emails in a custom HTML header/footer template with a live Ace editor preview."
+msgstr ""
+
+#: modules/acfml-sync-fix/module.php
+msgid "Disable Sync Repeater for ACFML"
+msgstr ""
+
+#: modules/acfml-sync-fix/module.php
+msgid "Disables the ACFML repeater sync checkbox and its stored option — prevents accidental field sync across languages."
+msgstr ""

@@ -1,0 +1,30 @@
+# Build output
+dist/
+*.zip
+
+# source/ contains the original upstream plugins used as vendoring reference.
+# They are large (~10MB, includes ace editor) and already vendored into modules/.
+# Remove this line if you want to track them for diff/comparison purposes.
+source/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.*
+
+# Future-proofing
+node_modules/
+
+# AI
+CLAUDE.md
+.claude/
