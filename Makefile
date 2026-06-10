@@ -35,7 +35,7 @@ release:
 	@test -n "$(v)" || (echo "Usage: make release v=X.Y.Z" && exit 1)
 	@sed -i '' 's/^\( \* Version:[[:space:]]*\)[0-9][0-9.]*/\1$(v)/' $(PLUGIN_SLUG).php
 	@sed -i '' "s/define( 'BIZEN_TOOLKIT_VERSION',[[:space:]]*'[0-9][0-9.]*' )/define( 'BIZEN_TOOLKIT_VERSION',      '$(v)' )/" $(PLUGIN_SLUG).php
-	@git add $(PLUGIN_SLUG).php
+	@git add -A
 	@git commit -m "Release v$(v)"
 	@git push
 	@echo "Released v$(v) — WordPress will prompt for update on next check"
