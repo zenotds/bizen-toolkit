@@ -3,7 +3,7 @@
  * Plugin Name: Bizen Toolkit
  * Plugin URI:  https://bizen.it
  * Description: Bizen Toolkit - WordPress enhancements
- * Version:     1.0.4
+ * Version:     1.0.6
  * Author:      Bizen
  * Author URI:  https://bizen.it
  * License:     GPL-2.0+
@@ -15,7 +15,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BIZEN_TOOLKIT_VERSION',      '1.0.0' );
+define( 'BIZEN_TOOLKIT_VERSION',      '1.0.6' );
 define( 'BIZEN_TOOLKIT_FILE',         __FILE__ );
 define( 'BIZEN_TOOLKIT_PATH',         plugin_dir_path( __FILE__ ) );
 define( 'BIZEN_TOOLKIT_URL',          plugin_dir_url( __FILE__ ) );
@@ -26,6 +26,14 @@ require_once BIZEN_TOOLKIT_PATH . 'includes/class-conflict-checker.php';
 require_once BIZEN_TOOLKIT_PATH . 'includes/class-module-loader.php';
 require_once BIZEN_TOOLKIT_PATH . 'includes/class-version-monitor.php';
 require_once BIZEN_TOOLKIT_PATH . 'includes/class-admin-panel.php';
+
+require_once BIZEN_TOOLKIT_PATH . 'vendor/plugin-update-checker/plugin-update-checker.php';
+$bizen_updater = YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+	'https://github.com/zenotds/bizen-toolkit/',
+	__FILE__,
+	'bizen-toolkit'
+);
+$bizen_updater->setBranch( 'main' );
 
 // Wire cron handler early (before plugins_loaded so WP-cron triggers it correctly)
 add_action( 'bizen_toolkit_version_check', function () {
