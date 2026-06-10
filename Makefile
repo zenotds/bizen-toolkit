@@ -8,7 +8,7 @@ ZIP_FILE := $(DIST_DIR)/$(PLUGIN_SLUG)-$(VERSION).zip
 
 .DEFAULT_GOAL := build
 
-.PHONY: build pot mo clean
+.PHONY: build pot mo clean release
 
 ## build: Compile translations, then create a ready-to-install ZIP in dist/
 build: mo clean
@@ -29,3 +29,13 @@ mo:
 ## clean: Remove the dist/ directory
 clean:
 	@rm -rf "$(DIST_DIR)"
+
+## release v=X.Y.Z: Bump version in plugin header + constant, commit, push
+release:
+	@test -n "$(v)" || (echo "Usage: make release v=X.Y.Z" && exit 1)
+	@sed -i '' 's/^\( \* Version:[[:space:]]*\)[0-9][0-9.]*/\1$(v)/' $(PLUGIN_SLUG).php
+	@sed -i '' "s/define( 'BIZEN_TOOLKIT_VERSION',[[:space:]]*'[0-9][0-9.]*' )/define( 'BIZEN_TOOLKIT_VERSION',      '$(v)' )/" $(PLUGIN_SLUG).php
+	@git add $(PLUGIN_SLUG).php
+	@git commit -m "Release v$(v)"
+	@git push
+	@echo "Released v$(v) — WordPress will prompt for update on next check"
