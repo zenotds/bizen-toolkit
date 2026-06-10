@@ -3,19 +3,19 @@
  * Plugin Name: Bizen Toolkit
  * Plugin URI:  https://bizen.it
  * Description: Bizen Toolkit - WordPress enhancements
- * Version:     1.0.6
+ * Version:     1.0.7
  * Author:      Bizen
  * Author URI:  https://bizen.it
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: bizen-toolkit
- * Requires at least: 5.8
+ * Requires at least: 6.7
  * Requires PHP: 8.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BIZEN_TOOLKIT_VERSION',      '1.0.6' );
+define( 'BIZEN_TOOLKIT_VERSION',      '1.0.7' );
 define( 'BIZEN_TOOLKIT_FILE',         __FILE__ );
 define( 'BIZEN_TOOLKIT_PATH',         plugin_dir_path( __FILE__ ) );
 define( 'BIZEN_TOOLKIT_URL',          plugin_dir_url( __FILE__ ) );
