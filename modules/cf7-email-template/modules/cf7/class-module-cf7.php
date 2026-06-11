@@ -222,10 +222,10 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
 
             $properties = $properties[ CF7HETE_Module_Cf7::METADATA ];
 
-            if ( $properties['activate'] ) {
-                $body = $this->replace_tags( $properties['header-html'] );
+            if ( ! empty( $properties['activate'] ) ) {
+                $body = $this->replace_tags( $properties['header-html'] ?? '' );
                 $body .= $components['body'];
-                $body .= $this->replace_tags( $properties['footer-html'] );
+                $body .= $this->replace_tags( $properties['footer-html'] ?? '' );
 
                 $components['body'] = $body;
             }
