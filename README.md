@@ -14,6 +14,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `cf7-html-editor` | Adds a syntax-highlighted HTML editor to Contact Form 7 form fields | [CF7 Coder v1.0.1](https://wordpress.org/plugins/cf7-coder/) (GPL-2.0+) |
 | `cf7-email-template` | Wraps CF7 emails in a custom HTML header/footer template with a live Ace editor preview | [HTML Template for CF7 v2.2.2](https://wordpress.org/plugins/cf7-html-email-template-extension/) (GPL-2.0+) |
 | `acfml-sync-fix` | Keeps ACF field group definitions in sync across WPML languages | Core — written in-house |
+| `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
 
 ---
 
