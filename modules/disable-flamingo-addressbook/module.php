@@ -9,6 +9,9 @@
  * unhooks the user-profile and comment listeners, and blanks the contact
  * args so Flamingo_Contact::add() aborts (it bails on an empty email).
  * Existing address book entries are not affected.
+ *
+ * Bizen addition over upstream: hides the Address Book screen from the
+ * admin menu and redirects direct URL access to the Inbound Messages list.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -54,6 +57,24 @@ return new class extends Bizen_Module {
 		remove_action( 'transition_comment_status', 'flamingo_transition_comment_status', 10 );
 
 		add_filter( 'flamingo_add_contact', [ $this, 'blank_contact' ] );
+
+		// Flamingo adds its menu at admin_menu/8; remove the Address Book
+		// entry after that. With the 'flamingo' submenu gone, the top-level
+		// Flamingo link points to the first remaining submenu (Inbound Messages).
+		add_action( 'admin_menu', [ $this, 'remove_addressbook_menu' ], 20 );
+		add_action( 'admin_init', [ $this, 'redirect_addressbook_page' ] );
+	}
+
+	public function remove_addressbook_menu(): void {
+		remove_submenu_page( 'flamingo', 'flamingo' );
+	}
+
+	/** The Address Book page stays reachable via URL even without its menu entry. */
+	public function redirect_addressbook_page(): void {
+		if ( 'flamingo' === ( $_GET['page'] ?? '' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			wp_safe_redirect( admin_url( 'admin.php?page=flamingo_inbound' ) );
+			exit;
+		}
 	}
 
 	/** Returns empty contact args so Flamingo_Contact::add() discards the entry. */
