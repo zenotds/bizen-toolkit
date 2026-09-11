@@ -236,3 +236,23 @@ msgstr "Disabilita Sync Repeater per ACFML"
 #: modules/acfml-sync-fix/module.php
 msgid "Disables the ACFML repeater sync checkbox and its stored option — prevents accidental field sync across languages."
 msgstr "Disabilita il checkbox di sincronizzazione repeater di ACFML e la relativa opzione salvata — previene sincronizzazioni accidentali dei campi tra le lingue."
+
+#: modules/disable-flamingo-addressbook/module.php
+msgid "Disable Flamingo Addressbook"
+msgstr "Disabilita Rubrica Flamingo"
+
+#: modules/disable-flamingo-addressbook/module.php
+msgid "Prevents Flamingo from saving any data to its address book — form submissions are still stored in the inbound messages log."
+msgstr "Impedisce a Flamingo di salvare qualsiasi dato nella sua rubrica — gli invii dei form restano comunque registrati nel log dei messaggi in entrata."
+
+#: modules/disable-comments/module.php
+msgid "Disable Comments"
+msgstr "Disabilita Commenti"
+
+#: modules/disable-comments/module.php
+msgid "Disables the comment system site-wide — closes comments on all posts and pages (new and existing), hides existing ones, and removes the Comments menu and Discussion settings from the admin."
+msgstr "Disabilita il sistema di commenti su tutto il sito — chiude i commenti su tutti gli articoli e le pagine (nuovi ed esistenti), nasconde quelli già presenti e rimuove il menu Commenti e le impostazioni Discussione dall’amministrazione."
+
+#: modules/disable-comments/module.php
+msgid "Comments are closed."
+msgstr "I commenti sono chiusi."
