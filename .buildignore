@@ -4,6 +4,7 @@
 # Dev tooling
 /.git
 /.claude
+/CLAUDE.md
 /.gitignore
 /.buildignore
 /Makefile
