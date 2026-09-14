@@ -16,6 +16,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `acfml-sync-fix` | Keeps ACF field group definitions in sync across WPML languages | Core — written in-house |
 | `disable-comments` | Disables the comment system site-wide — closes comments everywhere and hides the Comments menu and Discussion settings | Core — written in-house |
 | `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
+| `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
 
 ---
 

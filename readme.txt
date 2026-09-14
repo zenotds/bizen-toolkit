@@ -21,8 +21,17 @@ Included modules:
 * **ACFML Sync Fix** — Keeps ACF field group definitions in sync across WPML languages.
 * **Disable Flamingo Addressbook** — Stops Flamingo from saving contact data to its address book; inbound messages are still logged.
 * **Disable Comments** — Turns the WordPress comment system off site-wide and removes it from the admin.
+* **Flatten SVG on Upload** — Rewrites uploaded SVGs so several of them can be inlined on the same page without their styles and ids colliding.
 
 == Changelog ==
+
+= 1.4.0 =
+* New module: Flatten SVG on Upload — rewrites uploaded SVGs so several exports can be inlined on the same page
+* Declarations in the SVG style block are resolved against the cascade and written onto the elements as presentation attributes, so the page can still recolour an icon
+* Ids that nothing references are dropped; gradients, clip paths and masks that survive are namespaced per file
+* Illustrator slice rectangles, generator comments and the XML prolog are stripped
+* Files whose CSS cannot be reproduced element by element (media queries, pseudo-classes, descendant selectors) are left untouched
+* Italian translation updated
 
 = 1.3.0 =
 * New module: Disable Comments — turns the WordPress comment system off site-wide

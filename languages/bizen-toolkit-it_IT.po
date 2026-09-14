@@ -256,3 +256,11 @@ msgstr "Disabilita il sistema di commenti su tutto il sito — chiude i commenti
 #: modules/disable-comments/module.php
 msgid "Comments are closed."
 msgstr "I commenti sono chiusi."
+
+#: modules/svg-flatten/module.php
+msgid "Flatten SVG on Upload"
+msgstr "Appiattisci SVG all’Upload"
+
+#: modules/svg-flatten/module.php
+msgid "Rewrites uploaded SVGs so they can be inlined side by side — the style block is dropped, its declarations move onto the elements as fill/stroke attributes, and ids are namespaced per file."
+msgstr "Riscrive gli SVG caricati perché possano essere inlineati fianco a fianco — il blocco style viene rimosso, le sue dichiarazioni passano sugli elementi come attributi fill/stroke e gli id vengono prefissati per file."
