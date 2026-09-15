@@ -25,6 +25,11 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.1 =
+* Plugin icon is now shown in the WordPress update screens and the plugin details modal
+* The green Bizen mark ships as icon.svg plus 128x128 and 256x256 PNG fallbacks, following the WordPress plugin asset naming convention
+* The white mark used by the admin menu moved to menu-icon.svg, so the two are no longer the same file
+
 = 1.4.0 =
 * New module: Flatten SVG on Upload — rewrites uploaded SVGs so several exports can be inlined on the same page
 * Declarations in the SVG style block are resolved against the cascade and written onto the elements as presentation attributes, so the page can still recolour an icon

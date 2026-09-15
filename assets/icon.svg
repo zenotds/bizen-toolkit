@@ -1,10 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 290 290" width="20" height="20">
-  <g fill="#fff" transform="translate(41.3,11.4)">
-    <circle cx="177.8" cy="134.1" r="29.6"/>
-    <rect x="-29.7" y="29.7" width="118.9" height="59.6" rx="29.8" ry="29.8" transform="translate(89.3 29.7) rotate(90)"/>
-    <circle cx="29.8" cy="163.5" r="29.6"/>
-    <circle cx="29.8" cy="237.7" r="29.6"/>
-    <circle cx="103.9" cy="75.1" r="29.6"/>
-    <rect x="44.4" y="148.3" width="118.9" height="59.6" rx="29.8" ry="29.8" transform="translate(281.9 74.2) rotate(90)"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <title>Bizen</title>
+  <g fill="#47b27b">
+    <circle cx="128.28" cy="37.96" r="17.96"/>
+    <circle cx="92.46" cy="82.9" r="17.96"/>
+    <rect x="118.91" y="64.76" width="72.18" height="36.18" rx="18.09" ry="18.09"/>
+    <rect x="46.9" y="109.79" width="72.18" height="36.18" rx="18.09" ry="18.09"/>
+    <circle cx="146.15" cy="127.83" r="17.96"/>
+    <circle cx="191.18" cy="127.83" r="17.96"/>
+    <rect x="92.19" y="154.9" width="72.18" height="36.18" rx="18.09" ry="18.09"/>
+    <circle cx="128.28" cy="218.06" r="17.96"/>
   </g>
 </svg>

@@ -12,7 +12,7 @@ class Bizen_Admin_Panel {
 	}
 
 	public function register_menu(): void {
-		$icon_path = BIZEN_TOOLKIT_PATH . 'assets/icon.svg';
+		$icon_path = BIZEN_TOOLKIT_PATH . 'assets/menu-icon.svg';
 		$icon      = file_exists( $icon_path )
 			? 'data:image/svg+xml;base64,' . base64_encode( (string) file_get_contents( $icon_path ) )
 			: 'dashicons-hammer';
