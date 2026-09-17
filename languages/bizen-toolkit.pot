@@ -303,6 +303,14 @@ msgid "Apply this status to %d selected images?"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Send %d selected images back to the review queue?"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Undone"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "You do not have permission to manage media."
 msgstr ""
 
@@ -344,6 +352,10 @@ msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Mark selection as:"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Undo"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php

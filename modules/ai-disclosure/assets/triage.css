@@ -191,3 +191,31 @@
 		float: none;
 	}
 }
+
+/*
+ * Leaving the view: the delay lets the saved state register before the card
+ * goes, so a mistaken click is still visible while it happens.
+ */
+.bizen-ai-item.is-leaving {
+	opacity: 0;
+	transform: scale( 0.96 );
+	transition: opacity .25s ease .45s, transform .25s ease .45s;
+	pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bizen-ai-item.is-leaving {
+		transform: none;
+		transition: opacity .01s linear .45s;
+	}
+}
+
+.bizen-ai-toolbar__undo {
+	padding: 0;
+	color: #2271b1;
+	cursor: pointer;
+}
+
+.bizen-ai-toolbar__undo[hidden] {
+	display: none;
+}

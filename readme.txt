@@ -26,6 +26,17 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.4 =
+* AI Disclosure: a card that no longer matches the active filter now leaves the view on its own, instead of sitting there until the page is reloaded. Clearing the last one returns to page one of the same view, because removing rows shifts the rest forward and a stale page offset would skip over images nobody had seen
+* AI Disclosure: new "To review" bulk action sends images back to the queue — that state used to be reachable only from the field on the attachment
+* AI Disclosure: added undo. Each image returns to its own previous status, so a mixed selection is restored one by one, and cards that had already left the view come back where they stood
+
+= 1.4.3 =
+* AI Disclosure: the review queue now works by selection — tick the images that belong together and apply a status to all of them at once, with shift-click for ranges and a toolbar that stays put while the grid scrolls
+* AI Disclosure: added a search field, so a batch is usually everything matching a filename fragment rather than a hunt through pages
+* AI Disclosure: the EU label is 22px instead of 18px, and 18px on small screens
+* The Italian translation keeps "AI" rather than turning it into "IA", matching the wording baked into the EU icons
+
 = 1.4.2 =
 * New module: AI Disclosure — flags AI-generated and AI-modified images and prints the official EU label beside them, as required of whoever publishes them by AI Act art. 50(4)
 * The label is a DOM sibling of the image rather than a watermark burnt into the pixels, so it survives every responsive crop; which corner it takes is chosen per template, since what is free in a card sits under the overlay panel in a hero

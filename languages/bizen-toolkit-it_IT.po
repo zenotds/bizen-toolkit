@@ -306,6 +306,14 @@ msgid "Apply this status to %d selected images?"
 msgstr "Applicare questo stato alle %d immagini selezionate?"
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Send %d selected images back to the review queue?"
+msgstr "Rimandare %d immagini selezionate nella coda di revisione?"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Undone"
+msgstr "Annullato"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "You do not have permission to manage media."
 msgstr "Non hai i permessi per gestire i media."
 
@@ -348,6 +356,10 @@ msgstr "Seleziona tutto"
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Mark selection as:"
 msgstr "Contrassegna la selezione come:"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Undo"
+msgstr "Annulla"
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Select %s"

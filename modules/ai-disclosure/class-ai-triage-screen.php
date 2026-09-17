@@ -47,6 +47,26 @@ class Bizen_AI_Triage_Screen {
 		}
 	}
 
+	private function current_filter(): string {
+		return isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : 'unreviewed';
+	}
+
+	private function current_search(): string {
+		return isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+	}
+
+	/** The current view without a page number: where to land once the grid empties out. */
+	private function view_url(): string {
+		$args   = [ 'page' => self::PAGE, 'status' => $this->current_filter() ];
+		$search = $this->current_search();
+
+		if ( '' !== $search ) {
+			$args['s'] = $search;
+		}
+
+		return add_query_arg( $args, admin_url( 'upload.php' ) );
+	}
+
 	public function enqueue(): void {
 		$base = plugin_dir_url( __FILE__ ) . 'assets/';
 
@@ -58,6 +78,8 @@ class Bizen_AI_Triage_Screen {
 			[
 				'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
 				'nonce'    => wp_create_nonce( 'bizen_ai_set_status' ),
+				'filter'   => $this->current_filter(),
+				'viewUrl'  => $this->view_url(),
 				'saving'   => __( 'Saving…', 'bizen-toolkit' ),
 				'saved'    => __( 'Saved', 'bizen-toolkit' ),
 				'failed'   => __( 'Could not save', 'bizen-toolkit' ),
@@ -66,6 +88,9 @@ class Bizen_AI_Triage_Screen {
 				'selected' => __( '%d selected', 'bizen-toolkit' ),
 				/* translators: %d: number of selected images */
 				'confirm'  => __( 'Apply this status to %d selected images?', 'bizen-toolkit' ),
+				/* translators: %d: number of selected images */
+				'reset'    => __( 'Send %d selected images back to the review queue?', 'bizen-toolkit' ),
+				'undone'   => __( 'Undone', 'bizen-toolkit' ),
 			]
 		);
 	}
@@ -75,8 +100,8 @@ class Bizen_AI_Triage_Screen {
 			wp_die( esc_html__( 'You do not have permission to manage media.', 'bizen-toolkit' ) );
 		}
 
-		$filter = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : 'unreviewed';
-		$search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+		$filter = $this->current_filter();
+		$search = $this->current_search();
 		$paged  = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
 		$counts = $this->counts();
 		$query  = $this->query( $filter, $paged, $search );
@@ -191,9 +216,17 @@ class Bizen_AI_Triage_Screen {
 						<?php echo esc_html( $label ); ?>
 					</button>
 				<?php endforeach; ?>
+
+				<button type="button" class="button" data-bulk-status="<?php echo esc_attr( Bizen_AI_Status::UNREVIEWED ); ?>" disabled>
+					<?php esc_html_e( 'To review', 'bizen-toolkit' ); ?>
+				</button>
 			</span>
 
 			<span class="bizen-ai-toolbar__feedback" aria-live="polite"></span>
+
+			<button type="button" class="button-link bizen-ai-toolbar__undo" hidden>
+				<?php esc_html_e( 'Undo', 'bizen-toolkit' ); ?>
+			</button>
 		</div>
 		<?php
 	}
@@ -363,8 +396,10 @@ class Bizen_AI_Triage_Screen {
 	public function ajax_set_status(): void {
 		check_ajax_referer( 'bizen_ai_set_status', 'nonce' );
 
-		$status = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : '';
-		if ( ! Bizen_AI_Status::is_valid( $status ) ) {
+		$status   = isset( $_POST['status'] ) ? sanitize_key( wp_unslash( $_POST['status'] ) ) : '';
+		$clearing = Bizen_AI_Status::UNREVIEWED === $status;
+
+		if ( ! $clearing && ! Bizen_AI_Status::is_valid( $status ) ) {
 			wp_send_json_error( [ 'message' => __( 'Unknown status.', 'bizen-toolkit' ) ], 400 );
 		}
 
@@ -382,7 +417,10 @@ class Bizen_AI_Triage_Screen {
 			if ( 'attachment' !== get_post_type( $id ) ) {
 				continue;
 			}
-			if ( Bizen_AI_Status::set( $id, $status ) ) {
+			if ( $clearing ) {
+				Bizen_AI_Status::clear( $id );
+				$saved[] = $id;
+			} elseif ( Bizen_AI_Status::set( $id, $status ) ) {
 				$saved[] = $id;
 			}
 		}

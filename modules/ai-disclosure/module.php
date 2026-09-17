@@ -174,9 +174,7 @@ return new class extends Bizen_Module {
 		$status = sanitize_key( (string) $attachment['bizen_ai_status'] );
 
 		if ( '' === $status ) {
-			// Back to unreviewed, which is not the same as "no AI".
-			delete_post_meta( $id, Bizen_AI_Status::META_STATUS );
-			delete_post_meta( $id, Bizen_AI_Status::META_SOURCE );
+			Bizen_AI_Status::clear( $id );
 		} else {
 			Bizen_AI_Status::set( $id, $status );
 		}

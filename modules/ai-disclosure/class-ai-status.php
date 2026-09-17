@@ -15,6 +15,9 @@ class Bizen_AI_Status {
 	public const META_STATUS = '_bizen_ai_status';
 	public const META_SOURCE = '_bizen_ai_status_source';
 
+	/** Not a status: the name the UI uses when asking for the meta to be removed. */
+	public const UNREVIEWED  = 'unreviewed';
+
 	public const NONE        = 'none';
 	public const GENERATED   = 'generated';
 	public const MANIPULATED = 'manipulated';
@@ -60,6 +63,12 @@ class Bizen_AI_Status {
 		update_post_meta( $attachment_id, self::META_SOURCE, 'auto' === $source ? 'auto' : 'manual' );
 
 		return true;
+	}
+
+	/** Back to never-reviewed, which is not the same as a reviewed "no AI". */
+	public static function clear( int $attachment_id ): void {
+		delete_post_meta( $attachment_id, self::META_STATUS );
+		delete_post_meta( $attachment_id, self::META_SOURCE );
 	}
 
 	public static function source( int $attachment_id ): string {
