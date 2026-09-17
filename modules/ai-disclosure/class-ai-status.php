@@ -22,6 +22,9 @@ class Bizen_AI_Status {
 	public const GENERATED   = 'generated';
 	public const MANIPULATED = 'manipulated';
 
+	/** Site-wide colourway for the EU label, set once in the toolkit panel. */
+	public const OPTION_VARIANT = 'bizen_ai_disclosure_icon_variant';
+
 	/** Statuses that put a badge on the front end. */
 	private const BADGED = [ self::GENERATED, self::MANIPULATED ];
 
@@ -32,6 +35,20 @@ class Bizen_AI_Status {
 			self::GENERATED   => __( 'AI generated', 'bizen-toolkit' ),
 			self::MANIPULATED => __( 'AI modified', 'bizen-toolkit' ),
 		];
+	}
+
+	/** @return array<string, string> variant => human label */
+	public static function variants(): array {
+		return [
+			'black'       => __( 'Solid black', 'bizen-toolkit' ),
+			'transparent' => __( 'Black, half transparent', 'bizen-toolkit' ),
+		];
+	}
+
+	public static function icon_variant(): string {
+		$variant = (string) get_option( self::OPTION_VARIANT, 'black' );
+
+		return isset( self::variants()[ $variant ] ) ? $variant : 'black';
 	}
 
 	public static function label( string $status ): string {

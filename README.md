@@ -17,7 +17,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `disable-comments` | Disables the comment system site-wide — closes comments everywhere and hides the Comments menu and Discussion settings | Core — written in-house |
 | `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
 | `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
-| `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; reads provenance from XMP on upload and adds a review queue under Media | Core — written in-house |
+| `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; reads provenance from XMP and C2PA on upload and adds a review queue under Media | Core — written in-house |
 
 ---
 
@@ -32,6 +32,8 @@ apply_filters( 'bizen_ai_disclosure_badge', '', $attachment_id, $position )
 It returns the markup, or an empty string when the image needs no disclosure or the module is switched off, so the caller carries no dependency on it.
 
 `$position` is one of `bottom-right` (the default), `bottom-left`, `top-right` or `top-left`. Which corner works is a property of the composition rather than of the file — the same photo is clear in the corner of a card and buried under an overlay panel in a hero — so the template decides. Wrap your own element in `.bizen-ai-media`, adding `--fill` where the image is stretched to a parent that sizes it.
+
+The label's colourway — solid black or half transparent — is a site-wide setting on the module's row in the toolkit panel. `bizen_ai_disclosure_icon_variant` overrides it per image where a composition needs it.
 
 [Timber AVIF](https://github.com/zenotds/timber-avif) v6.1 and later wires this into its `image()` macro through a `disclosure` option.
 

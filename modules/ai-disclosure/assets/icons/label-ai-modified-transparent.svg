@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1700.79 566.93">
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="231.11 144.36 1230.56 266.41">
   <defs>
     <style>
       .cls-1 {
-        fill: #fff;
         fill-rule: evenodd;
+        opacity: .5;
       }
 
       .cls-2 {
-        fill: #1d1d1b;
+        fill: #fff;
       }
     </style>
   </defs>

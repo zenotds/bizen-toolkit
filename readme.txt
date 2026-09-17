@@ -26,6 +26,12 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.5 =
+* AI Disclosure: provenance is now read from C2PA as well as XMP. ChatGPT and Gemini ship a C2PA manifest and no XMP packet at all, so images from either were arriving unflagged — the IPTC term travels through the manifest as a readable string, so it can be found without a C2PA parser
+* AI Disclosure: the EU label files are cropped to the artwork. The Commission ships them on a canvas where the pill covers 77% of the width and only 47% of the height, so most of the CSS height was buying empty space and the label rendered at about half the size it was set to
+* AI Disclosure: the label style is now a site-wide setting on the module's row in the toolkit panel — solid black or half transparent — rather than a per-image filter. The white variants have been dropped
+* Modules can now render and save their own settings in the admin panel: render_settings() was declared on the base class but never actually called, and save_settings() is new alongside it
+
 = 1.4.4 =
 * AI Disclosure: a card that no longer matches the active filter now leaves the view on its own, instead of sitting there until the page is reloaded. Clearing the last one returns to page one of the same view, because removing rows shifts the rest forward and a stale page offset would skip over images nobody had seen
 * AI Disclosure: new "To review" bulk action sends images back to the queue — that state used to be reachable only from the field on the attachment

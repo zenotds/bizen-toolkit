@@ -34,9 +34,17 @@ defined( 'ABSPATH' ) || exit;
 class Bizen_AI_Badge_Renderer {
 
 	/** status => [ file stem, intrinsic width, intrinsic height ] */
+	/**
+	 * status => [ file stem, intrinsic width, intrinsic height ]
+	 *
+	 * The Commission ships each label on a canvas far larger than the artwork —
+	 * the pill covers 77% of the width and 47% of the height — so the viewBox of
+	 * every file here has been tightened to the drawing. Without that, a CSS
+	 * height mostly buys empty space and the label reads far smaller than it is.
+	 */
 	private const ICONS = [
-		Bizen_AI_Status::GENERATED   => [ 'label-ai-generated', 1790, 567 ],
-		Bizen_AI_Status::MANIPULATED => [ 'label-ai-modified', 1701, 567 ],
+		Bizen_AI_Status::GENERATED   => [ 'label-ai-generated', 1384, 266 ],
+		Bizen_AI_Status::MANIPULATED => [ 'label-ai-modified', 1231, 266 ],
 	];
 
 	private const POSITIONS = [ 'bottom-right', 'bottom-left', 'top-right', 'top-left' ];
@@ -138,15 +146,17 @@ class Bizen_AI_Badge_Renderer {
 		$position = in_array( $position, self::POSITIONS, true ) ? $position : self::DEFAULT_POSITION;
 
 		/**
-		 * Filters the icon colourway: 'black' (black pill, white lettering) or
-		 * 'white'. Both ship with the module, straight from the Commission set.
+		 * Filters the icon colourway, which is otherwise a site-wide setting in
+		 * the toolkit panel. Both files ship with the module, straight from the
+		 * Commission set: a solid black pill, or the same at half opacity for
+		 * compositions a solid one would shout over.
 		 *
 		 * @param string $variant
 		 * @param int    $attachment_id
 		 * @param string $status
 		 */
-		$variant = (string) apply_filters( 'bizen_ai_disclosure_icon_variant', 'black', $attachment_id, $status );
-		$variant = in_array( $variant, [ 'black', 'white' ], true ) ? $variant : 'black';
+		$variant = (string) apply_filters( 'bizen_ai_disclosure_icon_variant', Bizen_AI_Status::icon_variant(), $attachment_id, $status );
+		$variant = isset( Bizen_AI_Status::variants()[ $variant ] ) ? $variant : 'black';
 
 		$html = sprintf(
 			'<img class="bizen-ai-badge bizen-ai-badge--%1$s bizen-ai-badge--%2$s" src="%3$s" width="%4$d" height="%5$d" alt="%6$s" decoding="async">',

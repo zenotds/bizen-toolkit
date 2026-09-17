@@ -274,6 +274,14 @@ msgstr ""
 msgid "AI modified"
 msgstr ""
 
+#: modules/ai-disclosure/class-ai-status.php
+msgid "Solid black"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "Black, half transparent"
+msgstr ""
+
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "AI Disclosure"
 msgstr ""
@@ -400,4 +408,8 @@ msgstr ""
 
 #: modules/ai-disclosure/module.php
 msgid "Generated and modified images carry the EU disclosure label on the front end."
+msgstr ""
+
+#: modules/ai-disclosure/module.php
+msgid "EU label style:"
 msgstr ""

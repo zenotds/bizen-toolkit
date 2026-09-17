@@ -37,9 +37,18 @@
  * _bizen_ai_status_source records whether a human decided ("manual") or the
  * uploader read it out of the file ("auto"), so detection can be re-run over
  * auto rows later without overwriting anyone's decision.
+ *
+ * Detection reads IPTC provenance, from an XMP packet where there is one and
+ * from the raw bytes of a C2PA manifest where there is not — which is the case
+ * for most of what ChatGPT and Gemini hand you. It only ever acts on a positive
+ * marker: a file carrying none stays unreviewed rather than being called clean.
  */
 
 defined( 'ABSPATH' ) || exit;
+
+// Loaded out here rather than in boot(): the admin panel renders and saves this
+// module's settings whether or not the module is enabled.
+require_once __DIR__ . '/class-ai-status.php';
 
 return new class extends Bizen_Module {
 
@@ -60,10 +69,10 @@ return new class extends Bizen_Module {
 
 	public function boot(): void {
 		require_once __DIR__ . '/class-ai-status.php';
-		require_once __DIR__ . '/class-ai-xmp-reader.php';
+		require_once __DIR__ . '/class-ai-provenance-reader.php';
 
-		// Priority 1: optimisation plugins that strip XMP hook the same filter,
-		// and once the packet is gone the file is indistinguishable from a photo.
+		// Priority 1: optimisation plugins that strip metadata hook the same filter,
+		// and once it is gone the file is indistinguishable from a camera photo.
 		add_filter( 'wp_handle_upload', [ $this, 'read_provenance' ], 1 );
 		add_action( 'add_attachment', [ $this, 'apply_provenance' ] );
 
@@ -84,7 +93,7 @@ return new class extends Bizen_Module {
 		$type = (string) ( $upload['type'] ?? '' );
 
 		if ( '' !== $file && str_starts_with( $type, 'image/' ) ) {
-			$status = Bizen_AI_XMP_Reader::detect( $file );
+			$status = Bizen_AI_Provenance_Reader::detect( $file );
 			if ( null !== $status ) {
 				$this->pending[ $file ] = $status;
 			}
@@ -112,7 +121,7 @@ return new class extends Bizen_Module {
 
 		// Sideloads and importers never pass through wp_handle_upload, so fall
 		// back to reading the file here.
-		$status = $this->pending[ $file ] ?? Bizen_AI_XMP_Reader::detect( $file );
+		$status = $this->pending[ $file ] ?? Bizen_AI_Provenance_Reader::detect( $file );
 		unset( $this->pending[ $file ] );
 
 		if ( null !== $status ) {
@@ -180,5 +189,35 @@ return new class extends Bizen_Module {
 		}
 
 		return $post;
+	}
+
+	public function render_settings(): void {
+		$current = Bizen_AI_Status::icon_variant();
+		?>
+		<label style="display:inline-block;font-size:12px;color:#50575e;">
+			<?php esc_html_e( 'EU label style:', 'bizen-toolkit' ); ?>
+			<select name="bizen_ai_icon_variant">
+				<?php foreach ( Bizen_AI_Status::variants() as $value => $label ) : ?>
+					<option value="<?php echo esc_attr( $value ); ?>"<?php selected( $current, $value ); ?>>
+						<?php echo esc_html( $label ); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+		</label>
+		<?php
+	}
+
+	public function save_settings(): void {
+		if ( ! isset( $_POST['bizen_ai_icon_variant'] ) ) {
+			return;
+		}
+
+		// Nonce and capability are already checked by the panel before this runs.
+		$variant = sanitize_key( wp_unslash( $_POST['bizen_ai_icon_variant'] ) );
+
+		update_option(
+			Bizen_AI_Status::OPTION_VARIANT,
+			isset( Bizen_AI_Status::variants()[ $variant ] ) ? $variant : 'black'
+		);
 	}
 };

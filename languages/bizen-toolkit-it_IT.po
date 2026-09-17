@@ -277,6 +277,14 @@ msgstr "Generata con AI"
 msgid "AI modified"
 msgstr "Modificata con AI"
 
+#: modules/ai-disclosure/class-ai-status.php
+msgid "Solid black"
+msgstr "Nero pieno"
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "Black, half transparent"
+msgstr "Nero, semitrasparente"
+
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "AI Disclosure"
 msgstr "Trasparenza AI"
@@ -404,3 +412,7 @@ msgstr "Trasparenza AI"
 #: modules/ai-disclosure/module.php
 msgid "Generated and modified images carry the EU disclosure label on the front end."
 msgstr "Le immagini generate e modificate mostrano l’etichetta UE sul front end."
+
+#: modules/ai-disclosure/module.php
+msgid "EU label style:"
+msgstr "Stile etichetta UE:"

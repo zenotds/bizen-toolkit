@@ -55,6 +55,12 @@ class Bizen_Admin_Panel {
 		}
 		$this->loader->save_enabled( $states );
 
+		// Every module, not just the enabled ones: a module being switched off in
+		// this same request still had its fields on screen.
+		foreach ( $modules as $module ) {
+			$module->save_settings();
+		}
+
 		wp_safe_redirect( add_query_arg( [ 'page' => 'bizen-toolkit', 'tab' => 'modules', 'saved' => '1' ], admin_url( 'admin.php' ) ) );
 		exit;
 	}
@@ -173,6 +179,16 @@ class Bizen_Admin_Panel {
 												?>
 											</span>
 										<?php endforeach; ?>
+										<?php
+										ob_start();
+										$module->render_settings();
+										$settings = trim( (string) ob_get_clean() );
+										?>
+										<?php if ( '' !== $settings ) : ?>
+											<div style="margin-top:8px;">
+												<?php echo $settings; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- first-party module markup, escaped where it is built. ?>
+											</div>
+										<?php endif; ?>
 									</td>
 									<td>
 										<?php if ( empty( $module->get_dependencies() ) ) : ?>
