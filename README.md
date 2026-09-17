@@ -37,6 +37,16 @@ The label's colourway — solid black or half transparent — is a site-wide set
 
 [Timber AVIF](https://github.com/zenotds/timber-avif) v6.1 and later wires this into its `image()` macro through a `disclosure` option.
 
+### Not covered yet: video and audio
+
+Art. 50(4) covers image, audio and video alike. This module handles raster images only, and widening the MIME list would not be enough:
+
+- The renderer filters `wp_get_attachment_image` and `wp_content_img_tag`. Core renders video through the `[video]` shortcode and the video block, which share none of that markup.
+- The disclosure is owed at first exposure, so for video it belongs on the poster frame — before anyone presses play, and not in player chrome that only appears on hover.
+- Provenance in MP4 sits in boxes whose position varies far more than it does in JPEG or PNG, so the head-and-tail scan that reliably finds it in a still is not a safe assumption there.
+- Audio has no visual surface at all: the disclosure has to sit beside the player as text.
+- The review queue filters on image MIME types and uses thumbnails; video needs poster frames and a different empty state.
+
 ---
 
 ## Installation

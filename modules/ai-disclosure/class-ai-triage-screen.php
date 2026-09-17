@@ -116,8 +116,6 @@ class Bizen_AI_Triage_Screen {
 				<?php esc_html_e( 'Images marked "AI generated" or "AI modified" carry the EU disclosure label on the front end. Mark an image "No AI" to clear it from this queue — an image nobody has reviewed is not the same as one confirmed to be AI-free.', 'bizen-toolkit' ); ?>
 			</p>
 
-			<?php $this->render_options(); ?>
-
 			<?php $this->render_search( $filter, $search ); ?>
 			<?php $this->render_filters( $filter, $search, $counts ); ?>
 
@@ -156,6 +154,12 @@ class Bizen_AI_Triage_Screen {
 				<?php $this->render_pagination( $query, $filter, $search, $paged ); ?>
 
 			<?php endif; ?>
+
+			<?php
+			// Below the grid, and outside the branch above: an empty queue still has
+			// a label style to set.
+			$this->render_options();
+			?>
 		</div>
 		<?php
 	}
@@ -173,7 +177,7 @@ class Bizen_AI_Triage_Screen {
 	}
 
 	/**
-	 * The one setting the module has, on the module's own screen.
+	 * The one setting the module has, sitting under the queue it affects.
 	 *
 	 * It is site-wide, so it asks for manage_options while the queue itself only
 	 * asks for upload_files: an editor clears the backlog, an administrator

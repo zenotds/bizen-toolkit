@@ -17,8 +17,13 @@
  * content published alongside the Code of Practice — free to use, no
  * attribution required, shipped in assets/icons.
  *
- * Note the scope this does not cover: it flags an attachment, it cannot judge
- * one. Only content meeting the three deepfake criteria — close resemblance, a
+ * Images only, for now: art. 50(4) covers video and audio on the same terms,
+ * but neither goes through the attachment helpers this module filters, and the
+ * disclosure would have to land on a poster frame or beside a player. See the
+ * README.
+ *
+ * Note the scope this does not cover either: it flags an attachment, it cannot
+ * judge one. Only content meeting the three deepfake criteria — close resemblance, a
  * subject that exists or plausibly could, an appearance of authenticity — owes
  * a disclosure at all, and a stylised illustration owes none. That call is
  * editorial and stays with whoever reviews the queue.

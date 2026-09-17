@@ -26,6 +26,9 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.7 =
+* AI Disclosure: the EU label style selector sits below the image grid rather than above it, and still renders when the queue is empty
+
 = 1.4.6 =
 * AI Disclosure: the EU label style setting moved out of the modules list and onto the AI Disclosure screen, beside the queue it affects. It saves on change, previews the choice against a mid-grey backdrop — on white the half-transparent option is indistinguishable from the solid one — and asks for manage_options, while the queue itself still only needs upload_files
 * The per-module settings hook added to the admin panel in 1.4.5 has been reverted. The modules list is a set of switches, and a module's settings belong on the module's own screen; save_settings() is gone from the base class again
