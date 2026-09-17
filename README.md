@@ -33,6 +33,10 @@ It returns the markup, or an empty string when the image needs no disclosure or 
 
 `$position` is one of `bottom-right` (the default), `bottom-left`, `top-right` or `top-left`. Which corner works is a property of the composition rather than of the file — the same photo is clear in the corner of a card and buried under an overlay panel in a hero — so the template decides. Wrap your own element in `.bizen-ai-media`, adding `--fill` where the image is stretched to a parent that sizes it.
 
+Passing `none` leaves the label off that one placement, for a layout that carries the disclosure another way — a caption under the image, or a second instance of the same photo on the page that is already labelled. It silences a placement, not an image: the same photo keeps its label everywhere else, and an unrecognised value falls back to the default corner rather than to silence, so a typo shows the label instead of hiding it.
+
+It is the wrong tool for "this image never needs a label". An AI image that is not a deepfake — a plainly stylised illustration, which fails the resemblance test — owes no disclosure anywhere, and that is a fact about the file. Record it on the attachment instead, or every template that uses the image has to remember to suppress it.
+
 The label's colourway — solid black or half transparent — is a site-wide setting on the **Media → AI Disclosure** screen. `bizen_ai_disclosure_icon_variant` overrides it per image where a composition needs it.
 
 [Timber AVIF](https://github.com/zenotds/timber-avif) v6.1 and later wires this into its `image()` macro through a `disclosure` option.

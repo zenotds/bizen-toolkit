@@ -26,6 +26,9 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.8 =
+* AI Disclosure: a placement can now pass "none" as the position to leave the label off, for a layout that carries the disclosure another way. It silences one placement rather than the image, and an unrecognised position still falls back to the default corner — on a compliance marker a typo should show the label, not hide it
+
 = 1.4.7 =
 * AI Disclosure: the EU label style selector sits below the image grid rather than above it, and still renders when the queue is empty
 

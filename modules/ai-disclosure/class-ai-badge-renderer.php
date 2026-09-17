@@ -49,6 +49,18 @@ class Bizen_AI_Badge_Renderer {
 
 	private const POSITIONS = [ 'bottom-right', 'bottom-left', 'top-right', 'top-left' ];
 
+	/**
+	 * Not a corner: suppresses the badge for this one placement.
+	 *
+	 * It shares its spelling with Bizen_AI_Status::NONE by coincidence, and the
+	 * two mean opposite things. That one is a fact about the image — no AI in it,
+	 * so no disclosure is owed anywhere. This one is a fact about the placement:
+	 * the image still owes a disclosure, and this composition gives it some other
+	 * way. Suppressing because an image never needs a label is the wrong tool;
+	 * that belongs on the attachment, where it follows the image everywhere.
+	 */
+	private const HIDDEN = 'none';
+
 	private const DEFAULT_POSITION = 'bottom-right';
 
 	public function __construct() {
@@ -79,7 +91,8 @@ class Bizen_AI_Badge_Renderer {
 
 	/**
 	 * Badge markup on its own, for markup this module does not generate.
-	 * Empty string when the attachment needs no disclosure.
+	 * Empty string when the attachment needs no disclosure, or when the caller
+	 * passed 'none' as the position to keep it off this one placement.
 	 */
 	public function badge_for( $html, $attachment_id = 0, $position = '' ): string {
 		$attachment_id = (int) $attachment_id;
@@ -104,7 +117,8 @@ class Bizen_AI_Badge_Renderer {
 
 		/**
 		 * Filters where the badge sits for images rendered through the core
-		 * attachment helpers. One of the values in self::POSITIONS.
+		 * attachment helpers: one of self::POSITIONS, or 'none' to leave the
+		 * badge off this placement entirely.
 		 *
 		 * @param string $position
 		 * @param int    $attachment_id
@@ -136,6 +150,10 @@ class Bizen_AI_Badge_Renderer {
 	}
 
 	private function badge( string $status, int $attachment_id, string $position = '' ): string {
+		if ( self::HIDDEN === $position ) {
+			return '';
+		}
+
 		$icon = self::ICONS[ $status ] ?? null;
 		if ( null === $icon ) {
 			return '';
