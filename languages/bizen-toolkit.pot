@@ -339,6 +339,18 @@ msgid "Nothing to review here."
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "EU label style"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "You do not have permission to change this setting."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Unknown label style."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Search images"
 msgstr ""
 
@@ -408,8 +420,4 @@ msgstr ""
 
 #: modules/ai-disclosure/module.php
 msgid "Generated and modified images carry the EU disclosure label on the front end."
-msgstr ""
-
-#: modules/ai-disclosure/module.php
-msgid "EU label style:"
 msgstr ""

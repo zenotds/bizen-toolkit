@@ -46,10 +46,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// Loaded out here rather than in boot(): the admin panel renders and saves this
-// module's settings whether or not the module is enabled.
-require_once __DIR__ . '/class-ai-status.php';
-
 return new class extends Bizen_Module {
 
 	/** Provenance read at upload time, keyed by path, consumed when the attachment appears. */
@@ -189,35 +185,5 @@ return new class extends Bizen_Module {
 		}
 
 		return $post;
-	}
-
-	public function render_settings(): void {
-		$current = Bizen_AI_Status::icon_variant();
-		?>
-		<label style="display:inline-block;font-size:12px;color:#50575e;">
-			<?php esc_html_e( 'EU label style:', 'bizen-toolkit' ); ?>
-			<select name="bizen_ai_icon_variant">
-				<?php foreach ( Bizen_AI_Status::variants() as $value => $label ) : ?>
-					<option value="<?php echo esc_attr( $value ); ?>"<?php selected( $current, $value ); ?>>
-						<?php echo esc_html( $label ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
-		</label>
-		<?php
-	}
-
-	public function save_settings(): void {
-		if ( ! isset( $_POST['bizen_ai_icon_variant'] ) ) {
-			return;
-		}
-
-		// Nonce and capability are already checked by the panel before this runs.
-		$variant = sanitize_key( wp_unslash( $_POST['bizen_ai_icon_variant'] ) );
-
-		update_option(
-			Bizen_AI_Status::OPTION_VARIANT,
-			isset( Bizen_AI_Status::variants()[ $variant ] ) ? $variant : 'black'
-		);
 	}
 };

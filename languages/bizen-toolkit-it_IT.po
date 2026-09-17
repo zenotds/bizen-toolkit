@@ -342,6 +342,18 @@ msgid "Nothing to review here."
 msgstr "Niente da revisionare qui."
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "EU label style"
+msgstr "Stile etichetta UE"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "You do not have permission to change this setting."
+msgstr "Non hai i permessi per modificare questa impostazione."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Unknown label style."
+msgstr "Stile etichetta sconosciuto."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Search images"
 msgstr "Cerca immagini"
 
@@ -412,7 +424,3 @@ msgstr "Trasparenza AI"
 #: modules/ai-disclosure/module.php
 msgid "Generated and modified images carry the EU disclosure label on the front end."
 msgstr "Le immagini generate e modificate mostrano l’etichetta UE sul front end."
-
-#: modules/ai-disclosure/module.php
-msgid "EU label style:"
-msgstr "Stile etichetta UE:"

@@ -219,3 +219,44 @@
 .bizen-ai-toolbar__undo[hidden] {
 	display: none;
 }
+
+.bizen-ai-options {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 12px 0 4px;
+	padding: 10px 12px;
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.bizen-ai-options label {
+	font-weight: 600;
+}
+
+/* Mid grey, so a half-transparent pill reads differently from a solid one — on
+   white both look identical and the choice would be guesswork. */
+.bizen-ai-options__preview {
+	display: inline-flex;
+	align-items: center;
+	padding: 7px 11px;
+	background: #7a7a7a;
+	border-radius: 3px;
+}
+
+.bizen-ai-options__preview img {
+	display: block;
+	width: auto;
+	height: 22px;
+}
+
+.bizen-ai-options__feedback {
+	color: #646970;
+	font-size: 12px;
+}
+
+.bizen-ai-options__feedback.is-error {
+	color: #d63638;
+}

@@ -53,13 +53,6 @@ abstract class Bizen_Module {
 	/** Optional per-module settings HTML rendered inside the admin panel. */
 	public function render_settings(): void {}
 
-	/**
-	 * Persist whatever render_settings() put in the form.
-	 * Called for every module on save, after the panel has checked the nonce
-	 * and the capability, so an implementation only has to read its own keys.
-	 */
-	public function save_settings(): void {}
-
 	public function dependencies_met(): bool {
 		if ( empty( $this->get_dependencies() ) ) {
 			return true;

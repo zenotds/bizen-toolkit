@@ -30,6 +30,7 @@ class Bizen_AI_Triage_Screen {
 	public function __construct() {
 		add_action( 'admin_menu', [ $this, 'register' ] );
 		add_action( 'wp_ajax_bizen_ai_set_status', [ $this, 'ajax_set_status' ] );
+		add_action( 'wp_ajax_bizen_ai_set_variant', [ $this, 'ajax_set_variant' ] );
 	}
 
 	public function register(): void {
@@ -80,6 +81,8 @@ class Bizen_AI_Triage_Screen {
 				'nonce'    => wp_create_nonce( 'bizen_ai_set_status' ),
 				'filter'   => $this->current_filter(),
 				'viewUrl'  => $this->view_url(),
+				'styleNonce' => wp_create_nonce( 'bizen_ai_set_variant' ),
+				'stylePreviews' => $this->variant_previews(),
 				'saving'   => __( 'Saving…', 'bizen-toolkit' ),
 				'saved'    => __( 'Saved', 'bizen-toolkit' ),
 				'failed'   => __( 'Could not save', 'bizen-toolkit' ),
@@ -112,6 +115,8 @@ class Bizen_AI_Triage_Screen {
 			<p class="description" style="max-width:52em;">
 				<?php esc_html_e( 'Images marked "AI generated" or "AI modified" carry the EU disclosure label on the front end. Mark an image "No AI" to clear it from this queue — an image nobody has reviewed is not the same as one confirmed to be AI-free.', 'bizen-toolkit' ); ?>
 			</p>
+
+			<?php $this->render_options(); ?>
 
 			<?php $this->render_search( $filter, $search ); ?>
 			<?php $this->render_filters( $filter, $search, $counts ); ?>
@@ -153,6 +158,71 @@ class Bizen_AI_Triage_Screen {
 			<?php endif; ?>
 		</div>
 		<?php
+	}
+
+	/** @return array<string, string> variant => preview image URL */
+	private function variant_previews(): array {
+		$base     = plugin_dir_url( __FILE__ ) . 'assets/icons/label-ai-generated-';
+		$previews = [];
+
+		foreach ( array_keys( Bizen_AI_Status::variants() ) as $variant ) {
+			$previews[ $variant ] = $base . $variant . '.svg';
+		}
+
+		return $previews;
+	}
+
+	/**
+	 * The one setting the module has, on the module's own screen.
+	 *
+	 * It is site-wide, so it asks for manage_options while the queue itself only
+	 * asks for upload_files: an editor clears the backlog, an administrator
+	 * decides how the label looks everywhere.
+	 */
+	private function render_options(): void {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$current  = Bizen_AI_Status::icon_variant();
+		$previews = $this->variant_previews();
+		?>
+		<div class="bizen-ai-options" id="bizen-ai-options">
+			<label for="bizen-ai-variant"><?php esc_html_e( 'EU label style', 'bizen-toolkit' ); ?></label>
+
+			<select id="bizen-ai-variant">
+				<?php foreach ( Bizen_AI_Status::variants() as $value => $label ) : ?>
+					<option value="<?php echo esc_attr( $value ); ?>"<?php selected( $current, $value ); ?>>
+						<?php echo esc_html( $label ); ?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+
+			<span class="bizen-ai-options__preview">
+				<img src="<?php echo esc_url( $previews[ $current ] ?? '' ); ?>" alt="">
+			</span>
+
+			<span class="bizen-ai-options__feedback" aria-live="polite"></span>
+		</div>
+		<?php
+	}
+
+	public function ajax_set_variant(): void {
+		check_ajax_referer( 'bizen_ai_set_variant', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( [ 'message' => __( 'You do not have permission to change this setting.', 'bizen-toolkit' ) ], 403 );
+		}
+
+		$variant = isset( $_POST['variant'] ) ? sanitize_key( wp_unslash( $_POST['variant'] ) ) : '';
+
+		if ( ! isset( Bizen_AI_Status::variants()[ $variant ] ) ) {
+			wp_send_json_error( [ 'message' => __( 'Unknown label style.', 'bizen-toolkit' ) ], 400 );
+		}
+
+		update_option( Bizen_AI_Status::OPTION_VARIANT, $variant );
+
+		wp_send_json_success( [ 'variant' => $variant ] );
 	}
 
 	private function render_search( string $filter, string $search ): void {

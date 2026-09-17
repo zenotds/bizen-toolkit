@@ -33,7 +33,7 @@ It returns the markup, or an empty string when the image needs no disclosure or 
 
 `$position` is one of `bottom-right` (the default), `bottom-left`, `top-right` or `top-left`. Which corner works is a property of the composition rather than of the file — the same photo is clear in the corner of a card and buried under an overlay panel in a hero — so the template decides. Wrap your own element in `.bizen-ai-media`, adding `--fill` where the image is stretched to a parent that sizes it.
 
-The label's colourway — solid black or half transparent — is a site-wide setting on the module's row in the toolkit panel. `bizen_ai_disclosure_icon_variant` overrides it per image where a composition needs it.
+The label's colourway — solid black or half transparent — is a site-wide setting on the **Media → AI Disclosure** screen. `bizen_ai_disclosure_icon_variant` overrides it per image where a composition needs it.
 
 [Timber AVIF](https://github.com/zenotds/timber-avif) v6.1 and later wires this into its `image()` macro through a `disclosure` option.
 

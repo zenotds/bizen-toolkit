@@ -26,6 +26,10 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.6 =
+* AI Disclosure: the EU label style setting moved out of the modules list and onto the AI Disclosure screen, beside the queue it affects. It saves on change, previews the choice against a mid-grey backdrop — on white the half-transparent option is indistinguishable from the solid one — and asks for manage_options, while the queue itself still only needs upload_files
+* The per-module settings hook added to the admin panel in 1.4.5 has been reverted. The modules list is a set of switches, and a module's settings belong on the module's own screen; save_settings() is gone from the base class again
+
 = 1.4.5 =
 * AI Disclosure: provenance is now read from C2PA as well as XMP. ChatGPT and Gemini ship a C2PA manifest and no XMP packet at all, so images from either were arriving unflagged — the IPTC term travels through the manifest as a readable string, so it can be found without a C2PA parser
 * AI Disclosure: the EU label files are cropped to the artwork. The Commission ships them on a canvas where the pill covers 77% of the width and only 47% of the height, so most of the CSS height was buying empty space and the label rendered at about half the size it was set to

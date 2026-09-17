@@ -3,7 +3,15 @@
 	var grid    = document.getElementById( 'bizen-ai-grid' );
 	var toolbar = document.getElementById( 'bizen-ai-toolbar' );
 
-	if ( ! grid || ! toolbar || ! cfg.ajaxUrl ) {
+	if ( ! cfg.ajaxUrl ) {
+		return;
+	}
+
+	// The style setting sits above the queue and has to keep working when the
+	// queue is empty, so it is wired before the grid is required.
+	initOptions();
+
+	if ( ! grid || ! toolbar ) {
 		return;
 	}
 
@@ -79,6 +87,51 @@
 		}
 		node.textContent = text;
 		node.classList.toggle( 'is-error', !! failed );
+	}
+
+	/* The one site-wide setting on this screen: the colourway of the EU label. */
+	function initOptions() {
+		var options = document.getElementById( 'bizen-ai-options' );
+		if ( ! options ) {
+			return;
+		}
+
+		var select  = options.querySelector( 'select' );
+		var preview = options.querySelector( 'img' );
+		var note    = options.querySelector( '.bizen-ai-options__feedback' );
+
+		if ( ! select ) {
+			return;
+		}
+
+		select.addEventListener( 'change', function () {
+			var variant = select.value;
+			var body    = new FormData();
+
+			body.append( 'action', 'bizen_ai_set_variant' );
+			body.append( 'nonce', cfg.styleNonce );
+			body.append( 'variant', variant );
+
+			// Swap the preview at once: it shows the choice, not the save.
+			if ( preview && cfg.stylePreviews && cfg.stylePreviews[ variant ] ) {
+				preview.src = cfg.stylePreviews[ variant ];
+			}
+
+			say( note, cfg.saving );
+
+			fetch( cfg.ajaxUrl, {
+				method: 'POST',
+				credentials: 'same-origin',
+				body: body
+			} ).then( function ( response ) {
+				return response.json();
+			} ).then( function ( result ) {
+				var ok = result && result.success;
+				say( note, ok ? cfg.saved : cfg.failed, ! ok );
+			} ).catch( function () {
+				say( note, cfg.failed, true );
+			} );
+		} );
 	}
 
 	function refreshCounts( counts ) {
