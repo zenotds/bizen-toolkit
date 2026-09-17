@@ -1,9 +1,36 @@
 ( function () {
-	var cfg  = window.bizenAiTriage || {};
-	var grid = document.getElementById( 'bizen-ai-grid' );
+	var cfg     = window.bizenAiTriage || {};
+	var grid    = document.getElementById( 'bizen-ai-grid' );
+	var toolbar = document.getElementById( 'bizen-ai-toolbar' );
 
-	if ( ! grid || ! cfg.ajaxUrl ) {
+	if ( ! grid || ! toolbar || ! cfg.ajaxUrl ) {
 		return;
+	}
+
+	var selectAll = document.getElementById( 'bizen-ai-select-all' );
+	var countNode = toolbar.querySelector( '[data-selected-count]' );
+	var feedback  = toolbar.querySelector( '.bizen-ai-toolbar__feedback' );
+	var buttons   = list( toolbar.querySelectorAll( '[data-bulk-status]' ) );
+
+	// Anchor for shift-click ranges: the last box the user touched directly.
+	var anchor = null;
+
+	function list( nodes ) {
+		return Array.prototype.slice.call( nodes );
+	}
+
+	function boxes() {
+		return list( grid.querySelectorAll( '.bizen-ai-item__select' ) );
+	}
+
+	function itemOf( box ) {
+		return box.closest( '.bizen-ai-item' );
+	}
+
+	function checked() {
+		return boxes().filter( function ( box ) {
+			return box.checked;
+		} );
 	}
 
 	function save( ids, status ) {
@@ -50,6 +77,70 @@
 		}
 	}
 
+	function sync() {
+		var all = boxes();
+		var n   = 0;
+
+		all.forEach( function ( box ) {
+			var item = itemOf( box );
+			if ( box.checked ) {
+				n++;
+			}
+			if ( item ) {
+				item.classList.toggle( 'is-selected', box.checked );
+			}
+		} );
+
+		if ( countNode ) {
+			countNode.textContent = n ? String( cfg.selected ).replace( '%d', n ) : '';
+		}
+
+		buttons.forEach( function ( button ) {
+			button.disabled = 0 === n;
+		} );
+
+		if ( selectAll ) {
+			selectAll.checked       = n > 0 && n === all.length;
+			selectAll.indeterminate = n > 0 && n < all.length;
+		}
+	}
+
+	if ( selectAll ) {
+		selectAll.addEventListener( 'change', function () {
+			boxes().forEach( function ( box ) {
+				box.checked = selectAll.checked;
+			} );
+			anchor = null;
+			sync();
+		} );
+	}
+
+	// Selection, with shift-click extending from the last box touched.
+	grid.addEventListener( 'click', function ( event ) {
+		var box = event.target.closest ? event.target.closest( '.bizen-ai-item__select' ) : null;
+
+		if ( ! box ) {
+			return;
+		}
+
+		var all   = boxes();
+		var index = all.indexOf( box );
+
+		if ( event.shiftKey && null !== anchor && index > -1 ) {
+			var from = Math.min( anchor, index );
+			var to   = Math.max( anchor, index );
+
+			for ( var i = from; i <= to; i++ ) {
+				all[ i ].checked = box.checked;
+			}
+		}
+
+		anchor = index;
+		say( feedback, '' );
+		sync();
+	} );
+
+	// A radio on a single card is the one-off correction: save it on the spot.
 	grid.addEventListener( 'change', function ( event ) {
 		var input = event.target;
 
@@ -57,43 +148,42 @@
 			return;
 		}
 
-		var item = input.closest( '.bizen-ai-item' );
+		var item = itemOf( input );
 		if ( ! item ) {
 			return;
 		}
 
-		var feedback = item.querySelector( '.bizen-ai-item__feedback' );
-		say( feedback, cfg.saving );
+		var note = item.querySelector( '.bizen-ai-item__feedback' );
+		say( note, cfg.saving );
 
 		save( [ item.dataset.id ], input.value ).then( function ( result ) {
 			if ( result && result.success ) {
-				say( feedback, cfg.saved );
+				say( note, cfg.saved );
 				dropAutoFlag( item );
 				refreshCounts( result.data.counts );
 			} else {
-				say( feedback, cfg.failed, true );
+				say( note, cfg.failed, true );
 			}
 		} ).catch( function () {
-			say( feedback, cfg.failed, true );
+			say( note, cfg.failed, true );
 		} );
 	} );
 
-	var bulk = document.querySelector( '.bizen-ai-bulk' );
+	buttons.forEach( function ( button ) {
+		button.addEventListener( 'click', function () {
+			var chosen = checked();
 
-	if ( bulk ) {
-		bulk.addEventListener( 'click', function ( event ) {
-			var button = event.target.closest( '[data-bulk-status]' );
-			if ( ! button ) {
+			if ( ! chosen.length ) {
+				say( feedback, cfg.none, true );
 				return;
 			}
 
-			var status   = button.dataset.bulkStatus;
-			var items    = Array.prototype.slice.call( grid.querySelectorAll( '.bizen-ai-item' ) );
-			var feedback = bulk.querySelector( '.bizen-ai-bulk__feedback' );
-
-			if ( ! items.length || ! window.confirm( cfg.confirm ) ) {
+			if ( ! window.confirm( String( cfg.confirm ).replace( '%d', chosen.length ) ) ) {
 				return;
 			}
+
+			var status = button.dataset.bulkStatus;
+			var items  = chosen.map( itemOf );
 
 			say( feedback, cfg.saving );
 
@@ -114,11 +204,20 @@
 					say( item.querySelector( '.bizen-ai-item__feedback' ), cfg.saved );
 				} );
 
+				// The batch is done: clear it so the next one starts empty.
+				chosen.forEach( function ( box ) {
+					box.checked = false;
+				} );
+				anchor = null;
+
 				say( feedback, cfg.saved );
 				refreshCounts( result.data.counts );
+				sync();
 			} ).catch( function () {
 				say( feedback, cfg.failed, true );
 			} );
 		} );
-	}
+	} );
+
+	sync();
 } )();

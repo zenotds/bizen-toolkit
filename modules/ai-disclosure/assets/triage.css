@@ -1,8 +1,29 @@
-.bizen-ai-bulk {
+.bizen-ai-search {
+	float: right;
+	margin: 0 0 4px;
+}
+
+.bizen-ai-results {
+	margin: 8px 0 0;
+	color: #50575e;
+}
+
+.bizen-ai-results a {
+	margin-left: 8px;
+}
+
+/*
+ * Sticky: selecting across a 60-item grid means scrolling away from the
+ * buttons that act on the selection.
+ */
+.bizen-ai-toolbar {
+	position: sticky;
+	top: 32px;
+	z-index: 10;
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
-	gap: 8px;
+	gap: 10px;
 	margin: 12px 0 16px;
 	padding: 10px 12px;
 	background: #fff;
@@ -10,18 +31,45 @@
 	border-radius: 4px;
 }
 
-.bizen-ai-bulk__label {
+.bizen-ai-toolbar__all {
+	display: flex;
+	align-items: center;
+	gap: 6px;
 	font-weight: 600;
+	white-space: nowrap;
 }
 
-.bizen-ai-bulk__feedback,
+.bizen-ai-toolbar__all input {
+	margin: 0;
+}
+
+.bizen-ai-toolbar__count {
+	min-width: 8em;
+	color: #50575e;
+	font-size: 12px;
+}
+
+.bizen-ai-toolbar__actions {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px;
+	padding-left: 10px;
+	border-left: 1px solid #dcdcde;
+}
+
+.bizen-ai-toolbar__label {
+	color: #50575e;
+}
+
+.bizen-ai-toolbar__feedback,
 .bizen-ai-item__feedback {
 	color: #646970;
 	font-size: 12px;
 	min-height: 16px;
 }
 
-.bizen-ai-bulk__feedback.is-error,
+.bizen-ai-toolbar__feedback.is-error,
 .bizen-ai-item__feedback.is-error {
 	color: #d63638;
 }
@@ -41,6 +89,11 @@
 	background: #fff;
 	border: 1px solid #c3c4c7;
 	border-radius: 4px;
+}
+
+.bizen-ai-item.is-selected {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
 }
 
 .bizen-ai-item__thumb {
@@ -64,6 +117,26 @@
 .bizen-ai-item__placeholder {
 	width: 100%;
 	height: 100%;
+}
+
+/* A solid plate, so the box stays visible whatever the photo is doing behind it. */
+.bizen-ai-item__check {
+	position: absolute;
+	top: 6px;
+	left: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 26px;
+	height: 26px;
+	background: rgba(255, 255, 255, 0.92);
+	border-radius: 3px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+	cursor: pointer;
+}
+
+.bizen-ai-item__check input {
+	margin: 0;
 }
 
 .bizen-ai-item__auto {
@@ -106,4 +179,15 @@
 
 .bizen-ai-item__choices input {
 	margin: 0;
+}
+
+/* Below 600px the admin bar stops being fixed, so a sticky offset would float. */
+@media screen and (max-width: 782px) {
+	.bizen-ai-toolbar {
+		position: static;
+	}
+
+	.bizen-ai-search {
+		float: none;
+	}
 }

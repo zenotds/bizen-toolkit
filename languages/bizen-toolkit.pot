@@ -291,7 +291,15 @@ msgid "Could not save"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
-msgid "Apply this status to every image shown on this page?"
+msgid "Nothing selected"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "%d selected"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Apply this status to %d selected images?"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
@@ -303,7 +311,23 @@ msgid "Images marked \"AI generated\" or \"AI modified\" carry the EU disclosure
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "%1$s matching %2$s"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Clear search"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Nothing to review here."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Search images"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Search"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
@@ -315,7 +339,15 @@ msgid "All images"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
-msgid "Mark everything on this page as:"
+msgid "Select all"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Mark selection as:"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Select %s"
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php

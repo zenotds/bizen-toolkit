@@ -29,7 +29,7 @@
 	position: absolute;
 	z-index: 20;
 	width: auto;
-	height: 18px;
+	height: 22px;
 	max-width: calc(100% - 16px);
 	margin: 0;
 	padding: 0;
@@ -81,7 +81,7 @@
 
 @media (max-width: 600px) {
 	.bizen-ai-badge {
-		height: 15px;
+		height: 18px;
 	}
 
 	.bizen-ai-badge--bottom-right,

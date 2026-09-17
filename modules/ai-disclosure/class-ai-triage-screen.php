@@ -10,6 +10,11 @@ defined( 'ABSPATH' ) || exit;
  * builds the whole attachment editor for every item, which is exactly the wrong
  * shape for classifying a few hundred files in a sitting.
  *
+ * Work happens by selection: tick the images that belong together, apply a
+ * status to all of them at once. Search narrows the grid first, so a batch is
+ * usually "everything matching hero-" rather than a hunt through pages. A radio
+ * on a single card still saves on the spot, for the one-off correction.
+ *
  * The default view is everything nobody has looked at yet. Once that list is
  * empty the screen has done its job and day-to-day work happens in the field on
  * the attachment itself.
@@ -21,8 +26,6 @@ class Bizen_AI_Triage_Screen {
 
 	/** Raster formats only: an icon or a logo is never a deepfake, and SVGs would flood the queue. */
 	private const MIMES = [ 'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif' ];
-
-	private string $hook = '';
 
 	public function __construct() {
 		add_action( 'admin_menu', [ $this, 'register' ] );
@@ -40,7 +43,6 @@ class Bizen_AI_Triage_Screen {
 		);
 
 		if ( is_string( $hook ) ) {
-			$this->hook = $hook;
 			add_action( 'admin_print_styles-' . $hook, [ $this, 'enqueue' ] );
 		}
 	}
@@ -54,12 +56,16 @@ class Bizen_AI_Triage_Screen {
 			'bizen-ai-triage',
 			'bizenAiTriage',
 			[
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'bizen_ai_set_status' ),
-				'saving'  => __( 'Saving…', 'bizen-toolkit' ),
-				'saved'   => __( 'Saved', 'bizen-toolkit' ),
-				'failed'  => __( 'Could not save', 'bizen-toolkit' ),
-				'confirm' => __( 'Apply this status to every image shown on this page?', 'bizen-toolkit' ),
+				'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
+				'nonce'    => wp_create_nonce( 'bizen_ai_set_status' ),
+				'saving'   => __( 'Saving…', 'bizen-toolkit' ),
+				'saved'    => __( 'Saved', 'bizen-toolkit' ),
+				'failed'   => __( 'Could not save', 'bizen-toolkit' ),
+				'none'     => __( 'Nothing selected', 'bizen-toolkit' ),
+				/* translators: %d: number of selected images */
+				'selected' => __( '%d selected', 'bizen-toolkit' ),
+				/* translators: %d: number of selected images */
+				'confirm'  => __( 'Apply this status to %d selected images?', 'bizen-toolkit' ),
 			]
 		);
 	}
@@ -70,9 +76,10 @@ class Bizen_AI_Triage_Screen {
 		}
 
 		$filter = isset( $_GET['status'] ) ? sanitize_key( wp_unslash( $_GET['status'] ) ) : 'unreviewed';
+		$search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
 		$paged  = max( 1, (int) ( $_GET['paged'] ?? 1 ) );
 		$counts = $this->counts();
-		$query  = $this->query( $filter, $paged );
+		$query  = $this->query( $filter, $paged, $search );
 		?>
 		<div class="wrap bizen-ai-triage">
 			<h1><?php esc_html_e( 'AI Disclosure', 'bizen-toolkit' ); ?></h1>
@@ -81,13 +88,32 @@ class Bizen_AI_Triage_Screen {
 				<?php esc_html_e( 'Images marked "AI generated" or "AI modified" carry the EU disclosure label on the front end. Mark an image "No AI" to clear it from this queue — an image nobody has reviewed is not the same as one confirmed to be AI-free.', 'bizen-toolkit' ); ?>
 			</p>
 
-			<?php $this->render_filters( $filter, $counts ); ?>
+			<?php $this->render_search( $filter, $search ); ?>
+			<?php $this->render_filters( $filter, $search, $counts ); ?>
+
+			<div class="clear"></div>
+
+			<?php if ( '' !== $search ) : ?>
+				<p class="bizen-ai-results">
+					<?php
+					printf(
+						/* translators: 1: number of matches, 2: search term */
+						esc_html__( '%1$s matching %2$s', 'bizen-toolkit' ),
+						'<strong>' . esc_html( number_format_i18n( (int) $query->found_posts ) ) . '</strong>',
+						'<em>' . esc_html( $search ) . '</em>'
+					);
+					?>
+					<a href="<?php echo esc_url( add_query_arg( [ 'page' => self::PAGE, 'status' => $filter ], admin_url( 'upload.php' ) ) ); ?>">
+						<?php esc_html_e( 'Clear search', 'bizen-toolkit' ); ?>
+					</a>
+				</p>
+			<?php endif; ?>
 
 			<?php if ( ! $query->have_posts() ) : ?>
 				<p><em><?php esc_html_e( 'Nothing to review here.', 'bizen-toolkit' ); ?></em></p>
 			<?php else : ?>
 
-				<?php $this->render_bulk_bar(); ?>
+				<?php $this->render_toolbar(); ?>
 
 				<div class="bizen-ai-grid" id="bizen-ai-grid">
 					<?php
@@ -97,14 +123,30 @@ class Bizen_AI_Triage_Screen {
 					?>
 				</div>
 
-				<?php $this->render_pagination( $query, $filter, $paged ); ?>
+				<?php $this->render_pagination( $query, $filter, $search, $paged ); ?>
 
 			<?php endif; ?>
 		</div>
 		<?php
 	}
 
-	private function render_filters( string $current, array $counts ): void {
+	private function render_search( string $filter, string $search ): void {
+		?>
+		<form method="get" class="bizen-ai-search">
+			<input type="hidden" name="page" value="<?php echo esc_attr( self::PAGE ); ?>">
+			<input type="hidden" name="status" value="<?php echo esc_attr( $filter ); ?>">
+			<p class="search-box">
+				<label class="screen-reader-text" for="bizen-ai-search-input">
+					<?php esc_html_e( 'Search images', 'bizen-toolkit' ); ?>
+				</label>
+				<input type="search" id="bizen-ai-search-input" name="s" value="<?php echo esc_attr( $search ); ?>">
+				<input type="submit" class="button" value="<?php esc_attr_e( 'Search', 'bizen-toolkit' ); ?>">
+			</p>
+		</form>
+		<?php
+	}
+
+	private function render_filters( string $current, string $search, array $counts ): void {
 		$tabs = [ 'unreviewed' => __( 'To review', 'bizen-toolkit' ) ]
 			+ Bizen_AI_Status::labels()
 			+ [ 'all' => __( 'All images', 'bizen-toolkit' ) ];
@@ -113,14 +155,14 @@ class Bizen_AI_Triage_Screen {
 		$last = array_key_last( $tabs );
 
 		foreach ( $tabs as $key => $label ) {
-			$url = add_query_arg(
-				[ 'page' => self::PAGE, 'status' => $key ],
-				admin_url( 'upload.php' )
-			);
+			$args = [ 'page' => self::PAGE, 'status' => $key ];
+			if ( '' !== $search ) {
+				$args['s'] = $search;
+			}
 
 			printf(
 				'<li><a href="%1$s" class="%2$s" data-status-tab="%3$s">%4$s <span class="count">(<span data-count="%3$s">%5$s</span>)</span></a>%6$s</li>',
-				esc_url( $url ),
+				esc_url( add_query_arg( $args, admin_url( 'upload.php' ) ) ),
 				$key === $current ? 'current' : '',
 				esc_attr( $key ),
 				esc_html( $label ),
@@ -132,16 +174,26 @@ class Bizen_AI_Triage_Screen {
 		echo '</ul>';
 	}
 
-	private function render_bulk_bar(): void {
+	private function render_toolbar(): void {
 		?>
-		<div class="bizen-ai-bulk">
-			<span class="bizen-ai-bulk__label"><?php esc_html_e( 'Mark everything on this page as:', 'bizen-toolkit' ); ?></span>
-			<?php foreach ( Bizen_AI_Status::labels() as $status => $label ) : ?>
-				<button type="button" class="button" data-bulk-status="<?php echo esc_attr( $status ); ?>">
-					<?php echo esc_html( $label ); ?>
-				</button>
-			<?php endforeach; ?>
-			<span class="bizen-ai-bulk__feedback" aria-live="polite"></span>
+		<div class="bizen-ai-toolbar" id="bizen-ai-toolbar">
+			<label class="bizen-ai-toolbar__all">
+				<input type="checkbox" id="bizen-ai-select-all">
+				<span><?php esc_html_e( 'Select all', 'bizen-toolkit' ); ?></span>
+			</label>
+
+			<span class="bizen-ai-toolbar__count" data-selected-count>&nbsp;</span>
+
+			<span class="bizen-ai-toolbar__actions">
+				<span class="bizen-ai-toolbar__label"><?php esc_html_e( 'Mark selection as:', 'bizen-toolkit' ); ?></span>
+				<?php foreach ( Bizen_AI_Status::labels() as $status => $label ) : ?>
+					<button type="button" class="button" data-bulk-status="<?php echo esc_attr( $status ); ?>" disabled>
+						<?php echo esc_html( $label ); ?>
+					</button>
+				<?php endforeach; ?>
+			</span>
+
+			<span class="bizen-ai-toolbar__feedback" aria-live="polite"></span>
 		</div>
 		<?php
 	}
@@ -155,6 +207,17 @@ class Bizen_AI_Triage_Screen {
 		<div class="bizen-ai-item" data-id="<?php echo esc_attr( (string) $attachment_id ); ?>">
 			<div class="bizen-ai-item__thumb">
 				<?php echo $thumb ? wp_kses_post( $thumb ) : '<span class="bizen-ai-item__placeholder"></span>'; ?>
+
+				<label class="bizen-ai-item__check">
+					<input type="checkbox" class="bizen-ai-item__select">
+					<span class="screen-reader-text">
+						<?php
+						/* translators: %s: attachment title */
+						printf( esc_html__( 'Select %s', 'bizen-toolkit' ), esc_html( $name ) );
+						?>
+					</span>
+				</label>
+
 				<?php if ( $auto && '' !== $status ) : ?>
 					<span class="bizen-ai-item__auto" title="<?php esc_attr_e( 'Read from the file\'s provenance metadata — confirm or correct it.', 'bizen-toolkit' ); ?>">
 						<?php esc_html_e( 'auto', 'bizen-toolkit' ); ?>
@@ -191,9 +254,14 @@ class Bizen_AI_Triage_Screen {
 		<?php
 	}
 
-	private function render_pagination( WP_Query $query, string $filter, int $paged ): void {
+	private function render_pagination( WP_Query $query, string $filter, string $search, int $paged ): void {
 		if ( $query->max_num_pages < 2 ) {
 			return;
+		}
+
+		$args = [ 'page' => self::PAGE, 'status' => $filter ];
+		if ( '' !== $search ) {
+			$args['s'] = $search;
 		}
 
 		$links = paginate_links(
@@ -202,7 +270,7 @@ class Bizen_AI_Triage_Screen {
 				'format'    => '',
 				'current'   => $paged,
 				'total'     => (int) $query->max_num_pages,
-				'add_args'  => [ 'page' => self::PAGE, 'status' => $filter ],
+				'add_args'  => $args,
 				'prev_text' => '&laquo;',
 				'next_text' => '&raquo;',
 			]
@@ -213,7 +281,7 @@ class Bizen_AI_Triage_Screen {
 		}
 	}
 
-	private function query( string $filter, int $paged ): WP_Query {
+	private function query( string $filter, int $paged, string $search = '' ): WP_Query {
 		$args = [
 			'post_type'              => 'attachment',
 			'post_status'            => 'inherit',
@@ -225,6 +293,10 @@ class Bizen_AI_Triage_Screen {
 			'fields'                 => 'ids',
 			'update_post_term_cache' => false,
 		];
+
+		if ( '' !== $search ) {
+			$args['s'] = $search;
+		}
 
 		if ( 'unreviewed' === $filter ) {
 			$args['meta_query'] = [
@@ -246,7 +318,15 @@ class Bizen_AI_Triage_Screen {
 		return new WP_Query( $args );
 	}
 
-	/** @return array<string, int> keyed by tab: unreviewed, the three statuses, all. */
+	/**
+	 * Counts for the filter tabs, keyed by tab.
+	 *
+	 * Deliberately library-wide rather than scoped to the search: the tabs say
+	 * how much is left to review overall, which is the number worth knowing
+	 * while narrowing the grid. The match count sits next to the search instead.
+	 *
+	 * @return array<string, int>
+	 */
 	private function counts(): array {
 		global $wpdb;
 
