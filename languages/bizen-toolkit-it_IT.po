@@ -264,3 +264,99 @@ msgstr "Appiattisci SVG all’Upload"
 #: modules/svg-flatten/module.php
 msgid "Rewrites uploaded SVGs so they can be inlined side by side — the style block is dropped, its declarations move onto the elements as fill/stroke attributes, and ids are namespaced per file."
 msgstr "Riscrive gli SVG caricati perché possano essere inlineati fianco a fianco — il blocco style viene rimosso, le sue dichiarazioni passano sugli elementi come attributi fill/stroke e gli id vengono prefissati per file."
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "No AI"
+msgstr "Nessuna IA"
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "AI generated"
+msgstr "Generata con IA"
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "AI modified"
+msgstr "Modificata con IA"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "AI Disclosure"
+msgstr "Trasparenza IA"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Saving…"
+msgstr "Salvataggio…"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Saved"
+msgstr "Salvato"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Could not save"
+msgstr "Salvataggio non riuscito"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Apply this status to every image shown on this page?"
+msgstr "Applicare questo stato a tutte le immagini mostrate in questa pagina?"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "You do not have permission to manage media."
+msgstr "Non hai i permessi per gestire i media."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Images marked \"AI generated\" or \"AI modified\" carry the EU disclosure label on the front end. Mark an image \"No AI\" to clear it from this queue — an image nobody has reviewed is not the same as one confirmed to be AI-free."
+msgstr "Le immagini contrassegnate come «Generata con IA» o «Modificata con IA» mostrano l’etichetta UE sul front end. Contrassegna un’immagine come «Nessuna IA» per toglierla dalla coda — un’immagine che nessuno ha ancora revisionato non è la stessa cosa di una confermata senza IA."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Nothing to review here."
+msgstr "Niente da revisionare qui."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "To review"
+msgstr "Da revisionare"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "All images"
+msgstr "Tutte le immagini"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Mark everything on this page as:"
+msgstr "Contrassegna tutto in questa pagina come:"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Read from the file's provenance metadata — confirm or correct it."
+msgstr "Letto dai metadati di provenienza del file — conferma o correggi."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "auto"
+msgstr "auto"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "AI disclosure status for %s"
+msgstr "Stato di trasparenza IA per %s"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Unknown status."
+msgstr "Stato sconosciuto."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "No images selected."
+msgstr "Nessuna immagine selezionata."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Nothing was saved."
+msgstr "Non è stato salvato nulla."
+
+#: modules/ai-disclosure/module.php
+msgid "Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Reads provenance metadata on upload, adds a field to the media library, and puts a review queue under Media → AI Disclosure."
+msgstr "Contrassegna le immagini generate o modificate con IA e mostra accanto a esse l’etichetta ufficiale UE sul front end. Legge i metadati di provenienza al caricamento, aggiunge un campo nella libreria media e crea una coda di revisione in Media → Trasparenza IA."
+
+#: modules/ai-disclosure/module.php
+msgid "— Not reviewed —"
+msgstr "— Non revisionata —"
+
+#: modules/ai-disclosure/module.php
+msgid "AI disclosure"
+msgstr "Trasparenza IA"
+
+#: modules/ai-disclosure/module.php
+msgid "Generated and modified images carry the EU disclosure label on the front end."
+msgstr "Le immagini generate e modificate mostrano l’etichetta UE sul front end."

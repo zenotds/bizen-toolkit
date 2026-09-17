@@ -22,8 +22,19 @@ Included modules:
 * **Disable Flamingo Addressbook** — Stops Flamingo from saving contact data to its address book; inbound messages are still logged.
 * **Disable Comments** — Turns the WordPress comment system off site-wide and removes it from the admin.
 * **Flatten SVG on Upload** — Rewrites uploaded SVGs so several of them can be inlined on the same page without their styles and ids colliding.
+* **AI Disclosure** — Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them on the front end, with a review queue under Media.
 
 == Changelog ==
+
+= 1.4.2 =
+* New module: AI Disclosure — flags AI-generated and AI-modified images and prints the official EU label beside them, as required of whoever publishes them by AI Act art. 50(4)
+* The label is a DOM sibling of the image rather than a watermark burnt into the pixels, so it survives every responsive crop; which corner it takes is chosen per template, since what is free in a card sits under the overlay panel in a hero
+* Provenance is read from the file's XMP on upload, ahead of any plugin that strips metadata: IPTC trainedAlgorithmicMedia marks an image generated, compositeWithTrainedAlgorithmicMedia marks it modified
+* A file carrying no marker stays unreviewed rather than being recorded as AI-free — stripped metadata and a camera photo are indistinguishable
+* New review queue under Media → AI Disclosure, with bulk marking, plus a per-attachment field in the media library
+* Ships the European Commission's icon set for labelling AI-generated content
+* Themes that build their own image markup can ask for the label through the bizen_ai_disclosure_badge filter; Timber AVIF v6.1 uses it
+* Italian translation updated
 
 = 1.4.1 =
 * Plugin icon is now shown in the WordPress update screens and the plugin details modal

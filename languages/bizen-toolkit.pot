@@ -261,3 +261,99 @@ msgstr ""
 #: modules/svg-flatten/module.php
 msgid "Rewrites uploaded SVGs so they can be inlined side by side — the style block is dropped, its declarations move onto the elements as fill/stroke attributes, and ids are namespaced per file."
 msgstr ""
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "No AI"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "AI generated"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-status.php
+msgid "AI modified"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "AI Disclosure"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Saving…"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Saved"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Could not save"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Apply this status to every image shown on this page?"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "You do not have permission to manage media."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Images marked \"AI generated\" or \"AI modified\" carry the EU disclosure label on the front end. Mark an image \"No AI\" to clear it from this queue — an image nobody has reviewed is not the same as one confirmed to be AI-free."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Nothing to review here."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "To review"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "All images"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Mark everything on this page as:"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Read from the file's provenance metadata — confirm or correct it."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "auto"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "AI disclosure status for %s"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Unknown status."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "No images selected."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Nothing was saved."
+msgstr ""
+
+#: modules/ai-disclosure/module.php
+msgid "Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Reads provenance metadata on upload, adds a field to the media library, and puts a review queue under Media → AI Disclosure."
+msgstr ""
+
+#: modules/ai-disclosure/module.php
+msgid "— Not reviewed —"
+msgstr ""
+
+#: modules/ai-disclosure/module.php
+msgid "AI disclosure"
+msgstr ""
+
+#: modules/ai-disclosure/module.php
+msgid "Generated and modified images carry the EU disclosure label on the front end."
+msgstr ""
