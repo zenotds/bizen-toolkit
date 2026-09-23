@@ -24,6 +24,10 @@ return new class extends Bizen_Module {
 		return __( 'Adds a CodeMirror HTML editor, test mode, redirect after submit, GA/GTM events, auto-hide message, and more to Contact Form 7.', 'bizen-toolkit' );
 	}
 
+	public function get_category(): string {
+		return 'form';
+	}
+
 	public function get_source_slug(): ?string {
 		return 'cf7-coder';
 	}

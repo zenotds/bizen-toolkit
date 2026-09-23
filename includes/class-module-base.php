@@ -8,6 +8,15 @@ abstract class Bizen_Module {
 	abstract public function get_description(): string;
 	abstract public function boot(): void;
 
+	/**
+	 * Section of the modules list this module is shown under: one of the keys of
+	 * Bizen_Admin_Panel::categories(). Anything else lands under "Other", so a
+	 * module that does not say is still listed rather than lost.
+	 */
+	public function get_category(): string {
+		return 'other';
+	}
+
 	/** WP.org plugin slug this module is derived from, or null if not on WP.org. */
 	public function get_source_slug(): ?string {
 		return null;

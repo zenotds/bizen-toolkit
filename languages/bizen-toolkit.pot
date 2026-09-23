@@ -31,6 +31,26 @@ msgid "Modules"
 msgstr ""
 
 #: includes/class-admin-panel.php
+msgid "Updates"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Form"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Media"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Admin"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Other"
+msgstr ""
+
+#: includes/class-admin-panel.php
 msgid "Enable or disable individual modules. Modules with unmet dependencies are shown but cannot be booted."
 msgstr ""
 

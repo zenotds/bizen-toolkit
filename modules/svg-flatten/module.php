@@ -37,6 +37,10 @@ return new class extends Bizen_Module {
 		return __( 'Rewrites uploaded SVGs so they can be inlined side by side — the style block is dropped, its declarations move onto the elements as fill/stroke attributes, and ids are namespaced per file.', 'bizen-toolkit' );
 	}
 
+	public function get_category(): string {
+		return 'media';
+	}
+
 	public function boot(): void {
 		require_once __DIR__ . '/class-svg-flattener.php';
 

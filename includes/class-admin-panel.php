@@ -43,7 +43,7 @@ class Bizen_Admin_Panel {
 		// Handle "Check now" button
 		if ( isset( $_POST['bizen_check_now'] ) ) {
 			Bizen_Version_Monitor::trigger_check_now();
-			wp_safe_redirect( add_query_arg( [ 'page' => 'bizen-toolkit', 'tab' => 'tools', 'checked' => '1' ], admin_url( 'admin.php' ) ) );
+			wp_safe_redirect( add_query_arg( [ 'page' => 'bizen-toolkit', 'tab' => 'updates', 'checked' => '1' ], admin_url( 'admin.php' ) ) );
 			exit;
 		}
 
@@ -59,12 +59,47 @@ class Bizen_Admin_Panel {
 		exit;
 	}
 
+	/**
+	 * Sections of the modules list, in display order. Sections rather than tabs:
+	 * the list is short enough to read in one screen, and a single form means
+	 * saving can never touch a module that was not on the page.
+	 *
+	 * @return array<string, string> category => label
+	 */
+	private function categories(): array {
+		return [
+			'form'  => __( 'Form', 'bizen-toolkit' ),
+			'media' => __( 'Media', 'bizen-toolkit' ),
+			'admin' => __( 'Admin', 'bizen-toolkit' ),
+			'other' => __( 'Other', 'bizen-toolkit' ),
+		];
+	}
+
+	/**
+	 * Modules bucketed by category, empty sections dropped. An unknown category
+	 * falls into "other" rather than hiding the module.
+	 *
+	 * @param  Bizen_Module[] $modules
+	 * @return array<string, Bizen_Module[]>
+	 */
+	private function group_modules( array $modules ): array {
+		$groups = array_fill_keys( array_keys( $this->categories() ), [] );
+
+		foreach ( $modules as $id => $module ) {
+			$category = $module->get_category();
+			$groups[ isset( $groups[ $category ] ) ? $category : 'other' ][ $id ] = $module;
+		}
+
+		return array_filter( $groups );
+	}
+
 	public function render_page(): void {
 		$modules    = $this->loader->get_modules();
 		$monitor    = Bizen_Version_Monitor::get_results();
 		$next_check = wp_next_scheduled( Bizen_Version_Monitor::CRON_HOOK );
 		$conflicts  = $this->loader->get_conflict_checker()->get_active();
-		$active_tab = ( isset( $_GET['tab'] ) && $_GET['tab'] === 'tools' ) ? 'tools' : 'modules';
+		$categories = $this->categories();
+		$active_tab = ( isset( $_GET['tab'] ) && $_GET['tab'] === 'updates' ) ? 'updates' : 'modules';
 		?>
 		<div class="wrap">
 			<h1>
@@ -84,11 +119,11 @@ class Bizen_Admin_Panel {
 			<nav class="nav-tab-wrapper" style="margin-bottom:20px;">
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=bizen-toolkit&tab=modules' ) ); ?>"
 				   class="nav-tab<?php echo $active_tab === 'modules' ? ' nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Moduli', 'bizen-toolkit' ); ?>
+					<?php esc_html_e( 'Modules', 'bizen-toolkit' ); ?>
 				</a>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=bizen-toolkit&tab=tools' ) ); ?>"
-				   class="nav-tab<?php echo $active_tab === 'tools' ? ' nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Tools', 'bizen-toolkit' ); ?>
+				<a href="<?php echo esc_url( admin_url( 'admin.php?page=bizen-toolkit&tab=updates' ) ); ?>"
+				   class="nav-tab<?php echo $active_tab === 'updates' ? ' nav-tab-active' : ''; ?>">
+					<?php esc_html_e( 'Updates', 'bizen-toolkit' ); ?>
 				</a>
 			</nav>
 
@@ -108,103 +143,112 @@ class Bizen_Admin_Panel {
 								<th style="width:180px;"><?php esc_html_e( 'Upstream version', 'bizen-toolkit' ); ?></th>
 							</tr>
 						</thead>
-						<tbody>
 						<?php if ( empty( $modules ) ) : ?>
-							<tr><td colspan="4"><em><?php esc_html_e( 'No modules found.', 'bizen-toolkit' ); ?></em></td></tr>
+							<tbody>
+								<tr><td colspan="4"><em><?php esc_html_e( 'No modules found.', 'bizen-toolkit' ); ?></em></td></tr>
+							</tbody>
 						<?php else : ?>
-							<?php foreach ( $modules as $id => $module ) : ?>
-								<?php
-								$enabled       = $this->loader->is_enabled( $id );
-								$deps_met      = $module->dependencies_met();
-								$missing       = $module->get_missing_dependencies();
-								$mon           = $monitor[ $id ] ?? null;
-								$has_conflict  = ! empty( $conflicts[ $id ] );
-								$row_conflicts = $conflicts[ $id ] ?? [];
-								?>
-								<tr<?php echo $has_conflict ? ' style="background:#fff8f8;"' : ''; ?>>
-									<td style="text-align:center;">
-										<input
-											type="checkbox"
-											name="module_<?php echo esc_attr( $id ); ?>"
-											value="1"
-											<?php checked( $enabled ); ?>
-										>
-									</td>
-									<td>
-										<strong><?php echo esc_html( $module->get_name() ); ?></strong>
-										<?php if ( $has_conflict ) : ?>
-											<span style="background:#dc3232;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle;">
-												<?php esc_html_e( 'CONFLICT', 'bizen-toolkit' ); ?>
-											</span>
-										<?php endif; ?>
-										<?php if ( $module->get_source_slug() ) : ?>
-											<a href="https://wordpress.org/plugins/<?php echo esc_attr( $module->get_source_slug() ); ?>/"
-											   target="_blank"
-											   title="<?php echo esc_attr( sprintf( __( 'Based on %1$s v%2$s (WP.org)', 'bizen-toolkit' ), $module->get_source_slug(), $module->get_source_version() ?? '?' ) ); ?>"
-											   style="text-decoration:none;margin-left:5px;color:#aaa;font-size:12px;vertical-align:middle;">&#9432;</a>
-										<?php elseif ( $module->get_source_repo() ) : ?>
-											<a href="https://github.com/<?php echo esc_attr( $module->get_source_repo() ); ?>"
-											   target="_blank"
-											   title="<?php echo esc_attr( sprintf( __( 'Based on %1$s v%2$s (GitHub)', 'bizen-toolkit' ), $module->get_source_repo(), $module->get_source_version() ?? '?' ) ); ?>"
-											   style="text-decoration:none;margin-left:5px;color:#aaa;font-size:12px;vertical-align:middle;">&#9432;</a>
-										<?php endif; ?>
-										<br>
-										<span style="color:#757575;font-size:12px;"><?php echo esc_html( $module->get_description() ); ?></span>
-										<?php foreach ( $row_conflicts as $conflict ) : ?>
-											<?php
-											$deactivate_url = wp_nonce_url(
-												admin_url( 'plugins.php?action=deactivate&plugin=' . urlencode( $conflict['file'] ) ),
-												'deactivate-plugin_' . $conflict['file']
-											);
-											?>
-											<br>
-											<span style="color:#dc3232;font-size:11px;">
-												&#9888;
-												<?php
-												echo wp_kses(
-													sprintf(
-														/* translators: 1: plugin name, 2: deactivation URL */
-														__( 'Conflicts with active plugin: <strong>%1$s</strong>. <a href="%2$s">Deactivate it</a> to enable this module.', 'bizen-toolkit' ),
-														esc_html( $conflict['name'] ),
-														esc_url( $deactivate_url )
-													),
-													[ 'strong' => [], 'a' => [ 'href' => [] ] ]
-												);
-												?>
-											</span>
-										<?php endforeach; ?>
-									</td>
-									<td>
-										<?php if ( empty( $module->get_dependencies() ) ) : ?>
-										<?php elseif ( $deps_met ) : ?>
-											<span style="color:#46b450;">&#10003; <?php esc_html_e( 'Loaded', 'bizen-toolkit' ); ?></span>
-										<?php else : ?>
-											<span style="color:#dc3232;" title="<?php echo esc_attr( implode( ', ', $missing ) ); ?>">
-												&#9888; <?php esc_html_e( 'Missing', 'bizen-toolkit' ); ?>
-											</span>
-											<br>
-											<span style="color:#aaa;font-size:11px;"><?php echo esc_html( implode( ', ', $missing ) ); ?></span>
-										<?php endif; ?>
-									</td>
-									<td>
-										<?php if ( ! $mon && ! $module->get_source_slug() && ! $module->get_source_repo() ) : ?>
-											<span style="color:#aaa;"><?php esc_html_e( 'Core', 'bizen-toolkit' ); ?></span>
-										<?php elseif ( ! $mon ) : ?>
-											<span style="color:#aaa;">—</span>
-										<?php elseif ( $mon['has_update'] ) : ?>
-											<span style="color:#dc3232;" title="<?php printf( esc_attr__( 'Upstream: %s — Vendored: %s', 'bizen-toolkit' ), $mon['upstream_version'], $mon['vendored_version'] ); ?>">
-												&#8593; <?php echo esc_html( $mon['upstream_version'] ); ?>
-											</span>
-											<span style="color:#aaa;font-size:11px;display:block;"><?php esc_html_e( 'Update available', 'bizen-toolkit' ); ?></span>
-										<?php else : ?>
-											<span style="color:#46b450;">&#10003; <?php echo esc_html( $mon['vendored_version'] ); ?></span>
-											<span style="color:#aaa;font-size:11px;display:block;"><?php esc_html_e( 'Up to date', 'bizen-toolkit' ); ?></span>
-										<?php endif; ?>
-									</td>
-								</tr>
+							<?php foreach ( $this->group_modules( $modules ) as $category => $group ) : ?>
+								<tbody>
+									<tr>
+										<th colspan="4" scope="rowgroup" style="background:#f0f0f1;color:#50575e;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:8px 10px;">
+											<?php echo esc_html( $categories[ $category ] ); ?>
+										</th>
+									</tr>
+									<?php foreach ( $group as $id => $module ) : ?>
+										<?php
+										$enabled       = $this->loader->is_enabled( $id );
+										$deps_met      = $module->dependencies_met();
+										$missing       = $module->get_missing_dependencies();
+										$mon           = $monitor[ $id ] ?? null;
+										$has_conflict  = ! empty( $conflicts[ $id ] );
+										$row_conflicts = $conflicts[ $id ] ?? [];
+										?>
+										<tr<?php echo $has_conflict ? ' style="background:#fff8f8;"' : ''; ?>>
+											<td style="text-align:center;">
+												<input
+													type="checkbox"
+													name="module_<?php echo esc_attr( $id ); ?>"
+													value="1"
+													<?php checked( $enabled ); ?>
+												>
+											</td>
+											<td>
+												<strong><?php echo esc_html( $module->get_name() ); ?></strong>
+												<?php if ( $has_conflict ) : ?>
+													<span style="background:#dc3232;color:#fff;font-size:10px;padding:1px 5px;border-radius:3px;margin-left:6px;vertical-align:middle;">
+														<?php esc_html_e( 'CONFLICT', 'bizen-toolkit' ); ?>
+													</span>
+												<?php endif; ?>
+												<?php if ( $module->get_source_slug() ) : ?>
+													<a href="https://wordpress.org/plugins/<?php echo esc_attr( $module->get_source_slug() ); ?>/"
+													   target="_blank"
+													   title="<?php echo esc_attr( sprintf( __( 'Based on %1$s v%2$s (WP.org)', 'bizen-toolkit' ), $module->get_source_slug(), $module->get_source_version() ?? '?' ) ); ?>"
+													   style="text-decoration:none;margin-left:5px;color:#aaa;font-size:12px;vertical-align:middle;">&#9432;</a>
+												<?php elseif ( $module->get_source_repo() ) : ?>
+													<a href="https://github.com/<?php echo esc_attr( $module->get_source_repo() ); ?>"
+													   target="_blank"
+													   title="<?php echo esc_attr( sprintf( __( 'Based on %1$s v%2$s (GitHub)', 'bizen-toolkit' ), $module->get_source_repo(), $module->get_source_version() ?? '?' ) ); ?>"
+													   style="text-decoration:none;margin-left:5px;color:#aaa;font-size:12px;vertical-align:middle;">&#9432;</a>
+												<?php endif; ?>
+												<br>
+												<span style="color:#757575;font-size:12px;"><?php echo esc_html( $module->get_description() ); ?></span>
+												<?php foreach ( $row_conflicts as $conflict ) : ?>
+													<?php
+													$deactivate_url = wp_nonce_url(
+														admin_url( 'plugins.php?action=deactivate&plugin=' . urlencode( $conflict['file'] ) ),
+														'deactivate-plugin_' . $conflict['file']
+													);
+													?>
+													<br>
+													<span style="color:#dc3232;font-size:11px;">
+														&#9888;
+														<?php
+														echo wp_kses(
+															sprintf(
+																/* translators: 1: plugin name, 2: deactivation URL */
+																__( 'Conflicts with active plugin: <strong>%1$s</strong>. <a href="%2$s">Deactivate it</a> to enable this module.', 'bizen-toolkit' ),
+																esc_html( $conflict['name'] ),
+																esc_url( $deactivate_url )
+															),
+															[ 'strong' => [], 'a' => [ 'href' => [] ] ]
+														);
+														?>
+													</span>
+												<?php endforeach; ?>
+											</td>
+											<td>
+												<?php if ( empty( $module->get_dependencies() ) ) : ?>
+												<?php elseif ( $deps_met ) : ?>
+													<span style="color:#46b450;">&#10003; <?php esc_html_e( 'Loaded', 'bizen-toolkit' ); ?></span>
+												<?php else : ?>
+													<span style="color:#dc3232;" title="<?php echo esc_attr( implode( ', ', $missing ) ); ?>">
+														&#9888; <?php esc_html_e( 'Missing', 'bizen-toolkit' ); ?>
+													</span>
+													<br>
+													<span style="color:#aaa;font-size:11px;"><?php echo esc_html( implode( ', ', $missing ) ); ?></span>
+												<?php endif; ?>
+											</td>
+											<td>
+												<?php if ( ! $mon && ! $module->get_source_slug() && ! $module->get_source_repo() ) : ?>
+													<span style="color:#aaa;"><?php esc_html_e( 'Core', 'bizen-toolkit' ); ?></span>
+												<?php elseif ( ! $mon ) : ?>
+													<span style="color:#aaa;">—</span>
+												<?php elseif ( $mon['has_update'] ) : ?>
+													<span style="color:#dc3232;" title="<?php printf( esc_attr__( 'Upstream: %s — Vendored: %s', 'bizen-toolkit' ), $mon['upstream_version'], $mon['vendored_version'] ); ?>">
+														&#8593; <?php echo esc_html( $mon['upstream_version'] ); ?>
+													</span>
+													<span style="color:#aaa;font-size:11px;display:block;"><?php esc_html_e( 'Update available', 'bizen-toolkit' ); ?></span>
+												<?php else : ?>
+													<span style="color:#46b450;">&#10003; <?php echo esc_html( $mon['vendored_version'] ); ?></span>
+													<span style="color:#aaa;font-size:11px;display:block;"><?php esc_html_e( 'Up to date', 'bizen-toolkit' ); ?></span>
+												<?php endif; ?>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								</tbody>
 							<?php endforeach; ?>
 						<?php endif; ?>
-						</tbody>
 					</table>
 
 					<p class="submit">

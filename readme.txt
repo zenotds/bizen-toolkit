@@ -26,6 +26,11 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.10 =
+* The modules list is grouped into sections — Form, Media and Admin — instead of one flat table. Still a single page and a single Save: with a module count this size, tabs would hide more than they organise, and splitting the form would let saving one tab switch off the modules on the others
+* Modules declare their section through get_category(); a module that does not is listed under "Other" rather than left out
+* The "Tools" tab is now "Updates", which is what it holds: the upstream version monitor. The "Modules" tab label is translatable again — it was hard-coded in Italian
+
 = 1.4.9 =
 * AI Disclosure: the white EU label is back as a third style, alongside solid black and half transparent — the Commission's white pill with dark lettering, for imagery dark enough to swallow the black one. The badge now carries its variant as a class, and the white one gets a dark hairline instead of a light one
 * AI Disclosure: reading provenance metadata on upload is now a switch on the AI Disclosure screen, and it is off by default. AI providers do not mark their images consistently yet, so for now every status starts as a manual decision. Turning it on affects new uploads only and never overwrites a status already on record

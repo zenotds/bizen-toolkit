@@ -30,6 +30,10 @@ return new class extends Bizen_Module {
 		return __( 'Prevents Flamingo from saving any data to its address book — form submissions are still stored in the inbound messages log.', 'bizen-toolkit' );
 	}
 
+	public function get_category(): string {
+		return 'form';
+	}
+
 	public function get_source_slug(): ?string {
 		return 'disable-flamingo-addressbook';
 	}

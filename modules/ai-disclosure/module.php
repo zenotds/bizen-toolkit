@@ -72,6 +72,10 @@ return new class extends Bizen_Module {
 		return __( 'Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Adds a field to the media library, puts a review queue under Media → AI Disclosure, and can read provenance metadata on upload.', 'bizen-toolkit' );
 	}
 
+	public function get_category(): string {
+		return 'media';
+	}
+
 	public function boot(): void {
 		require_once __DIR__ . '/class-ai-status.php';
 		require_once __DIR__ . '/class-ai-provenance-reader.php';

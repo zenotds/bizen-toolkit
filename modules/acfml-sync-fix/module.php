@@ -21,6 +21,10 @@ return new class extends Bizen_Module {
 		return __( 'Disables the ACFML repeater sync checkbox and its stored option — prevents accidental field sync across languages.', 'bizen-toolkit' );
 	}
 
+	public function get_category(): string {
+		return 'admin';
+	}
+
 	public function get_dependencies(): array {
 		return [
 			'advanced-custom-fields-pro/acf.php',

@@ -88,6 +88,12 @@ return new class extends Bizen_Module {
         return 'What this module does, in one sentence.';
     }
 
+    // Section of the modules list: 'form', 'media' or 'admin'.
+    // Leave it out and the module is listed under "Other".
+    public function get_category(): string {
+        return 'admin';
+    }
+
     public function boot(): void {
         // Hook into WordPress here. Only called when the module is enabled
         // and all dependencies are met.
