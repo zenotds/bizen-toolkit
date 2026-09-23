@@ -26,6 +26,10 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.9 =
+* AI Disclosure: the white EU label is back as a third style, alongside solid black and half transparent — the Commission's white pill with dark lettering, for imagery dark enough to swallow the black one. The badge now carries its variant as a class, and the white one gets a dark hairline instead of a light one
+* AI Disclosure: reading provenance metadata on upload is now a switch on the AI Disclosure screen, and it is off by default. AI providers do not mark their images consistently yet, so for now every status starts as a manual decision. Turning it on affects new uploads only and never overwrites a status already on record
+
 = 1.4.8 =
 * AI Disclosure: a placement can now pass "none" as the position to leave the label off, for a layout that carries the disclosure another way. It silences one placement rather than the image, and an unrecognised position still falls back to the default corner — on a compliance marker a typo should show the label, not hide it
 

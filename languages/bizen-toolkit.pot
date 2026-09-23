@@ -282,6 +282,10 @@ msgstr ""
 msgid "Black, half transparent"
 msgstr ""
 
+#: modules/ai-disclosure/class-ai-status.php
+msgid "Solid white"
+msgstr ""
+
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "AI Disclosure"
 msgstr ""
@@ -351,6 +355,14 @@ msgid "Unknown label style."
 msgstr ""
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Detect AI images on upload"
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Reads the provenance metadata AI generators write into the file and pre-fills the status, marked \"auto\" for review. Off by default: providers do not mark their images consistently yet, so a file with no marker is not necessarily free of AI. Images already reviewed are never changed."
+msgstr ""
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Search images"
 msgstr ""
 
@@ -407,7 +419,7 @@ msgid "Nothing was saved."
 msgstr ""
 
 #: modules/ai-disclosure/module.php
-msgid "Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Reads provenance metadata on upload, adds a field to the media library, and puts a review queue under Media → AI Disclosure."
+msgid "Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Adds a field to the media library, puts a review queue under Media → AI Disclosure, and can read provenance metadata on upload."
 msgstr ""
 
 #: modules/ai-disclosure/module.php

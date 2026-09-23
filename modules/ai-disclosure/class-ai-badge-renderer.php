@@ -164,10 +164,11 @@ class Bizen_AI_Badge_Renderer {
 		$position = in_array( $position, self::POSITIONS, true ) ? $position : self::DEFAULT_POSITION;
 
 		/**
-		 * Filters the icon colourway, which is otherwise a site-wide setting in
-		 * the toolkit panel. Both files ship with the module, straight from the
-		 * Commission set: a solid black pill, or the same at half opacity for
-		 * compositions a solid one would shout over.
+		 * Filters the icon colourway, which is otherwise a site-wide setting on
+		 * the AI Disclosure screen. All three ship with the module, straight from
+		 * the Commission set: a solid black pill, the same at half opacity for
+		 * compositions a solid one would shout over, and a white pill with dark
+		 * lettering for imagery dark enough to swallow the black one.
 		 *
 		 * @param string $variant
 		 * @param int    $attachment_id
@@ -177,9 +178,10 @@ class Bizen_AI_Badge_Renderer {
 		$variant = isset( Bizen_AI_Status::variants()[ $variant ] ) ? $variant : 'black';
 
 		$html = sprintf(
-			'<img class="bizen-ai-badge bizen-ai-badge--%1$s bizen-ai-badge--%2$s" src="%3$s" width="%4$d" height="%5$d" alt="%6$s" decoding="async">',
+			'<img class="bizen-ai-badge bizen-ai-badge--%1$s bizen-ai-badge--%2$s bizen-ai-badge--%3$s" src="%4$s" width="%5$d" height="%6$d" alt="%7$s" decoding="async">',
 			esc_attr( $status ),
 			esc_attr( $position ),
+			esc_attr( $variant ),
 			esc_url( plugin_dir_url( __FILE__ ) . 'assets/icons/' . $stem . '-' . $variant . '.svg' ),
 			$width,
 			$height,

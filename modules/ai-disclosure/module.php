@@ -47,6 +47,10 @@
  * from the raw bytes of a C2PA manifest where there is not — which is the case
  * for most of what ChatGPT and Gemini hand you. It only ever acts on a positive
  * marker: a file carrying none stays unreviewed rather than being called clean.
+ *
+ * It is off by default and switched on from the AI Disclosure screen. Provider
+ * watermarks are not standardised yet, so until they are, marking is manual.
+ * Switching it off leaves every status already on record alone.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -65,17 +69,19 @@ return new class extends Bizen_Module {
 	}
 
 	public function get_description(): string {
-		return __( 'Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Reads provenance metadata on upload, adds a field to the media library, and puts a review queue under Media → AI Disclosure.', 'bizen-toolkit' );
+		return __( 'Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Adds a field to the media library, puts a review queue under Media → AI Disclosure, and can read provenance metadata on upload.', 'bizen-toolkit' );
 	}
 
 	public function boot(): void {
 		require_once __DIR__ . '/class-ai-status.php';
 		require_once __DIR__ . '/class-ai-provenance-reader.php';
 
-		// Priority 1: optimisation plugins that strip metadata hook the same filter,
-		// and once it is gone the file is indistinguishable from a camera photo.
-		add_filter( 'wp_handle_upload', [ $this, 'read_provenance' ], 1 );
-		add_action( 'add_attachment', [ $this, 'apply_provenance' ] );
+		if ( Bizen_AI_Status::auto_detect() ) {
+			// Priority 1: optimisation plugins that strip metadata hook the same filter,
+			// and once it is gone the file is indistinguishable from a camera photo.
+			add_filter( 'wp_handle_upload', [ $this, 'read_provenance' ], 1 );
+			add_action( 'add_attachment', [ $this, 'apply_provenance' ] );
+		}
 
 		add_filter( 'attachment_fields_to_edit', [ $this, 'add_field' ], 10, 2 );
 		add_filter( 'attachment_fields_to_save', [ $this, 'save_field' ], 10, 2 );

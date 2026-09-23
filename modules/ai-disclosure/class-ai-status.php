@@ -25,6 +25,9 @@ class Bizen_AI_Status {
 	/** Site-wide colourway for the EU label, set once in the toolkit panel. */
 	public const OPTION_VARIANT = 'bizen_ai_disclosure_icon_variant';
 
+	/** Whether the uploader reads provenance metadata at all. Off unless an administrator turns it on. */
+	public const OPTION_AUTO_DETECT = 'bizen_ai_disclosure_auto_detect';
+
 	/** Statuses that put a badge on the front end. */
 	private const BADGED = [ self::GENERATED, self::MANIPULATED ];
 
@@ -42,6 +45,7 @@ class Bizen_AI_Status {
 		return [
 			'black'       => __( 'Solid black', 'bizen-toolkit' ),
 			'transparent' => __( 'Black, half transparent', 'bizen-toolkit' ),
+			'white'       => __( 'Solid white', 'bizen-toolkit' ),
 		];
 	}
 
@@ -49,6 +53,16 @@ class Bizen_AI_Status {
 		$variant = (string) get_option( self::OPTION_VARIANT, 'black' );
 
 		return isset( self::variants()[ $variant ] ) ? $variant : 'black';
+	}
+
+	/**
+	 * Off by default: the major AI providers do not mark their output
+	 * consistently yet — one writes the IPTC term, another only a C2PA manifest,
+	 * a third nothing at all — so for now every status starts as a human call.
+	 * The default is worth revisiting once the watermarks are standardised.
+	 */
+	public static function auto_detect(): bool {
+		return (bool) get_option( self::OPTION_AUTO_DETECT, false );
 	}
 
 	public static function label( string $status ): string {

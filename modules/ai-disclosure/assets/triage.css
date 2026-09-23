@@ -221,19 +221,40 @@
 }
 
 .bizen-ai-options {
-	display: flex;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 10px;
 	margin: 24px 0 0;
-	padding: 10px 12px;
 	background: #fff;
 	border: 1px solid #c3c4c7;
 	border-radius: 4px;
 }
 
+.bizen-ai-options__row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	padding: 10px 12px;
+}
+
+.bizen-ai-options__row + .bizen-ai-options__row {
+	border-top: 1px solid #dcdcde;
+}
+
 .bizen-ai-options label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 	font-weight: 600;
+}
+
+.bizen-ai-options label input {
+	margin: 0;
+}
+
+/* Its own line under the control, not squeezed beside it. */
+.bizen-ai-options .description {
+	flex-basis: 100%;
+	max-width: 52em;
+	margin: 0;
 }
 
 /* Mid grey, so a half-transparent pill reads differently from a solid one — on

@@ -41,6 +41,11 @@
 	filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.55)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
+/* The white pill needs the opposite edge: a dark hairline for a pale photo. */
+.bizen-ai-badge--white {
+	filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.45)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+}
+
 /*
  * Which corner is a property of the composition, not of the image: the same
  * photo is clear in a card and behind an overlay panel in a hero. The default
@@ -77,6 +82,11 @@
 	margin-top: 6px;
 	max-width: 100%;
 	filter: none;
+}
+
+/* Below the image the white pill sits on the page, usually white itself. */
+.bizen-ai-media--below .bizen-ai-badge--white {
+	filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.45));
 }
 
 @media (max-width: 600px) {

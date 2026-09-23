@@ -17,7 +17,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `disable-comments` | Disables the comment system site-wide — closes comments everywhere and hides the Comments menu and Discussion settings | Core — written in-house |
 | `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
 | `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
-| `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; reads provenance from XMP and C2PA on upload and adds a review queue under Media | Core — written in-house |
+| `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; adds a review queue under Media and can read provenance from XMP and C2PA on upload | Core — written in-house |
 
 ---
 
@@ -37,7 +37,9 @@ Passing `none` leaves the label off that one placement, for a layout that carrie
 
 It is the wrong tool for "this image never needs a label". An AI image that is not a deepfake — a plainly stylised illustration, which fails the resemblance test — owes no disclosure anywhere, and that is a fact about the file. Record it on the attachment instead, or every template that uses the image has to remember to suppress it.
 
-The label's colourway — solid black or half transparent — is a site-wide setting on the **Media → AI Disclosure** screen. `bizen_ai_disclosure_icon_variant` overrides it per image where a composition needs it.
+The label's colourway — solid black, half transparent or solid white — is a site-wide setting on the **Media → AI Disclosure** screen. `bizen_ai_disclosure_icon_variant` overrides it per image where a composition needs it. The badge carries a `bizen-ai-badge--{variant}` class alongside the status and position ones.
+
+Reading provenance metadata on upload is a switch on the same screen, and it is off by default. The major AI providers do not mark their images consistently yet, so every status starts as a manual decision; the default is worth revisiting once the watermarks are standardised. Turning it on only affects new uploads, and never overwrites a status already on record.
 
 [Timber AVIF](https://github.com/zenotds/timber-avif) v6.1 and later wires this into its `image()` macro through a `disclosure` option.
 

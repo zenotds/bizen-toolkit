@@ -7,8 +7,8 @@
 		return;
 	}
 
-	// The style setting sits above the queue and has to keep working when the
-	// queue is empty, so it is wired before the grid is required.
+	// The settings sit below the queue and have to keep working when the queue
+	// is empty, so they are wired before the grid is required.
 	initOptions();
 
 	if ( ! grid || ! toolbar ) {
@@ -89,33 +89,29 @@
 		node.classList.toggle( 'is-error', !! failed );
 	}
 
-	/* The one site-wide setting on this screen: the colourway of the EU label. */
+	/* The site-wide settings on this screen, each saved the moment it changes. */
 	function initOptions() {
 		var options = document.getElementById( 'bizen-ai-options' );
 		if ( ! options ) {
 			return;
 		}
 
-		var select  = options.querySelector( 'select' );
-		var preview = options.querySelector( 'img' );
-		var note    = options.querySelector( '.bizen-ai-options__feedback' );
+		var select  = options.querySelector( '#bizen-ai-variant' );
+		var preview = options.querySelector( '.bizen-ai-options__preview img' );
+		var detect  = options.querySelector( '#bizen-ai-auto-detect' );
 
-		if ( ! select ) {
-			return;
+		function noteFor( control ) {
+			var row = control.closest( '.bizen-ai-options__row' );
+			return row ? row.querySelector( '.bizen-ai-options__feedback' ) : null;
 		}
 
-		select.addEventListener( 'change', function () {
-			var variant = select.value;
-			var body    = new FormData();
+		function saveOption( control, fields ) {
+			var note = noteFor( control );
+			var body = new FormData();
 
-			body.append( 'action', 'bizen_ai_set_variant' );
-			body.append( 'nonce', cfg.styleNonce );
-			body.append( 'variant', variant );
-
-			// Swap the preview at once: it shows the choice, not the save.
-			if ( preview && cfg.stylePreviews && cfg.stylePreviews[ variant ] ) {
-				preview.src = cfg.stylePreviews[ variant ];
-			}
+			Object.keys( fields ).forEach( function ( key ) {
+				body.append( key, fields[ key ] );
+			} );
 
 			say( note, cfg.saving );
 
@@ -131,7 +127,34 @@
 			} ).catch( function () {
 				say( note, cfg.failed, true );
 			} );
-		} );
+		}
+
+		if ( select ) {
+			select.addEventListener( 'change', function () {
+				var variant = select.value;
+
+				// Swap the preview at once: it shows the choice, not the save.
+				if ( preview && cfg.stylePreviews && cfg.stylePreviews[ variant ] ) {
+					preview.src = cfg.stylePreviews[ variant ];
+				}
+
+				saveOption( select, {
+					action: 'bizen_ai_set_variant',
+					nonce: cfg.styleNonce,
+					variant: variant
+				} );
+			} );
+		}
+
+		if ( detect ) {
+			detect.addEventListener( 'change', function () {
+				saveOption( detect, {
+					action: 'bizen_ai_set_auto_detect',
+					nonce: cfg.detectNonce,
+					enabled: detect.checked ? '1' : '0'
+				} );
+			} );
+		}
 	}
 
 	function refreshCounts( counts ) {

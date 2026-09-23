@@ -31,6 +31,7 @@ class Bizen_AI_Triage_Screen {
 		add_action( 'admin_menu', [ $this, 'register' ] );
 		add_action( 'wp_ajax_bizen_ai_set_status', [ $this, 'ajax_set_status' ] );
 		add_action( 'wp_ajax_bizen_ai_set_variant', [ $this, 'ajax_set_variant' ] );
+		add_action( 'wp_ajax_bizen_ai_set_auto_detect', [ $this, 'ajax_set_auto_detect' ] );
 	}
 
 	public function register(): void {
@@ -83,6 +84,7 @@ class Bizen_AI_Triage_Screen {
 				'viewUrl'  => $this->view_url(),
 				'styleNonce' => wp_create_nonce( 'bizen_ai_set_variant' ),
 				'stylePreviews' => $this->variant_previews(),
+				'detectNonce' => wp_create_nonce( 'bizen_ai_set_auto_detect' ),
 				'saving'   => __( 'Saving…', 'bizen-toolkit' ),
 				'saved'    => __( 'Saved', 'bizen-toolkit' ),
 				'failed'   => __( 'Could not save', 'bizen-toolkit' ),
@@ -157,7 +159,7 @@ class Bizen_AI_Triage_Screen {
 
 			<?php
 			// Below the grid, and outside the branch above: an empty queue still has
-			// a label style to set.
+			// settings to change.
 			$this->render_options();
 			?>
 		</div>
@@ -177,11 +179,11 @@ class Bizen_AI_Triage_Screen {
 	}
 
 	/**
-	 * The one setting the module has, sitting under the queue it affects.
+	 * The module's settings, sitting under the queue they affect.
 	 *
-	 * It is site-wide, so it asks for manage_options while the queue itself only
-	 * asks for upload_files: an editor clears the backlog, an administrator
-	 * decides how the label looks everywhere.
+	 * They are site-wide, so they ask for manage_options while the queue itself
+	 * only asks for upload_files: an editor clears the backlog, an administrator
+	 * decides how the label looks everywhere and whether uploads pre-fill it.
 	 */
 	private function render_options(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -192,21 +194,36 @@ class Bizen_AI_Triage_Screen {
 		$previews = $this->variant_previews();
 		?>
 		<div class="bizen-ai-options" id="bizen-ai-options">
-			<label for="bizen-ai-variant"><?php esc_html_e( 'EU label style', 'bizen-toolkit' ); ?></label>
+			<div class="bizen-ai-options__row" data-option="variant">
+				<label for="bizen-ai-variant"><?php esc_html_e( 'EU label style', 'bizen-toolkit' ); ?></label>
 
-			<select id="bizen-ai-variant">
-				<?php foreach ( Bizen_AI_Status::variants() as $value => $label ) : ?>
-					<option value="<?php echo esc_attr( $value ); ?>"<?php selected( $current, $value ); ?>>
-						<?php echo esc_html( $label ); ?>
-					</option>
-				<?php endforeach; ?>
-			</select>
+				<select id="bizen-ai-variant">
+					<?php foreach ( Bizen_AI_Status::variants() as $value => $label ) : ?>
+						<option value="<?php echo esc_attr( $value ); ?>"<?php selected( $current, $value ); ?>>
+							<?php echo esc_html( $label ); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
 
-			<span class="bizen-ai-options__preview">
-				<img src="<?php echo esc_url( $previews[ $current ] ?? '' ); ?>" alt="">
-			</span>
+				<span class="bizen-ai-options__preview">
+					<img src="<?php echo esc_url( $previews[ $current ] ?? '' ); ?>" alt="">
+				</span>
 
-			<span class="bizen-ai-options__feedback" aria-live="polite"></span>
+				<span class="bizen-ai-options__feedback" aria-live="polite"></span>
+			</div>
+
+			<div class="bizen-ai-options__row" data-option="auto-detect">
+				<label for="bizen-ai-auto-detect">
+					<input type="checkbox" id="bizen-ai-auto-detect"<?php checked( Bizen_AI_Status::auto_detect() ); ?>>
+					<?php esc_html_e( 'Detect AI images on upload', 'bizen-toolkit' ); ?>
+				</label>
+
+				<span class="bizen-ai-options__feedback" aria-live="polite"></span>
+
+				<p class="description">
+					<?php esc_html_e( 'Reads the provenance metadata AI generators write into the file and pre-fills the status, marked "auto" for review. Off by default: providers do not mark their images consistently yet, so a file with no marker is not necessarily free of AI. Images already reviewed are never changed.', 'bizen-toolkit' ); ?>
+				</p>
+			</div>
 		</div>
 		<?php
 	}
@@ -227,6 +244,20 @@ class Bizen_AI_Triage_Screen {
 		update_option( Bizen_AI_Status::OPTION_VARIANT, $variant );
 
 		wp_send_json_success( [ 'variant' => $variant ] );
+	}
+
+	public function ajax_set_auto_detect(): void {
+		check_ajax_referer( 'bizen_ai_set_auto_detect', 'nonce' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( [ 'message' => __( 'You do not have permission to change this setting.', 'bizen-toolkit' ) ], 403 );
+		}
+
+		$enabled = isset( $_POST['enabled'] ) && '1' === sanitize_key( wp_unslash( $_POST['enabled'] ) );
+
+		update_option( Bizen_AI_Status::OPTION_AUTO_DETECT, $enabled ? 1 : 0 );
+
+		wp_send_json_success( [ 'enabled' => $enabled ] );
 	}
 
 	private function render_search( string $filter, string $search ): void {

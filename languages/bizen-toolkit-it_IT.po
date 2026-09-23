@@ -285,6 +285,10 @@ msgstr "Nero pieno"
 msgid "Black, half transparent"
 msgstr "Nero, semitrasparente"
 
+#: modules/ai-disclosure/class-ai-status.php
+msgid "Solid white"
+msgstr "Bianco pieno"
+
 #: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "AI Disclosure"
 msgstr "Trasparenza AI"
@@ -354,6 +358,14 @@ msgid "Unknown label style."
 msgstr "Stile etichetta sconosciuto."
 
 #: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Detect AI images on upload"
+msgstr "Rileva le immagini AI al caricamento"
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
+msgid "Reads the provenance metadata AI generators write into the file and pre-fills the status, marked \"auto\" for review. Off by default: providers do not mark their images consistently yet, so a file with no marker is not necessarily free of AI. Images already reviewed are never changed."
+msgstr "Legge i metadati di provenienza che i generatori AI scrivono nel file e precompila lo stato, segnato «auto» da revisionare. Disattivato di default: i provider non marcano ancora le immagini in modo uniforme, quindi un file senza marcatore non è per forza privo di AI. Le immagini già revisionate non vengono mai modificate."
+
+#: modules/ai-disclosure/class-ai-triage-screen.php
 msgid "Search images"
 msgstr "Cerca immagini"
 
@@ -410,8 +422,8 @@ msgid "Nothing was saved."
 msgstr "Non è stato salvato nulla."
 
 #: modules/ai-disclosure/module.php
-msgid "Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Reads provenance metadata on upload, adds a field to the media library, and puts a review queue under Media → AI Disclosure."
-msgstr "Contrassegna le immagini generate o modificate con AI e mostra accanto a esse l’etichetta ufficiale UE sul front end. Legge i metadati di provenienza al caricamento, aggiunge un campo nella libreria media e crea una coda di revisione in Media → Trasparenza AI."
+msgid "Flags AI-generated and AI-modified images and prints the official EU disclosure label next to them on the front end. Adds a field to the media library, puts a review queue under Media → AI Disclosure, and can read provenance metadata on upload."
+msgstr "Contrassegna le immagini generate o modificate con AI e mostra accanto a esse l’etichetta ufficiale UE sul front end. Aggiunge un campo nella libreria media, crea una coda di revisione in Media → Trasparenza AI e può leggere i metadati di provenienza al caricamento."
 
 #: modules/ai-disclosure/module.php
 msgid "— Not reviewed —"
