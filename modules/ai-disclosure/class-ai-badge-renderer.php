@@ -77,6 +77,8 @@ class Bizen_AI_Badge_Renderer {
 			[],
 			BIZEN_TOOLKIT_VERSION
 		);
+		// Inline in the <head> (wp_maybe_inline_styles); beyond styles_inline_size_limit it stays a <link>
+		wp_style_add_data( 'bizen-ai-disclosure', 'path', plugin_dir_path( __FILE__ ) . 'assets/badge.css' );
 	}
 
 	/** @param string $html */
