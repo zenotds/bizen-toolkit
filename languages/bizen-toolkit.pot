@@ -267,7 +267,7 @@ msgid "ACFML: Copy once everywhere"
 msgstr ""
 
 #: modules/acfml-copy-once/module.php
-msgid "In the \"Each language has its own content\" mode every ACF field becomes \"Copy once\" (text fields included), and the WPML custom field settings are realigned when the field group is saved, so saving the original no longer overwrites the translations."
+msgid "Puts every ACF field group in Expert mode with every field set to \"Copy once\", and realigns the WPML custom field settings when a field group is saved: saving the original no longer overwrites the translations, and pages can still be duplicated in bulk."
 msgstr ""
 
 #: modules/disable-flamingo-addressbook/module.php

@@ -19,7 +19,7 @@ Included modules:
 * **CF7 HTML Editor** — Replaces the plain textarea in Contact Form 7 with a syntax-highlighted HTML editor.
 * **CF7 Email Template** — Wraps CF7 outgoing emails in a custom HTML header/footer template, editable with a live preview.
 * **ACFML Sync Fix** — Removes the ACFML repeater sync checkbox and its stored option, so repeater rows are never synced across languages by accident.
-* **ACFML: Copy once everywhere** — In the "Each language has its own content" mode every ACF field becomes Copy once, and WPML's per-key settings are realigned when the field group is saved, so saving the original no longer overwrites the translations.
+* **ACFML: Copy once everywhere** — Runs every ACF field group in Expert mode with every field on Copy once, and realigns WPML's per-key settings when a field group is saved: saving the original no longer overwrites the translations, and pages can still be duplicated in bulk.
 * **Independent WPML duplicates** — Turns WPML "Duplicate" into a one-off copy that opens in the WordPress editor and is no longer overwritten by the original.
 * **Disable Flamingo Addressbook** — Stops Flamingo from saving contact data to its address book; inbound messages are still logged.
 * **Disable Comments** — Turns the WordPress comment system off site-wide and removes it from the admin.
@@ -27,6 +27,10 @@ Included modules:
 * **AI Disclosure** — Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them on the front end, with a review queue under Media.
 
 == Changelog ==
+
+= 1.4.13 =
+* ACFML: Copy once everywhere now runs every field group in Expert mode with every field on Copy once, instead of extending the "Each language has its own content" mode. That mode makes ACFML exclude the posts from the Translation Editor, and Translation Management then refused to duplicate them in bulk. Mode and preference are forced when ACF loads and saves the groups, local JSON included, so fields added later start on Copy once too. The new `bizen_acfml_copy_once_field` filter keeps chosen fields out
+* ACFML: Copy once everywhere: realigning the WPML settings — on field group save and with `wp bizen-acfml realign` — now covers every group, builds the key patterns from the ACF fields themselves (clone fields included) and no longer touches the underscored field-key twins, which ACFML resets on every save. Keys set to "Don't translate" are realigned too, since every field is now Copy once
 
 = 1.4.12 =
 * New module, Independent WPML duplicates: "Duplicate" gives a one-off copy. WPML keeps duplicates bound to the original — it rewrites them on every save and always opens them in its own Translation Editor — so the copy is unlinked right away, the same reset the "Translate independently" button does. `wp bizen-wpml unlink-duplicates` unlinks the ones already on the site, and the `bizen_wpml_independent_duplicates_unlink` filter keeps chosen duplicates synced
