@@ -28,6 +28,9 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.14 =
+* ACFML: Copy once everywhere: `wp bizen-acfml realign` now also stores Expert mode and Copy once in the field group definitions, which until now changed only when a group was saved from the ACF admin. Local JSON files are rewritten in place with a new modified time, keeping their indentation, so ACF offers the sync wherever the database copy is older; groups that live only in the database are updated directly. Neither goes through the ACF save, which from WP-CLI would write clone fields expanded into the JSON
+
 = 1.4.13 =
 * ACFML: Copy once everywhere now runs every field group in Expert mode with every field on Copy once, instead of extending the "Each language has its own content" mode. That mode makes ACFML exclude the posts from the Translation Editor, and Translation Management then refused to duplicate them in bulk. Mode and preference are forced when ACF loads and saves the groups, local JSON included, so fields added later start on Copy once too. The new `bizen_acfml_copy_once_field` filter keeps chosen fields out
 * ACFML: Copy once everywhere: realigning the WPML settings — on field group save and with `wp bizen-acfml realign` — now covers every group, builds the key patterns from the ACF fields themselves (clone fields included) and no longer touches the underscored field-key twins, which ACFML resets on every save. Keys set to "Don't translate" are realigned too, since every field is now Copy once

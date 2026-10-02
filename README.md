@@ -44,6 +44,8 @@ wp bizen-wpml unlink-duplicates --dry-run   # then without --dry-run
 wp bizen-acfml realign --dry-run            # then without --dry-run
 ```
 
+`realign` also stores Expert mode and Copy once in the definitions, which otherwise change only when a group is saved from the ACF admin. Local JSON files are rewritten in place — same indentation, new `modified` time — so ACF shows **Sync available** wherever the database copy is older: sync them from ACF → Field Groups, locally and on every site the JSON is deployed to. Groups stored only in the database are updated directly.
+
 To keep some duplicates synced — a post type whose translations should mirror the original — return `false` from `bizen_wpml_independent_duplicates_unlink` (args: `$unlink`, `$post_id`, `$master_post_id`). The WP-CLI command honours it too.
 
 Save field groups from the ACF admin, not from WP-CLI: saving a field group from the command line makes ACF write clone fields expanded into the local JSON.

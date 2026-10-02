@@ -30,9 +30,16 @@
  * it is saved, so keys left on "Copy" by an earlier setup keep pushing the
  * original's flexible layouts, repeater row counts and selects onto every
  * translation until then. Each time a field group is saved the keys matching its
- * fields are realigned; `wp bizen-acfml realign` does it for every group without
- * saving them (saving field groups from WP-CLI makes ACF write clone fields
- * expanded into the local JSON).
+ * fields are realigned.
+ *
+ * `wp bizen-acfml realign` does both for every group at once, without saving
+ * them through ACF (saving field groups from WP-CLI makes ACF write clone fields
+ * expanded into the local JSON):
+ * - Local JSON files get Expert mode, Copy once and a new "modified" time, written
+ *   back with the file's own indentation, so ACF offers "Sync available" wherever
+ *   the database copy is older — locally and on every site the JSON is deployed to.
+ * - Groups stored only in the database are updated in place.
+ * - The WPML per-meta-key settings are realigned.
  *
  * Left alone on purpose:
  * - Keys locked by a wpml-config.xml: WPML restores them on the next config load.
@@ -118,15 +125,15 @@ return new class extends Bizen_Module {
 	}
 
 	public function force_copy_once( $field ) {
-		if ( ! is_array( $field ) || empty( $field['name'] ) ) {
-			return $field;
-		}
-
-		if ( apply_filters( 'bizen_acfml_copy_once_field', true, $field ) ) {
+		if ( is_array( $field ) && $this->wants_copy_once( $field ) ) {
 			$field[ self::PREFERENCE ] = WPML_COPY_ONCE_CUSTOM_FIELD;
 		}
 
 		return $field;
+	}
+
+	private function wants_copy_once( array $field ): bool {
+		return ! empty( $field['name'] ) && apply_filters( 'bizen_acfml_copy_once_field', true, $field );
 	}
 
 	public function realign_group( $field_group ): void {
@@ -136,39 +143,215 @@ return new class extends Bizen_Module {
 	}
 
 	/**
-	 * Sets every WPML custom field setting matching an ACF field to "Copy once".
+	 * Stores Expert mode and Copy once in every field group definition — local JSON
+	 * and database — and sets every WPML custom field setting matching an ACF field
+	 * to "Copy once".
 	 *
 	 * ## OPTIONS
 	 *
 	 * [--dry-run]
-	 * : List the settings that would change without saving them.
+	 * : List what would change without saving anything.
 	 */
 	public function cli_realign( array $args, array $assoc_args ): void {
 		if ( ! function_exists( 'acf_get_field_groups' ) ) {
 			WP_CLI::error( 'ACF is not active.' );
 		}
 
-		$field_groups = acf_get_field_groups();
-		if ( ! $field_groups ) {
-			WP_CLI::success( 'No field groups.' );
-			return;
-		}
-
-		$dry_run = ! empty( $assoc_args['dry-run'] );
-		$changes = $this->realign( $field_groups, $dry_run );
+		$dry_run  = ! empty( $assoc_args['dry-run'] );
+		$stored   = $this->store_definitions( $dry_run );
+		$settings = $this->realign( (array) acf_get_field_groups(), $dry_run );
 
 		if ( $dry_run ) {
-			foreach ( $changes as $change ) {
+			foreach ( array_merge( $stored, $settings ) as $change ) {
 				WP_CLI::log( $change );
 			}
 		}
 
 		WP_CLI::success( sprintf(
-			'%d settings %s to Copy once across %d field groups.',
-			count( $changes ),
-			$dry_run ? 'would be set' : 'set',
-			count( $field_groups )
+			'%d field groups %s Expert / Copy once, %d WPML settings %s Copy once.',
+			count( $stored ),
+			$dry_run ? 'would be set to' : 'set to',
+			count( $settings ),
+			$dry_run ? 'would be set to' : 'set to'
 		) );
+
+		if ( ! $dry_run && preg_grep( '/^json: /', $stored ) ) {
+			WP_CLI::log( 'Local JSON updated: sync the field groups from ACF > Field Groups where it says "Sync available".' );
+		}
+	}
+
+	/**
+	 * Writes Expert mode and Copy once into the stored definitions, bypassing the
+	 * ACF save. A group with a local JSON file is changed there only: the newer
+	 * "modified" time makes ACF offer the sync into the database.
+	 *
+	 * @return string[] The groups changed, as "json: <path>" or "db: <title> (<key>)".
+	 */
+	private function store_definitions( bool $dry_run ): array {
+		$changes = [];
+		$in_json = [];
+
+		$files = function_exists( 'acf_get_local_json_files' ) ? (array) acf_get_local_json_files( 'acf-field-group' ) : [];
+
+		foreach ( $files as $key => $path ) {
+			$raw   = (string) file_get_contents( $path );
+			$group = json_decode( $raw, true );
+
+			if ( ! is_array( $group ) || ! isset( $group['fields'] ) ) {
+				continue;
+			}
+
+			$in_json[ $group['key'] ?? $key ] = true;
+
+			if ( ! $this->set_expert_copy_once( $group ) ) {
+				continue;
+			}
+
+			$changes[] = 'json: ' . $path;
+
+			if ( ! $dry_run ) {
+				$group['modified'] = time();
+
+				if ( false === file_put_contents( $path, $this->encode_like( $group, $raw ) ) ) {
+					WP_CLI::warning( 'Could not write ' . $path );
+				}
+			}
+		}
+
+		foreach ( (array) acf_get_raw_field_groups() as $group ) {
+			if ( isset( $in_json[ $group['key'] ] ) ) {
+				continue;
+			}
+
+			$changed = $this->update_post_settings( (int) $group['ID'], $dry_run, function ( array $settings ) {
+				$settings[ self::MODE_KEY ] = self::EXPERT;
+				return $settings;
+			} );
+
+			$changed = $this->store_db_fields( (int) $group['ID'], $dry_run ) || $changed;
+
+			if ( ! $changed ) {
+				continue;
+			}
+
+			$changes[] = sprintf( 'db: %s (%s)', $group['title'] ?? '', $group['key'] );
+
+			if ( ! $dry_run ) {
+				global $wpdb;
+				$wpdb->update(
+					$wpdb->posts,
+					[ 'post_modified' => current_time( 'mysql' ), 'post_modified_gmt' => current_time( 'mysql', true ) ],
+					[ 'ID' => (int) $group['ID'] ]
+				);
+				clean_post_cache( (int) $group['ID'] );
+			}
+		}
+
+		return $changes;
+	}
+
+	/** Sets Expert mode and Copy once on a decoded JSON group; true if anything changed. */
+	private function set_expert_copy_once( array &$group ): bool {
+		$changed = false;
+
+		if ( self::EXPERT !== ( $group[ self::MODE_KEY ] ?? null ) ) {
+			$group[ self::MODE_KEY ] = self::EXPERT;
+			$changed                 = true;
+		}
+
+		$this->set_copy_once_on( $group['fields'], $changed );
+
+		return $changed;
+	}
+
+	private function set_copy_once_on( array &$fields, bool &$changed ): void {
+		foreach ( $fields as &$field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
+			if ( $this->wants_copy_once( $field ) && WPML_COPY_ONCE_CUSTOM_FIELD !== (int) ( $field[ self::PREFERENCE ] ?? -1 ) ) {
+				$field[ self::PREFERENCE ] = WPML_COPY_ONCE_CUSTOM_FIELD;
+				$changed                   = true;
+			}
+
+			if ( ! empty( $field['sub_fields'] ) && is_array( $field['sub_fields'] ) ) {
+				$this->set_copy_once_on( $field['sub_fields'], $changed );
+			}
+
+			if ( ! empty( $field['layouts'] ) && is_array( $field['layouts'] ) ) {
+				foreach ( $field['layouts'] as &$layout ) {
+					if ( ! empty( $layout['sub_fields'] ) && is_array( $layout['sub_fields'] ) ) {
+						$this->set_copy_once_on( $layout['sub_fields'], $changed );
+					}
+				}
+				unset( $layout );
+			}
+		}
+		unset( $field );
+	}
+
+	/** Copy once on every field stored under a database parent (group, field or layout parent). */
+	private function store_db_fields( int $parent_id, bool $dry_run ): bool {
+		$changed = false;
+
+		foreach ( (array) acf_get_raw_fields( $parent_id ) as $field ) {
+			if ( $this->wants_copy_once( $field ) ) {
+				$changed = $this->update_post_settings( (int) $field['ID'], $dry_run, function ( array $settings ) {
+					$settings[ self::PREFERENCE ] = WPML_COPY_ONCE_CUSTOM_FIELD;
+					return $settings;
+				} ) || $changed;
+			}
+
+			$changed = $this->store_db_fields( (int) $field['ID'], $dry_run ) || $changed;
+		}
+
+		return $changed;
+	}
+
+	/** Rewrites the serialized settings ACF keeps in post_content; true if they change. */
+	private function update_post_settings( int $post_id, bool $dry_run, callable $modify ): bool {
+		global $wpdb;
+
+		$post     = get_post( $post_id );
+		$settings = $post ? acf_maybe_unserialize( $post->post_content ) : null;
+
+		if ( ! is_array( $settings ) ) {
+			return false;
+		}
+
+		$updated = $modify( $settings );
+
+		if ( $updated == $settings ) { // phpcs:ignore Universal.Operators.StrictComparisons -- "3" and 3 are the same preference.
+			return false;
+		}
+
+		if ( ! $dry_run ) {
+			$wpdb->update( $wpdb->posts, [ 'post_content' => maybe_serialize( $updated ) ], [ 'ID' => $post_id ] );
+			clean_post_cache( $post_id );
+		}
+
+		return true;
+	}
+
+	/** Encodes like ACF does, keeping the original file's indentation, slashes and final newline. */
+	private function encode_like( array $data, string $original ): string {
+		$flags = JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE;
+		if ( false === strpos( $original, '\\/' ) ) {
+			$flags |= JSON_UNESCAPED_SLASHES;
+		}
+
+		$json = (string) json_encode( $data, $flags );
+
+		if ( preg_match( '/^\{\R\t/', $original ) ) {
+			$json = preg_replace_callback( '/^(?: {4})+/m', fn( $m ) => str_repeat( "\t", strlen( $m[0] ) / 4 ), $json );
+		}
+
+		if ( preg_match( '/\R\z/', $original ) ) {
+			$json .= "\n";
+		}
+
+		return $json;
 	}
 
 	/**
