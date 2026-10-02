@@ -254,6 +254,22 @@ msgstr ""
 msgid "Disables the ACFML repeater sync checkbox and its stored option — prevents accidental field sync across languages."
 msgstr ""
 
+#: modules/wpml-independent-duplicates/module.php
+msgid "Independent WPML duplicates"
+msgstr ""
+
+#: modules/wpml-independent-duplicates/module.php
+msgid "Turns WPML \"Duplicate\" into a one-off copy: the duplicate is unlinked from the original right away, so it opens in the WordPress editor and is no longer overwritten when the original is saved."
+msgstr ""
+
+#: modules/acfml-copy-once/module.php
+msgid "ACFML: Copy once everywhere"
+msgstr ""
+
+#: modules/acfml-copy-once/module.php
+msgid "In the \"Each language has its own content\" mode every ACF field becomes \"Copy once\" (text fields included), and the WPML custom field settings are realigned when the field group is saved, so saving the original no longer overwrites the translations."
+msgstr ""
+
 #: modules/disable-flamingo-addressbook/module.php
 msgid "Disable Flamingo Addressbook"
 msgstr ""

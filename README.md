@@ -13,11 +13,37 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `menu-enhancer` | Per-item enhancer for the WP nav-menu editor (collapse, scroll indicator, group highlight) | Inspired by Menu Management Enhancer v1.2 |
 | `cf7-html-editor` | Adds a syntax-highlighted HTML editor to Contact Form 7 form fields | [CF7 Coder v1.0.1](https://wordpress.org/plugins/cf7-coder/) (GPL-2.0+) |
 | `cf7-email-template` | Wraps CF7 emails in a custom HTML header/footer template with a live Ace editor preview | [HTML Template for CF7 v2.2.2](https://wordpress.org/plugins/cf7-html-email-template-extension/) (GPL-2.0+) |
-| `acfml-sync-fix` | Keeps ACF field group definitions in sync across WPML languages | Core — written in-house |
+| `acfml-sync-fix` | Removes the ACFML repeater sync checkbox and its stored option, so repeater rows are never synced across languages by accident | Core — written in-house |
+| `wpml-independent-duplicates` | Turns WPML "Duplicate" into a one-off copy: the duplicate is unlinked right away, opens in the WordPress editor and is no longer overwritten by the original. `wp bizen-wpml unlink-duplicates` unlinks existing ones | Core — written in-house |
+| `acfml-copy-once` | ACFML "Each language has its own content" mode becomes Copy once for every field, and WPML's per-key settings are realigned on field group save. `wp bizen-acfml realign` realigns without saving | Core — written in-house |
 | `disable-comments` | Disables the comment system site-wide — closes comments everywhere and hides the Comments menu and Discussion settings | Core — written in-house |
 | `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
 | `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
 | `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; adds a review queue under Media and can read provenance from XMP and C2PA on upload | Core — written in-house |
+
+---
+
+## Manual translation with WPML + ACF
+
+For sites translated by hand in the WordPress editor (ACF flexible content), enable `wpml-independent-duplicates` and `acfml-copy-once`, set WPML to translate with the WordPress editor, and put every field group in **Each language has its own content** mode. Then "Duplicate" gives an independent copy, and saving the original never touches the translations.
+
+Why each step is needed:
+
+- **Duplicates always open in the WPML Translation Editor**, whatever the editor setting says: WPML excludes them from the WordPress-editor route on purpose, and rewrites them on every save of the original. Unlinking them right after creation is the same reset the "Translate independently" button does.
+- **The group mode overrides the per-field preference.** Fields set to Copy once by hand are ignored unless the group is in Expert mode, and only localization mode also makes ACFML switch the Translation Editor off for those posts.
+- **Localization mode leaves text, textarea, wysiwyg, url and link on Translate.** The module maps them to Copy once too.
+- **WPML syncs from its own per-meta-key list** (`content_0_cards`, `_content`, `bg_color`…), not from the ACF fields. When a group changes mode ACFML only adds missing keys, so the old "Copy" ones keep pushing the original's layouts, repeater row counts and selects onto the translations. The module rewrites the keys matching the group's name patterns whenever the group is saved, skipping keys set to "Don't translate" and keys locked by a `wpml-config.xml`.
+
+On an existing site, run once:
+
+```bash
+wp bizen-wpml unlink-duplicates --dry-run   # then without --dry-run
+wp bizen-acfml realign --dry-run            # then without --dry-run
+```
+
+To keep some duplicates synced — a post type whose translations should mirror the original — return `false` from `bizen_wpml_independent_duplicates_unlink` (args: `$unlink`, `$post_id`, `$master_post_id`). The WP-CLI command honours it too.
+
+Switch the group mode from the ACF admin, not from WP-CLI: saving a field group from the command line makes ACF write clone fields expanded into the local JSON.
 
 ---
 
