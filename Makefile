@@ -8,7 +8,7 @@ ZIP_FILE := $(DIST_DIR)/$(PLUGIN_SLUG)-$(VERSION).zip
 
 .DEFAULT_GOAL := build
 
-.PHONY: build pot mo clean release
+.PHONY: build pot mo clean release gh-release
 
 ## build: Compile translations, then create a ready-to-install ZIP in dist/
 build: mo clean
@@ -30,7 +30,9 @@ mo:
 clean:
 	@rm -rf "$(DIST_DIR)"
 
-## release v=X.Y.Z: Bump version in plugin header + constant, commit, push
+## release v=X.Y.Z: Bump version in plugin header + constant, commit, push, publish a GitHub release
+# The GitHub release lets the update checker find the version with its first API call
+# (releases/latest) instead of falling back to tags and then the branch.
 release:
 	@test -n "$(v)" || (echo "Usage: make release v=X.Y.Z" && exit 1)
 	@sed -i '' 's/^\( \* Version:[[:space:]]*\)[0-9][0-9.]*/\1$(v)/' $(PLUGIN_SLUG).php
@@ -38,4 +40,10 @@ release:
 	@git add -A
 	@git commit -m "Release v$(v)"
 	@git push
+	@$(MAKE) --no-print-directory gh-release v=$(v)
 	@echo "Released v$(v) — WordPress will prompt for update on next check"
+
+## gh-release v=X.Y.Z: Publish the GitHub release for an already pushed version, notes from readme.txt
+gh-release:
+	@test -n "$(v)" || (echo "Usage: make gh-release v=X.Y.Z" && exit 1)
+	@awk '/^= $(subst .,\.,$(v)) =$$/{f=1;next} /^= /{f=0} f' readme.txt | gh release create "v$(v)" --target main --title "v$(v)" --notes-file -
