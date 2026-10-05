@@ -265,6 +265,14 @@ msgstr "Duplicati WPML indipendenti"
 msgid "Turns WPML \"Duplicate\" into a one-off copy: the duplicate is unlinked from the original right away, so it opens in the WordPress editor and is no longer overwritten when the original is saved."
 msgstr "Trasforma il \"Duplica\" di WPML in una copia una tantum: il duplicato viene subito sganciato dall'originale, quindi si apre nell'editor di WordPress e non viene più sovrascritto quando si salva l'originale."
 
+#: modules/wpml-media-sync/module.php
+msgid "WPML media in every language"
+msgstr "Media WPML in tutte le lingue"
+
+#: modules/wpml-media-sync/module.php
+msgid "Every media file uploaded in one language shows up in the media library of all the others. Locks WPML media translation on \"Configure manually\" with duplication of new media on, and fills in existing media that is missing from a language, once a day and whenever a language is added. With FileBird, the copies go into the same folder as the original."
+msgstr "Ogni media caricato in una lingua compare nella libreria media di tutte le altre. Blocca la traduzione media di WPML su \"Configura manualmente\" con la duplicazione dei nuovi media attiva, e completa i media esistenti mancanti in una lingua, una volta al giorno e ogni volta che si aggiunge una lingua. Con FileBird, le copie finiscono nella stessa cartella dell'originale."
+
 #: modules/acfml-copy-once/module.php
 msgid "ACFML: Copy once everywhere"
 msgstr "ACFML: Copia una volta ovunque"

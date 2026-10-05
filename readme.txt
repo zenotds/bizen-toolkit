@@ -21,6 +21,7 @@ Included modules:
 * **ACFML Sync Fix** — Removes the ACFML repeater sync checkbox and its stored option, so repeater rows are never synced across languages by accident.
 * **ACFML: Copy once everywhere** — Runs every ACF field group in Expert mode with every field on Copy once, and realigns WPML's per-key settings when a field group is saved: saving the original no longer overwrites the translations, and pages can still be duplicated in bulk.
 * **Independent WPML duplicates** — Turns WPML "Duplicate" into a one-off copy that opens in the WordPress editor and is no longer overwritten by the original.
+* **WPML media in every language** — Every media file uploaded in one language is copied into the media library of all the others, and existing media missing from a language is filled in. With FileBird, the copies follow the original's folder.
 * **Disable Flamingo Addressbook** — Stops Flamingo from saving contact data to its address book; inbound messages are still logged.
 * **Disable Comments** — Turns the WordPress comment system off site-wide and removes it from the admin.
 * **Flatten SVG on Upload** — Rewrites uploaded SVGs so several of them can be inlined on the same page without their styles and ids colliding.
