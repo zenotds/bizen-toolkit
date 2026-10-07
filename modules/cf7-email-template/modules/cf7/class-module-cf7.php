@@ -55,7 +55,7 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
             $this->core->add_filter( 'wpcf7_editor_panels', array( $this, 'wpcf7_editor_panels' ) );
             $this->core->add_filter( 'wpcf7_contact_form_properties', array( $this, 'wpcf7_contact_form_properties' ), 10, 2 );
             $this->core->add_filter( 'wpcf7_pre_construct_contact_form_properties', array( $this, 'wpcf7_contact_form_properties' ), 10, 2 );
-            $this->core->add_filter( 'wpcf7_mail_components', array( $this, 'wpcf7_mail_components' ), 20, 2 );
+            $this->core->add_filter( 'wpcf7_mail_components', array( $this, 'wpcf7_mail_components' ), 20, 3 );
         }
 
         /**
@@ -213,7 +213,7 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
          * @param WPCF7_ContactForm
          * @return void
          */
-        public function wpcf7_mail_components( $components, $contactform ) {
+        public function wpcf7_mail_components( $components, $contactform, $mail = null ) {
             $properties = $contactform->get_properties();
 
             if ( ! isset( $properties[ CF7HETE_Module_Cf7::METADATA ] ) ) {
@@ -223,11 +223,19 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
             $properties = $properties[ CF7HETE_Module_Cf7::METADATA ];
 
             if ( ! empty( $properties['activate'] ) ) {
-                $body = $this->replace_tags( $properties['header-html'] ?? '' );
-                $body .= $components['body'];
-                $body .= $this->replace_tags( $properties['footer-html'] ?? '' );
+                $context = array(
+                    'contact_form' => $contactform,
+                    'autoreply'    => $mail instanceof WPCF7_Mail && 'mail_2' === $mail->name(),
+                );
 
-                $components['body'] = $body;
+                // Bizen: CF7 has already wrapped the body in a full document (htmlize()),
+                // so concatenating header + body + footer gave <table><!doctype html>…
+                // Keep only what is inside <body> and build one document around it.
+                $body = $this->replace_tags( $properties['header-html'] ?? '', $context );
+                $body .= $this->extract_body( $components['body'] );
+                $body .= $this->replace_tags( $properties['footer-html'] ?? '', $context );
+
+                $components['body'] = $this->wrap_document( $body, $components['subject'] ?? '', $contactform->locale() );
             }
 
             return $components;
@@ -250,9 +258,11 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
          */
         private function render_mail_preview( $contactform ) {
             if ( empty( $contactform ) || empty( $contactform->prop( CF7HETE_Module_Cf7::METADATA ) ) ) {
-                echo $this->get_default_template_for_preview( 'header' );
-                echo $this->get_default_template_for_preview( 'body' );
-                echo $this->get_default_template_for_preview( 'footer' );
+                echo $this->wrap_document(
+                    $this->get_default_template_for_preview( 'header' )
+                    . $this->get_default_template_for_preview( 'body' )
+                    . $this->get_default_template_for_preview( 'footer' )
+                );
                 return;
             }
 
@@ -268,8 +278,10 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
             $body = wpautop( $body );
 
             if ( ! empty( $data['activate'] ) ) {
-                $body = $this->replace_tags( $data['header-html'] ) . $body;
-                $body .= $this->replace_tags( $data['footer-html'] );
+                $context = array( 'contact_form' => $contactform );
+                $body = $this->replace_tags( $data['header-html'], $context ) . $body;
+                $body .= $this->replace_tags( $data['footer-html'], $context );
+                $body = $this->wrap_document( $body, $contactform->title(), $contactform->locale() );
             }
 
             echo $body;
@@ -297,7 +309,9 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
                 return $default_template;
             }
 
-            return file_get_contents( CF7HETE_PLUGIN_PATH . '/modules/cf7/includes/templates/default-' . $name . '.htm' );
+            $ext = 'style' === $name ? '.css' : '.htm';
+
+            return file_get_contents( CF7HETE_PLUGIN_PATH . '/modules/cf7/includes/templates/default-' . $name . $ext );
         }
 
         /**
@@ -306,14 +320,157 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
          * @since    1.0.0
          * @param    string     $string     Text to be processed
          */
-        private function replace_tags( $text ) {
+        private function replace_tags( $text, $context = array() ) {
             $text = str_replace( '[home_url]', home_url(), $text );
             $text = str_replace( '[site_name]', get_bloginfo( "name" ), $text );
 
             $text = str_replace( '[_EXAMPLE_HELLO]', get_bloginfo( "name" ), $text );
             $text = str_replace( '[_EXAMPLE_CHEERS]', get_bloginfo( "name" ), $text );
 
+            // Bizen tags
+            $text = str_replace( '[site_domain]', esc_html( preg_replace( '@^www\.@', '', (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) ), $text );
+
+            if ( str_contains( $text, '[site_logo]' ) ) {
+                $text = str_replace( '[site_logo]', $this->get_logo_html(), $text );
+            }
+
+            if ( str_contains( $text, '[mail_note]' ) ) {
+                $text = str_replace( '[mail_note]', esc_html( $this->get_mail_note( $context ) ), $text );
+            }
+
+            // [company_*] reads the field of the same name from the ACF options page
+            // ("Anagrafica"), so company data are kept in one place instead of every form.
+            $text = preg_replace_callback( '/\[(company_[a-z_]+)\]/', function ( $m ) {
+                $value = function_exists( 'get_field' ) ? get_field( $m[1], 'option' ) : null;
+                $value = is_scalar( $value ) ? trim( (string) $value ) : '';
+
+                if ( '' === $value && 'company_name' === $m[1] ) {
+                    $value = get_bloginfo( 'name' );
+                }
+
+                /**
+                 * Filter: bizen_cf7_email_template_company_tag
+                 *
+                 * @param string $value Value printed for the tag.
+                 * @param string $field Tag name, e.g. company_phone.
+                 */
+                return esc_html( apply_filters( 'bizen_cf7_email_template_company_tag', $value, $m[1] ) );
+            }, $text );
+
             return $text;
+        }
+
+        /**
+         * [site_logo]: the site's custom logo scaled into a 210×84 box, or the site
+         * name in bold when there is none. Logos made for the email (white on the
+         * header colour) can be passed through the bizen_cf7_email_template_logo filter.
+         */
+        private function get_logo_html() {
+            $name     = get_bloginfo( 'name' );
+            $logo_id  = (int) get_theme_mod( 'custom_logo' );
+            $image    = $logo_id ? wp_get_attachment_image_src( $logo_id, 'full' ) : false;
+            $url      = $image ? $image[0] : '';
+            $width    = $image ? (int) $image[1] : 0;
+            $height   = $image ? (int) $image[2] : 0;
+
+            /**
+             * Filter: bizen_cf7_email_template_logo
+             *
+             * @param array $logo [ 'url' => string, 'width' => int, 'height' => int ] — empty url prints the site name.
+             */
+            $logo = apply_filters( 'bizen_cf7_email_template_logo', array( 'url' => $url, 'width' => $width, 'height' => $height ) );
+
+            if ( empty( $logo['url'] ) ) {
+                return '<span style="font-family:Helvetica,Arial,sans-serif; font-size:24px; line-height:1.2; font-weight:bold; color:#ffffff;">' . esc_html( $name ) . '</span>';
+            }
+
+            $width  = (int) ( $logo['width'] ?? 0 );
+            $height = (int) ( $logo['height'] ?? 0 );
+
+            if ( $width > 0 && $height > 0 ) {
+                $scale  = min( 210 / $width, 84 / $height, 1 );
+                $width  = (int) round( $width * $scale );
+                $height = (int) round( $height * $scale );
+                $size   = sprintf( ' width="%1$d" height="%2$d" style="display:block; width:%1$dpx; height:%2$dpx; border:0;"', $width, $height );
+            } else {
+                $size = ' width="210" style="display:block; width:210px; max-width:210px; height:auto; border:0;"';
+            }
+
+            return '<img src="' . esc_url( $logo['url'] ) . '"' . $size . ' alt="' . esc_attr( $name ) . '">';
+        }
+
+        /**
+         * [mail_note]: the closing line under the template. The autoresponder (Mail 2)
+         * usually leaves from a no-reply address, the notification goes to staff who
+         * do reply to it. The language follows the form, not the site: CF7 does not
+         * switch locale while sending.
+         */
+        private function get_mail_note( $context ) {
+            $notes = array(
+                'it' => array( 'Messaggio inviato automaticamente da %s. Ti preghiamo di non rispondere a questo indirizzo.', 'Notifica automatica dal sito %s.' ),
+                'en' => array( 'This message was sent automatically by %s. Please do not reply to this address.', 'Automatic notification from the %s website.' ),
+                'fr' => array( 'Message envoyé automatiquement par %s. Merci de ne pas répondre à cette adresse.', 'Notification automatique du site %s.' ),
+                'es' => array( 'Mensaje enviado automáticamente por %s. Te rogamos que no respondas a esta dirección.', 'Notificación automática del sitio %s.' ),
+                'de' => array( 'Diese Nachricht wurde automatisch von %s gesendet. Bitte antworten Sie nicht an diese Adresse.', 'Automatische Benachrichtigung von der Website %s.' ),
+            );
+
+            $form   = $context['contact_form'] ?? null;
+            $locale = $form instanceof WPCF7_ContactForm && $form->locale() ? $form->locale() : get_locale();
+            $set    = $notes[ substr( (string) $locale, 0, 2 ) ] ?? $notes['en'];
+            $note   = sprintf( $set[ empty( $context['autoreply'] ) ? 1 : 0 ], get_bloginfo( 'name' ) );
+
+            /**
+             * Filter: bizen_cf7_email_template_mail_note
+             *
+             * @param string $note    The note.
+             * @param array  $context [ 'contact_form' => WPCF7_ContactForm|null, 'autoreply' => bool ]
+             */
+            return apply_filters( 'bizen_cf7_email_template_mail_note', $note, $context );
+        }
+
+        /**
+         * Returns what is inside <body> when $html is a full document, $html otherwise.
+         */
+        private function extract_body( $html ) {
+            if ( preg_match( '@<body\b[^>]*>(.*)</body>@is', $html, $m ) ) {
+                return $m[1];
+            }
+
+            return $html;
+        }
+
+        /**
+         * Builds the email document: one <head> carrying the template's base styles
+         * and the media query that stacks the layout on phones.
+         */
+        private function wrap_document( $inner, $title = '', $locale = '' ) {
+            $locale = $locale ?: get_locale();
+            $lang   = esc_attr( str_replace( '_', '-', $locale ) );
+            $dir    = function_exists( 'wpcf7_is_rtl' ) && wpcf7_is_rtl( $locale ) ? 'rtl' : 'ltr';
+            $title  = esc_html( $title ?: get_bloginfo( 'name' ) );
+
+            /**
+             * Filter: bizen_cf7_email_template_style
+             *
+             * @param string $css Contents of the <style> element.
+             */
+            $css = apply_filters( 'bizen_cf7_email_template_style', $this->get_default_template( 'style' ) );
+
+            return '<!doctype html>
+<html lang="' . $lang . '" dir="' . $dir . '">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<title>' . $title . '</title>
+<style>
+' . $css . '
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f4f4;">
+' . $inner . '
+</body>
+</html>';
         }
 
         /**

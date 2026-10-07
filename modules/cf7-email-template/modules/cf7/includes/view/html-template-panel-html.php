@@ -67,6 +67,12 @@ if ( ! empty( $contactform ) && is_a( $contactform, 'WPCF7_ContactForm' ) ) {
         <?php echo __( 'You can use these tags to use dinamic content', 'cf7-html-email-template-extension' ) . ": " ?>
         <span class="mailtag code">[home_url]</span>
         <span class="mailtag code">[site_name]</span>
+        <span class="mailtag code">[site_domain]</span>
+        <span class="mailtag code">[site_logo]</span>
+        <span class="mailtag code">[mail_note]</span>
+        <span class="mailtag code">[company_*]</span>
+        <br>
+        <small><?php esc_html_e( '[company_*] prints the field of the same name from the ACF options page (company_name, company_address, company_phone, company_vat, …).', 'bizen-toolkit' ); ?></small>
     </legend>
 
     <table class="form-table">

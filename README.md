@@ -11,7 +11,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | Module | Description | Origin |
 |--------|-------------|--------|
 | `menu-enhancer` | Per-item enhancer for the WP nav-menu editor (collapse, scroll indicator, group highlight) | Inspired by Menu Management Enhancer v1.2 |
-| `cf7-html-editor` | Adds a syntax-highlighted HTML editor to Contact Form 7 form fields | [CF7 Coder v1.0.1](https://wordpress.org/plugins/cf7-coder/) (GPL-2.0+) |
+| `cf7-html-editor` | Adds a syntax-highlighted HTML editor to Contact Form 7 form fields, plus per-form test mode, redirect, GA/GTM event and submit behaviours | Core — forked from [CF7 Coder v1.0.1](https://wordpress.org/plugins/cf7-coder/) (GPL-2.0+) |
 | `cf7-email-template` | Wraps CF7 emails in a custom HTML header/footer template with a live Ace editor preview | [HTML Template for CF7 v2.2.2](https://wordpress.org/plugins/cf7-html-email-template-extension/) (GPL-2.0+) |
 | `acfml-sync-fix` | Removes the ACFML repeater sync checkbox and its stored option, so repeater rows are never synced across languages by accident | Core — written in-house |
 | `wpml-independent-duplicates` | Turns WPML "Duplicate" into a one-off copy: the duplicate is unlinked right away, opens in the WordPress editor and is no longer overwritten by the original. `wp bizen-wpml unlink-duplicates` unlinks existing ones | Core — written in-house |

@@ -2,10 +2,17 @@
 /**
  * CF7 HTML Editor module.
  *
- * Vendored from CF7 Coder v1.0.1 by Aurovrata Venet (GPL-2.0+)
- * WP.org: https://wordpress.org/plugins/cf7-coder/
+ * Bizen module — written and maintained by Bizen (https://bizen.it).
  *
- * The vendor class is renamed CF7_Coder_Bizen to avoid conflicts with the original plugin.
+ * Started as a vendored copy of CF7 Coder v1.0.1 (GPL-2.0+,
+ * https://wordpress.org/plugins/cf7-coder/), which stopped working with
+ * Contact Form 7 6.2. Now maintained in-house and no longer tracked upstream.
+ *
+ * Swaps the form-template textarea for a CodeMirror HTML editor and adds
+ * per-form switches to the CF7 "Status" box: test mode, autop off, redirect,
+ * hide form, GA/GTM event and a few submit-time behaviours. Settings are CF7
+ * properties stored under the same `_wpcf7_*` meta keys CF7 Coder used, so
+ * forms configured with the original plugin keep their settings.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -28,14 +35,6 @@ return new class extends Bizen_Module {
 		return 'form';
 	}
 
-	public function get_source_slug(): ?string {
-		return 'cf7-coder';
-	}
-
-	public function get_source_version(): ?string {
-		return '1.0.1';
-	}
-
 	public function get_dependencies(): array {
 		return [ 'contact-form-7/wp-contact-form-7.php' ];
 	}
@@ -47,8 +46,7 @@ return new class extends Bizen_Module {
 	}
 
 	public function boot(): void {
-		// Require the adapted vendor class, then instantiate it.
-		require_once __DIR__ . '/class-cf7-coder.php';
-		new CF7_Coder_Bizen();
+		require_once __DIR__ . '/class-cf7-html-editor.php';
+		new Bizen_CF7_HTML_Editor();
 	}
 };

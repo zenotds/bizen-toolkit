@@ -1,0 +1,16 @@
+body { margin: 0; padding: 0; background-color: #f4f4f4; }
+img { border: 0; line-height: 100%; outline: none; text-decoration: none; }
+table { border-collapse: collapse; }
+.mail-body p { margin: 0 0 14px; }
+.mail-body p:last-child { margin-bottom: 0; }
+.mail-body a { color: #2f2f2f; }
+.mail-body ul { margin: 0 0 14px; padding-left: 20px; }
+.mail-body li { margin-bottom: 6px; }
+.mail-body li p { margin: 0; }
+.mail-footer a { color: #ffffff; text-decoration: none; }
+@media only screen and (max-width: 620px) {
+	.mail-shell { width: 100% !important; }
+	.mail-pad { padding-left: 20px !important; padding-right: 20px !important; }
+	.mail-stack { display: block !important; width: 100% !important; text-align: left !important; }
+	.mail-stack + .mail-stack { padding-top: 12px !important; }
+}

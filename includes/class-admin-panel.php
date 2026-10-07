@@ -160,7 +160,8 @@ class Bizen_Admin_Panel {
 										$enabled       = $this->loader->is_enabled( $id );
 										$deps_met      = $module->dependencies_met();
 										$missing       = $module->get_missing_dependencies();
-										$mon           = $monitor[ $id ] ?? null;
+										$tracked       = $module->get_source_slug() || $module->get_source_repo();
+										$mon           = $tracked ? ( $monitor[ $id ] ?? null ) : null;
 										$has_conflict  = ! empty( $conflicts[ $id ] );
 										$row_conflicts = $conflicts[ $id ] ?? [];
 										?>
@@ -230,7 +231,7 @@ class Bizen_Admin_Panel {
 												<?php endif; ?>
 											</td>
 											<td>
-												<?php if ( ! $mon && ! $module->get_source_slug() && ! $module->get_source_repo() ) : ?>
+												<?php if ( ! $tracked ) : ?>
 													<span style="color:#aaa;"><?php esc_html_e( 'Core', 'bizen-toolkit' ); ?></span>
 												<?php elseif ( ! $mon ) : ?>
 													<span style="color:#aaa;">—</span>

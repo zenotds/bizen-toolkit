@@ -29,6 +29,19 @@ Included modules:
 
 == Changelog ==
 
+= 1.4.16 =
+* CF7 HTML Editor is now a core module, maintained in-house instead of tracked against CF7 Coder (which has the same problem upstream). Settings already saved on existing forms are kept
+* CF7 HTML Editor: the code editor is back on Contact Form 7 6.2. CF7 6.2 moved its menu under a new Dashboard page, so the edit screen's admin hook changed from toplevel_page_wpcf7 to contact_page_wpcf7 and the editor never loaded. The screen is now matched by page slug, which also fixes "Add Contact Form" on non-English admins, where the hook carries the translated menu title
+* CF7 HTML Editor: the editor respects the "Disable syntax highlighting" profile setting and loads WordPress's HTML lint rules. CF7's live configuration check runs again when the editor loses focus
+* CF7 HTML Editor: form settings are saved as Contact Form 7 properties, so they survive a duplicate, a REST save and CF7's live configuration check — which until now reset every switch — and are kept on the very first save of a new form, where they were lost
+* CF7 HTML Editor: the front-end options now apply whichever way the shortcode names the form (id, hash or title); before, only the hash worked
+* CF7 HTML Editor: "Remove Auto tags p and br" turns off CF7's autop for that form instead of stripping tags from the rendered HTML, which also removed the closing tag of CF7's screen-reader status paragraph. Tags written by hand in the template are now kept
+* CF7 HTML Editor: redirect URLs with a query string work (the & was written as &#038; into the script); an empty ACF redirect field falls back to the URL set on the form
+* CF7 HTML Editor: auto-hidden success messages show again on the next submit; the submit button is re-enabled after spam and other responses too; URL pre-fill handles checkbox groups and values with quotes, and never touches CF7's internal fields
+* HTML Template for CF7: new default header and footer — the Bizen layout: header band with the logo, body panel, footer with the company details and a closing note under the frame, stacking on phones. Applies to forms whose template was never saved; saved templates are left as they are
+* HTML Template for CF7: new tags for header and footer. [company_*] prints the field of the same name from the ACF options page ("Anagrafica"), so company details live in one place; [site_logo] prints the custom logo scaled into 210×84 (or the site name), [site_domain] the domain without www, [mail_note] a closing line in the form's language that tells the autoresponder apart from the staff notification. Filters: bizen_cf7_email_template_logo, bizen_cf7_email_template_company_tag, bizen_cf7_email_template_mail_note, bizen_cf7_email_template_style
+* HTML Template for CF7: the email is one valid HTML document. CF7 had already wrapped the body in its own <!doctype html>, so header + body + footer nested a document inside a table and left no <head> for styles; the template's base styles and phone media query now go in the <head>. The admin preview uses the same document
+
 = 1.4.14 =
 * ACFML: Copy once everywhere: `wp bizen-acfml realign` now also stores Expert mode and Copy once in the field group definitions, which until now changed only when a group was saved from the ACF admin. Local JSON files are rewritten in place with a new modified time, keeping their indentation, so ACF offers the sync wherever the database copy is older; groups that live only in the database are updated directly. Neither goes through the ACF save, which from WP-CLI would write clone fields expanded into the JSON
 

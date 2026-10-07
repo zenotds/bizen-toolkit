@@ -7,6 +7,12 @@
  *
  * The original plugin's constants (CF7HETE_*) are defined here pointing to
  * this module directory so all internal includes and asset URLs resolve correctly.
+ *
+ * Local changes to carry over when updating from upstream (modules/cf7/):
+ * - templates/default-{header,footer,body}.htm, default-style.css — Bizen layout
+ * - class-module-cf7.php — [company_*], [site_logo], [site_domain], [mail_note]
+ *   tags; mail built as one HTML document with the styles in <head>
+ * - view/html-template-panel-html.php — new tags listed in the panel
  */
 
 defined( 'ABSPATH' ) || exit;

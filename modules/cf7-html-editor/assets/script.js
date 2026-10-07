@@ -4,7 +4,10 @@
     const checkboxSelector = '#wpcf7_codemiror_dark';
     const textareaId = 'wpcf7-form';
     const $textarea = $('#' + textareaId);
-    const editorSettings = wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
+    // False when the user turned syntax highlighting off in their profile.
+    const codeEditorEnabled =
+      window.bizenCf7HtmlEditor && window.bizenCf7HtmlEditor.codeEditor && window.wp && wp.codeEditor;
+    const editorSettings = codeEditorEnabled && wp.codeEditor.defaultSettings ? _.clone(wp.codeEditor.defaultSettings) : {};
 
     const codemirrorGen = {
       indentUnit: 4,
@@ -41,7 +44,6 @@
 
     let editorHTML = null;
 
-    // Функція ініціалізації CodeMirror з підтримкою теми
     function initEditor(isDark) {
       const finalSettings = Object.assign({}, editorSettings, {
         codemirror: Object.assign({}, editorSettings.codemirror || {}, codemirrorGen, {
@@ -49,34 +51,41 @@
         }),
       });
 
-      return wp.codeEditor.initialize(textareaId, finalSettings);
-    }
+      const instance = wp.codeEditor.initialize(textareaId, finalSettings);
+      const textarea = document.getElementById(textareaId);
+      let dirty = false;
 
-    // Ініціалізуємо редактор, якщо textarea існує
-    if ($textarea.length) {
-      const isDark = $(checkboxSelector).is(':checked');
-      editorHTML = initEditor(isDark);
-
-      editorHTML.codemirror.on('change', function () {
-        document.getElementById(textareaId).value = editorHTML.codemirror.getValue();
+      // Keep the textarea current: CF7 posts it and checks it for unsaved changes.
+      instance.codemirror.on('change', function () {
+        textarea.value = instance.codemirror.getValue();
+        dirty = true;
       });
 
-      $('#informationdiv_coder').insertAfter('#informationdiv').show();
+      // CF7 runs its live config check on the textarea's change event,
+      // which never fires while CodeMirror owns the input.
+      instance.codemirror.on('blur', function () {
+        if (dirty) {
+          dirty = false;
+          textarea.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
 
-      // Зміна теми при кліку на чекбокс
+      return instance;
+    }
+
+    if ($textarea.length && codeEditorEnabled) {
+      editorHTML = initEditor($(checkboxSelector).is(':checked'));
+
       $(checkboxSelector).on('change', function () {
-        const newIsDark = $(this).is(':checked');
         const currentValue = editorHTML.codemirror.getValue();
 
         editorHTML.codemirror.toTextArea();
-        editorHTML = initEditor(newIsDark);
+        editorHTML = initEditor($(this).is(':checked'));
         editorHTML.codemirror.setValue(currentValue);
-
-        editorHTML.codemirror.on('change', function () {
-          document.getElementById(textareaId).value = editorHTML.codemirror.getValue();
-        });
       });
 
+      // Tag generator: insert at the CodeMirror cursor. Capture phase, so this
+      // runs before CF7's own click handler on the button.
       document.addEventListener('click', function (e) {
         const btn = e.target.closest('[data-taggen="insert-tag"], .insert-tag');
         if (!btn) {
@@ -84,15 +93,10 @@
         }
 
         const dialog = btn.closest('dialog.tag-generator-dialog');
-        if (!dialog) {
+        if (!dialog || !editorHTML || !editorHTML.codemirror) {
           return;
         }
 
-        if (!editorHTML || !editorHTML.codemirror) {
-          return;
-        }
-
-        // Знаходимо значення тега
         const tagInput = dialog.querySelector('[data-tag-part="tag"], .tag');
         const tagValue = tagInput?.value;
 
@@ -103,21 +107,19 @@
         e.preventDefault();
         e.stopPropagation();
 
-        // Вставляємо в CodeMirror
         const cm = editorHTML.codemirror;
         const cursor = cm.getCursor();
         cm.replaceRange(tagValue, cursor);
         cm.focus();
         cm.setCursor({ line: cursor.line, ch: cursor.ch + tagValue.length });
 
-        // Синхронізуємо з textarea
         document.getElementById(textareaId).value = cm.getValue();
 
-        // Закриваємо діалог без значення (щоб CF7 не вставив ще раз)
+        // Close with an empty value so CF7 does not insert the tag a second time.
         dialog.close('');
-      }, true); // capture phase - важливо для перехоплення до CF7
+      }, true);
 
-      // Слухаємо подію close на всіх діалогах (делегування)
+      // If CF7 still wrote into the textarea, bring CodeMirror in line.
       document.addEventListener('close', function (e) {
         if (!e.target.matches('dialog.tag-generator-dialog')) {
           return;
@@ -127,15 +129,14 @@
           return;
         }
 
-        // Синхронізуємо CodeMirror з textarea
         const textareaValue = document.getElementById(textareaId).value;
-        const cmValue = editorHTML.codemirror.getValue();
-        if (textareaValue !== cmValue) {
+        if (textareaValue !== editorHTML.codemirror.getValue()) {
           editorHTML.codemirror.setValue(textareaValue);
         }
       }, true);
     }
 
+    // Legacy tag generator (CF7 < 6.0).
     function overrideTaggenInsert() {
       if (typeof wpcf7 === 'undefined' || !wpcf7.taggen) {
         return;
@@ -175,7 +176,6 @@
           $redirectWrap.slideDown(200);
         } else {
           $redirectWrap.slideUp(200);
-          $('#wpcf7-redirect-url').val('');
         }
       });
     }
@@ -194,7 +194,6 @@
           $gaWrap.slideDown(200);
         } else {
           $gaWrap.slideUp(200);
-          $('#wpcf7-ga-event-name').val('');
         }
       });
     }

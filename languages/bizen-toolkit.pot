@@ -174,67 +174,67 @@ msgstr ""
 msgid "Adds a CodeMirror HTML editor, test mode, redirect after submit, GA/GTM events, auto-hide message, and more to Contact Form 7."
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Test Mode"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Remove Auto tags p and br"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Enable dark theme (Material)"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Load scripts only on pages with shortcode"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Redirect after submit"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Open in new tab"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Force download"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Hide form after submit"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Remove refill"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Disable submit button while sending"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Pre-fill fields from URL"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "GA/GTM Event on submit"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Scroll to message after submit"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Auto-hide success message"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "seconds"
 msgstr ""
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Sending..."
 msgstr ""
 
@@ -476,4 +476,8 @@ msgstr ""
 
 #: modules/ai-disclosure/module.php
 msgid "Generated and modified images carry the EU disclosure label on the front end."
+msgstr ""
+
+#: modules/cf7-email-template/modules/cf7/includes/view/html-template-panel-html.php
+msgid "[company_*] prints the field of the same name from the ACF options page (company_name, company_address, company_phone, company_vat, …)."
 msgstr ""

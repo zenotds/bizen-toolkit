@@ -32,6 +32,10 @@ class Bizen_Version_Monitor {
 				$result = self::check_wporg( $module->get_source_slug() );
 			} elseif ( $module->get_source_repo() ) {
 				$result = self::check_github( $module->get_source_repo() );
+			} else {
+				// No longer tracked upstream (became a core module): drop the stale row.
+				unset( $results[ $id ] );
+				continue;
 			}
 
 			if ( ! $result ) {

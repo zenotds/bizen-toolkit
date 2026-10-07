@@ -177,67 +177,67 @@ msgstr "HTML Editor per CF7"
 msgid "Adds a CodeMirror HTML editor, test mode, redirect after submit, GA/GTM events, auto-hide message, and more to Contact Form 7."
 msgstr "Aggiunge un editor HTML CodeMirror, modalità test, reindirizzamento post-invio, eventi GA/GTM, nascondimento automatico del messaggio e altro a Contact Form 7."
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Test Mode"
 msgstr "Modalità test"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Remove Auto tags p and br"
 msgstr "Rimuovi i tag automatici p e br"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Enable dark theme (Material)"
 msgstr "Abilita tema scuro (Material)"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Load scripts only on pages with shortcode"
 msgstr "Carica gli script solo nelle pagine con lo shortcode"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Redirect after submit"
 msgstr "Reindirizza dopo l'invio"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Open in new tab"
 msgstr "Apri in nuova scheda"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Force download"
 msgstr "Forza il download"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Hide form after submit"
 msgstr "Nascondi il form dopo l'invio"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Remove refill"
 msgstr "Rimuovi il ripristino dei campi"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Disable submit button while sending"
 msgstr "Disabilita il pulsante durante l'invio"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Pre-fill fields from URL"
 msgstr "Pre-compila i campi dall'URL"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "GA/GTM Event on submit"
 msgstr "Evento GA/GTM all'invio"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Scroll to message after submit"
 msgstr "Scorri al messaggio dopo l'invio"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Auto-hide success message"
 msgstr "Nascondi automaticamente il messaggio di successo"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "seconds"
 msgstr "secondi"
 
-#: modules/cf7-html-editor/class-cf7-coder.php
+#: modules/cf7-html-editor/class-cf7-html-editor.php
 msgid "Sending..."
 msgstr "Invio in corso..."
 
@@ -480,3 +480,7 @@ msgstr "Trasparenza AI"
 #: modules/ai-disclosure/module.php
 msgid "Generated and modified images carry the EU disclosure label on the front end."
 msgstr "Le immagini generate e modificate mostrano l’etichetta UE sul front end."
+
+#: modules/cf7-email-template/modules/cf7/includes/view/html-template-panel-html.php
+msgid "[company_*] prints the field of the same name from the ACF options page (company_name, company_address, company_phone, company_vat, …)."
+msgstr "[company_*] stampa il campo con lo stesso nome dalla pagina opzioni ACF (company_name, company_address, company_phone, company_vat, …)."
