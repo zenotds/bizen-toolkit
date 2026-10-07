@@ -100,8 +100,11 @@ if ( ! class_exists( 'CF7HETE_Module_Cf7' ) ) {
                 return;
             }
 
-            // Make sure we're on the CF7 admin page
-            if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'wpcf7' ) {
+            // Make sure we're on the CF7 form editor: "Add Contact Form" (wpcf7-new)
+            // or an existing form (wpcf7 + post). Bizen: the form list shares the
+            // wpcf7 slug and has no template panel, so Ace threw there.
+            $page = sanitize_key( $_GET['page'] ?? '' );
+            if ( $page !== 'wpcf7-new' && ( $page !== 'wpcf7' || empty( $_GET['post'] ) ) ) {
                 return;
             }
 

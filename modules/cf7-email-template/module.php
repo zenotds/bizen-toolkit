@@ -13,6 +13,8 @@
  * - class-module-cf7.php — [company_*], [site_logo], [site_domain], [mail_note]
  *   tags; mail built as one HTML document with the styles in <head>
  * - view/html-template-panel-html.php — new tags listed in the panel
+ * - class-module-cf7.php admin_enqueue_scripts() + assets/cf7hete-script.js — Ace
+ *   loaded on the form editor only (wpcf7-new, wpcf7 + post), guarded when missing
  */
 
 defined( 'ABSPATH' ) || exit;

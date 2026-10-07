@@ -2,6 +2,11 @@
 
 jQuery(document).ready(function($) {
     function load_editor(id) {
+        // Bizen: skip quietly when the template panel is not on the page.
+        if (!document.getElementById(id + '-editor') || !document.getElementById(id)) {
+            return;
+        }
+
         var editor = ace.edit(id + '-editor');
 
         editor.setTheme('ace/theme/monokai');
