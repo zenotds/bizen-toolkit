@@ -1,0 +1,17 @@
+{
+  "_index-960b4f2b.js": {
+    "file": "index-960b4f2b.js"
+  },
+  "main.tsx": {
+    "file": "main-c924a38d.js",
+    "imports": [
+      "_index-960b4f2b.js"
+    ],
+    "isEntry": true,
+    "src": "main.tsx"
+  },
+  "style.css": {
+    "file": "style.css",
+    "src": "style.css"
+  }
+}

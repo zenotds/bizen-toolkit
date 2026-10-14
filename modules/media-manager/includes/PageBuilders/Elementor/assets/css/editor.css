@@ -1,0 +1,33 @@
+/* FileBird Elementor Editor Styles */
+.elementor-element-wrapper [class*="filebird"] .icon {
+    position: relative;
+}
+
+.elementor-element-wrapper [class*="filebird"] .icon:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.elementor-element-wrapper [class*="filebird"] .icon i {
+    color: #6d7882;
+    font-size: 28px;
+}
+
+.elementor-panel .elementor-element .filebird-icon {
+    position: relative;
+}
+
+.filebird-gallery-icon {
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: 3px;
+    color: #556068;
+    font-size: 28px;
+    text-align: center;
+} 

@@ -25,9 +25,20 @@ Included modules:
 * **Disable Flamingo Addressbook** — Stops Flamingo from saving contact data to its address book; inbound messages are still logged.
 * **Disable Comments** — Turns the WordPress comment system off site-wide and removes it from the admin.
 * **Flatten SVG on Upload** — Rewrites uploaded SVGs so several of them can be inlined on the same page without their styles and ids colliding.
+* **Media Manager** — Folders for the media library and for every post type list: drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are.
 * **AI Disclosure** — Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them on the front end, with a review queue under Media.
 
 == Changelog ==
+
+= 1.5.0 =
+* New core module, Media Manager: FileBird Pro 6.5.7 without its branding, licence, updater, review and feedback prompts, settings page, Windows/Dropbox themes, CSV import/export, backups, import from other folder plugins, public REST API and SVG upload. Folders stay in FileBird's tables, so a site switching from FileBird keeps them; FileBird is flagged as a conflict while it is active
+* Media Manager: the breadcrumb is always shown, and every post type with an admin UI gets folders (narrow with the bizen_media_manager_post_types filter). "Calculate file sizes" and "Clear all folders" are in the Tools submenu of the folder sidebar's ⋮ menu
+* Media Manager, carried over from FileBird 6.5.8: list rows can be dragged into folders again on WordPress 7.1, which renders the checkbox cell as a td; files sent through the browser uploader land in the chosen folder; drag and drop works on tablets that report a desktop browser (iPad)
+* Media Manager: "Sort by name" sorts by title, as shown in the library, instead of by slug; sorting by file name applies the direction to the whole key
+* Media Manager, security: the sort direction and the saved "Auto sort files by" preference reached the SQL ORDER BY unfiltered, and the latter can be written by any user who can upload; both are now reduced to known values. The WPML count query takes the language through prepare()
+* Media Manager: the post type folder filter no longer runs on front-end queries, where it could narrow an archive to the folder a logged-in editor last opened and wrote user meta on every page view
+* Media Manager: the folder counter mode, folder colours and post type settings accept only known values and enabled post types
+* WPML media in every language: works with Media Manager's folders as well as FileBird's, and takes over FileBird's "Sync WPML" tool. Besides the daily sweep, it runs on demand from "Sync WPML folders" in the Tools submenu of the folder sidebar
 
 = 1.4.16 =
 * CF7 HTML Editor is now a core module, maintained in-house instead of tracked against CF7 Coder (which has the same problem upstream). Settings already saved on existing forms are kept

@@ -267,7 +267,7 @@ msgid "WPML media in every language"
 msgstr ""
 
 #: modules/wpml-media-sync/module.php
-msgid "Every media file uploaded in one language shows up in the media library of all the others. Locks WPML media translation on \"Configure manually\" with duplication of new media on, and fills in existing media that is missing from a language, once a day and whenever a language is added. With FileBird, the copies go into the same folder as the original."
+msgid "Every media file uploaded in one language shows up in the media library of all the others. Locks WPML media translation on \"Configure manually\" with duplication of new media on, and fills in existing media that is missing from a language, once a day and whenever a language is added. With media folders (Media Manager or FileBird), the copies go into the same folder as the original."
 msgstr ""
 
 #: modules/acfml-copy-once/module.php
@@ -481,3 +481,646 @@ msgstr ""
 #: modules/cf7-email-template/modules/cf7/includes/view/html-template-panel-html.php
 msgid "[company_*] prints the field of the same name from the ACF options page (company_name, company_address, company_phone, company_vat, …)."
 msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "No media files found."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "New Folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Delete"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Cancel"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Cut"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Paste"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Download"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Generating download link..."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Successfully moved"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Unsuccessfully moved"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Successfully deleted!"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Save"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Enter folder name..."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Sort Folders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Delete Folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Sort Files"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Bulk Select"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "All Files"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Uncategorized"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Rename"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Are you sure you want to delete this folder? Those files will be moved to <strong>Uncategorized</strong> folder."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "By Name"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Name Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Name Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "By Date"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Date Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Date Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "By Modified"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Modified Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Modified Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "By Author"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Author Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Author Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Title Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Title Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Default"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Success."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Settings"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Select a default startup folder:"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Auto sort files by:"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Settings saved"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Failed to save settings. Please try again!"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Collapse"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Expand"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Please try again."
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Core.php
+msgid "Folder"
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Core.php
+msgid "All Folders"
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Core.php
+msgid "Choose folder: "
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "A folder with this name already exists. Please choose another one."
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Validation failed"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Can't delete folder, please try again later"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Please choose folder"
+msgstr ""
+
+#: modules/media-manager/includes/Support/DocumentGallery.php
+msgid "This folder ID does not exist, please check again."
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Folders"
+msgstr ""
+
+#: modules/media-manager/module.php
+msgid "Media Manager"
+msgstr ""
+
+#: modules/media-manager/module.php
+msgid "Folders for the media library and for every post type list, with drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Loading..."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Successfully updated!"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Unsuccessfully updated!"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Change Color"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Save %d folders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "By Size"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Media Manager settings"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Move"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "item"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "items"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Add your first folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "You don't have any folder. Add folder to easily manage your"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Add Folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "files"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "posts"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "pages"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "All Pages"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "All Posts"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "All Items"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Display folder ID"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Hide folder ID"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Count"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Count files in each folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Count files in both parent folder and subfolders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Please ensure your folder name is fewer than 200 characters."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Open folders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Collapse all"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Expand all"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Duplicate"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Folder duplicated!"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Duplicating folder..."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Tools"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Calculate file sizes"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Calculating file sizes..."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "File sizes calculated."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Clear all folders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Delete every folder? Files stay in the media library, but they all go back to Uncategorized. This cannot be undone."
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "All folders deleted."
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Core.php
+msgid "Folder:"
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Core.php
+msgid "Click on the folder name to move this file to another folder"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Invalid params"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Sorry, you are not allowed to manage folders."
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Permission denied."
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Failed to duplicate folder"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Drag node not found"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "There is nothing to move."
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Permisson Denied."
+msgstr ""
+
+#: modules/media-manager/includes/Model/Folder.php
+msgid "(Copy)"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Close (Esc)"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Share"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Toggle fullscreen"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Zoom in/out"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Share on Facebook"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Tweet"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Pin it"
+msgstr ""
+
+#: modules/media-manager/blocks/folder-gallery/build/render.php
+msgid "Download image"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Select Folder"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Folder Gallery"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Content"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Choose a folder to display images from"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Columns"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Number of columns to display"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Link To"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "None"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Media File"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Attachment Page"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Link behavior when clicking on image"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Image Size"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Select image size"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Order By"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Date"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Title"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Random"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Order images by"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Order"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Sort order"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "Please select a folder"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+msgid "No images found in this folder"
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Attachment/AttachmentSize.php
+msgid "File Size"
+msgstr ""
+
+#: modules/media-manager/includes/Classes/Attachment/AttachmentDownloader.php
+msgid "You do not have permission to download folders."
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "%s folder"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Search Folders"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Parent Folder"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Parent Folder:"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Edit Folder"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Update Folder"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "Add New Folder"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Init.php
+msgid "New Folder Name"
+msgstr ""
+
+#: modules/media-manager/includes/Support/ACF/acf-field-folder-v5.php
+msgid "Media folder"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/Elementor/widgets/FolderGalleryWidget.php
+msgid "Gallery Settings"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/Elementor/widgets/FolderGalleryWidget.php
+msgid "Full"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/Elementor/widgets/FolderGalleryWidget.php
+msgid "Gallery Style"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/Elementor/widgets/FolderGalleryWidget.php
+msgid "Spacing"
+msgstr ""
+
+#: modules/media-manager/includes/PageBuilders/Elementor/widgets/FolderGalleryWidget.php
+msgid "Border Radius"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
+msgid "Post Type not enabled."
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
+msgid "Could not edit this folder (author error)"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
+msgid "Could not edit this folder"
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
+msgid "Author Error"
+msgstr ""
+
+#: modules/wpml-media-sync/module.php
+msgid "Sync WPML folders"
+msgstr ""
+
+#: modules/wpml-media-sync/module.php
+msgid "Syncing WPML folders..."
+msgstr ""
+
+#: modules/wpml-media-sync/module.php
+msgid "Every translation is already in its folder."
+msgstr ""
+
+#: modules/wpml-media-sync/module.php
+#, php-format
+msgid "%d translation put into its folder."
+msgid_plural "%d translations put into their folder."
+msgstr[0] ""
+msgstr[1] ""

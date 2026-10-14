@@ -1,5 +1,5 @@
 # Build output
-dist/
+/dist/
 *.zip
 
 # source/ contains the original upstream plugins used as vendoring reference.

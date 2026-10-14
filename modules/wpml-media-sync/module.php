@@ -27,11 +27,12 @@
  * Copies are made, never removed or overwritten: texts translated in one language
  * stay as they are.
  *
- * With FileBird active, each copy also lands in the folder of the attachment it was
- * copied from, and the sweep ends with what FileBird's "Sync WPML" button does —
- * every translation left outside the folder its siblings are in is put there. The
- * button is an AJAX handler (nonce, wp_send_json), so its query is reproduced here
- * rather than called.
+ * With media folders on — the Media Manager module, or FileBird — each copy also
+ * lands in the folder of the attachment it was copied from, and the sweep ends by
+ * putting every translation left outside the folder its siblings are in there.
+ * This is what FileBird's "Sync WPML" tool did. It also runs on demand: from
+ * "Sync WPML folders" in the Tools submenu of the Media Manager sidebar (admins),
+ * or with `wp bizen-wpml sync-media`.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -54,7 +55,7 @@ return new class extends Bizen_Module {
 	}
 
 	public function get_description(): string {
-		return __( 'Every media file uploaded in one language shows up in the media library of all the others. Locks WPML media translation on "Configure manually" with duplication of new media on, and fills in existing media that is missing from a language, once a day and whenever a language is added. With FileBird, the copies go into the same folder as the original.', 'bizen-toolkit' );
+		return __( 'Every media file uploaded in one language shows up in the media library of all the others. Locks WPML media translation on "Configure manually" with duplication of new media on, and fills in existing media that is missing from a language, once a day and whenever a language is added. With media folders (Media Manager or FileBird), the copies go into the same folder as the original.', 'bizen-toolkit' );
 	}
 
 	public function get_category(): string {
@@ -76,8 +77,12 @@ return new class extends Bizen_Module {
 		add_action( 'wpml_update_active_languages', [ $this, 'schedule_sweep' ] );
 		add_action( 'init', [ $this, 'maybe_schedule' ] );
 
-		// Whichever of WPML and FileBird handles add_attachment first, the copy ends up in the folder.
+		// Whichever of WPML and the folders handles add_attachment first, the copy ends up in the folder.
 		add_action( 'wpml_after_duplicate_attachment', [ $this, 'copy_folder' ], 10, 2 );
+
+		// "Sync WPML folders" in the Tools submenu of the Media Manager sidebar.
+		add_filter( 'fbv_data', [ $this, 'folder_sync_tool' ] );
+		add_action( 'rest_api_init', [ $this, 'register_folder_sync_route' ] );
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			WP_CLI::add_command( 'bizen-wpml sync-media', [ $this, 'cli_sync_media' ] );
@@ -138,7 +143,7 @@ return new class extends Bizen_Module {
 		while ( time() < $deadline ) {
 			$ids = $this->incomplete_attachments( $cursor, self::BATCH );
 			if ( ! $ids ) {
-				$this->sync_filebird_folders();
+				$this->sync_folders();
 				delete_option( self::CURSOR );
 				update_option( self::SWEPT, time(), false );
 				return;
@@ -192,9 +197,9 @@ return new class extends Bizen_Module {
 		}
 
 		if ( ! $dry_run ) {
-			$foldered = $this->sync_filebird_folders();
+			$foldered = $this->sync_folders();
 			if ( $foldered ) {
-				WP_CLI::log( sprintf( '%d translations put into their FileBird folder.', $foldered ) );
+				WP_CLI::log( sprintf( '%d translations put into their media folder.', $foldered ) );
 			}
 			delete_option( self::CURSOR );
 			update_option( self::SWEPT, time(), false );
@@ -301,10 +306,53 @@ return new class extends Bizen_Module {
 		return count( $rows );
 	}
 
+	/** Shows the menu entry to admins when Media Manager draws the sidebar. */
+	public function folder_sync_tool( $data ) {
+		if ( defined( 'BIZEN_MM_REST_URL' ) && current_user_can( 'manage_options' ) ) {
+			$data['wpml_folder_sync']                 = true;
+			$data['i18n']['wpml_folder_sync']         = __( 'Sync WPML folders', 'bizen-toolkit' );
+			$data['i18n']['wpml_folder_sync_running'] = __( 'Syncing WPML folders...', 'bizen-toolkit' );
+		}
+
+		return $data;
+	}
+
+	/** Same namespace as the sidebar's own calls, so tools.js reaches it through fbv_data.json_url. */
+	public function register_folder_sync_route(): void {
+		if ( ! defined( 'BIZEN_MM_REST_URL' ) ) {
+			return;
+		}
+
+		register_rest_route(
+			BIZEN_MM_REST_URL,
+			'wpml-folder-sync',
+			[
+				'methods'             => \WP_REST_Server::CREATABLE,
+				'callback'            => function () {
+					$count = $this->sync_folders();
+
+					return rest_ensure_response(
+						[
+							'count'   => $count,
+							'message' => $count
+								/* translators: %d: number of translated attachments */
+								? sprintf( _n( '%d translation put into its folder.', '%d translations put into their folder.', $count, 'bizen-toolkit' ), $count )
+								: __( 'Every translation is already in its folder.', 'bizen-toolkit' ),
+						]
+					);
+				},
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			]
+		);
+	}
+
 	public function copy_folder( $source_id, $copy_id ): void {
 		global $wpdb;
 
-		if ( ! $this->filebird_active() || ! $copy_id ) {
+		$folders = $this->folder_model();
+		if ( ! $folders || ! $copy_id ) {
 			return;
 		}
 
@@ -315,20 +363,21 @@ return new class extends Bizen_Module {
 
 		$folder_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT folder_id FROM {$table} WHERE attachment_id = %d LIMIT 1", $source_id ) );
 		if ( $folder_id ) {
-			\FileBird\Model\Folder::setFoldersForPosts( (int) $copy_id, $folder_id );
+			$folders::setFoldersForPosts( (int) $copy_id, $folder_id );
 		}
 	}
 
 	/**
 	 * Translations in no folder whose trid has an attachment in one, each put in the
 	 * original's folder (or a sibling's, when the original has none). One folder per
-	 * attachment, as FileBird's own sync does: setFoldersForPosts() clears the
+	 * attachment, as FileBird's sync did: setFoldersForPosts() clears the
 	 * attachment before each insert, so passing several would keep only the last.
 	 */
-	private function sync_filebird_folders(): int {
+	private function sync_folders(): int {
 		global $wpdb;
 
-		if ( ! $this->filebird_active() ) {
+		$folders = $this->folder_model();
+		if ( ! $folders ) {
 			return 0;
 		}
 
@@ -348,14 +397,23 @@ return new class extends Bizen_Module {
 		);
 
 		foreach ( $rows as $row ) {
-			\FileBird\Model\Folder::setFoldersForPosts( (int) $row->element_id, (int) $row->folder_id );
+			$folders::setFoldersForPosts( (int) $row->element_id, (int) $row->folder_id );
 		}
 
 		return count( $rows );
 	}
 
-	private function filebird_active(): bool {
-		return class_exists( '\FileBird\Model\Folder' ) && method_exists( '\FileBird\Model\Folder', 'setFoldersForPosts' );
+	/**
+	 * The folder model in use: Media Manager's, or FileBird's on a site still running
+	 * it (the two share the tables). Null when neither is loaded.
+	 */
+	private function folder_model(): ?string {
+		foreach ( [ '\Bizen\MediaManager\Model\Folder', '\FileBird\Model\Folder' ] as $class ) {
+			if ( class_exists( $class ) && method_exists( $class, 'setFoldersForPosts' ) ) {
+				return $class;
+			}
+		}
+		return null;
 	}
 
 	/** @return string[] */
