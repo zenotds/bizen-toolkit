@@ -25,10 +25,14 @@ Included modules:
 * **Disable Flamingo Addressbook** — Stops Flamingo from saving contact data to its address book; inbound messages are still logged.
 * **Disable Comments** — Turns the WordPress comment system off site-wide and removes it from the admin.
 * **Flatten SVG on Upload** — Rewrites uploaded SVGs so several of them can be inlined on the same page without their styles and ids colliding.
-* **Media Manager** — Folders for the media library and for every post type list: drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are.
+* **Media Manager** — Folders for the media library: drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are.
 * **AI Disclosure** — Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them on the front end, with a review queue under Media.
 
 == Changelog ==
+
+= 1.5.2 =
+* Media Manager: folders are for the media library only. The folder sidebar, the Folder column and the folder box on the edit screen are gone from posts, pages, custom post types and admin lists such as ACF field groups. Folders a site made for posts under FileBird stay in the database, unused
+* Media Manager: "Clear all folders" clears media folders only
 
 = 1.5.1 =
 * Media Manager: folder downloads stream the zip again. 1.5.0 left out the zip library, so downloads fell back to building the archive on disk with ZipArchive — slower, kept in uploads for a day, and failing on hosts without the zip extension

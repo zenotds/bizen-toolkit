@@ -706,8 +706,8 @@ msgid "Media Manager"
 msgstr "Media Manager"
 
 #: modules/media-manager/module.php
-msgid "Folders for the media library and for every post type list, with drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are."
-msgstr "Cartelle per la libreria media e per l'elenco di ogni tipo di contenuto, con trascinamento, caricamento in una cartella, ordinamento, contatori e una galleria per cartella. Legge così come sono le cartelle di un'installazione FileBird esistente."
+msgid "Folders for the media library, with drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the media folders of an existing FileBird install as they are."
+msgstr "Cartelle per la libreria media, con trascinamento, caricamento in una cartella, ordinamento, contatori e una galleria per cartella. Legge così come sono le cartelle media di un'installazione FileBird esistente."
 
 #: modules/media-manager/includes/I18n.php
 msgid "Loading..."

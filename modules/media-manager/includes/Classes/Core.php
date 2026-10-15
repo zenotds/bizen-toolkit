@@ -37,6 +37,7 @@ class Core {
 		add_filter( 'attachment_fields_to_save', array( $this, 'attachment_fields_to_save' ), 10, 2 );
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueueAdminScripts' ), PHP_INT_MAX );
+		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		add_action( 'add_attachment', array( $this, 'addAttachment' ) );
 		add_action( 'delete_attachment', array( $this, 'deleteAttachment' ) );
 		add_action( 'pre-upload-ui', array( $this, 'actionPluploadUi' ) );
@@ -49,6 +50,15 @@ class Core {
 		// Fix WordPress VIP doesn't load CSS file correctly
 		add_filter( 'css_do_concat', array( $this, 'wordpress_vip_css_concat_filter' ), 10, 2 );
 		// -----
+	}
+
+	/** The sidebar's layout CSS is scoped to this class on the media library screen. */
+	public function admin_body_class( $classes ) {
+		$screen = get_current_screen();
+		if ( $screen && 'upload' === $screen->id ) {
+			$classes .= ' filebird-upload-php ';
+		}
+		return $classes;
 	}
 
 	public function manage_media_columns( $posts_columns ) {

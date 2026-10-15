@@ -150,63 +150,6 @@ class Helpers {
         return $bytes;
     }
 
-    public static function array_to_in_clause( $array ) {
-        // Escape each value and wrap it in single quotes
-        $escaped_values = array_map(
-            function( $value ) {
-            // Escape the value to prevent SQL injection
-            return "'" . esc_sql( $value ) . "'";
-			},
-            $array
-            );
-
-        // Join the escaped values into a comma-separated string
-        $values_string = implode( ', ', $escaped_values );
-
-        // Return the formatted string
-        return $values_string;
-    }
-    /** Types with an admin screen that is not a post list, or whose list must stay untouched. */
-    public static function getExcludedPostTypes() {
-        return array(
-            'attachment',
-            'wp_navigation',
-            'wp_block',
-            'wp_template',
-            'wp_template_part',
-            'wp_global_styles',
-            'wp_font_family',
-            'wp_font_face',
-            'shop_order',
-            'shop_order_refund',
-            'shop_coupon',
-        );
-    }
-
-    /**
-     * Post types that get a folder tree on their list screen: every type with an
-     * admin UI. There is no per-type switch any more; narrow it with the
-     * bizen_media_manager_post_types filter (slug => label).
-     */
-    public static function getRawPostTypes() {
-        $postTypes  = array();
-        $_postTypes = get_post_types(
-            array(
-                'show_ui' => true,
-            ),
-            'objects'
-        );
-
-        foreach ( $_postTypes as $key => $postType ) {
-            if ( in_array( $key, self::getExcludedPostTypes(), true ) ) {
-                continue;
-            }
-            $postTypes[ $key ] = $postType->labels->singular_name;
-        }
-
-        return apply_filters( 'bizen_media_manager_post_types', $postTypes );
-    }
-
     public static function buildExclusionConditions() {
         global $wpdb;
         

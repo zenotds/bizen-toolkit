@@ -19,7 +19,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `disable-comments` | Disables the comment system site-wide — closes comments everywhere and hides the Comments menu and Discussion settings | Core — written in-house |
 | `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
 | `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
-| `media-manager` | Virtual folders for the media library and for every post type list — drag and drop, upload into a folder, sorting, counters, folder gallery (block editor, Elementor, WPBakery), ACF folder field. Reads an existing FileBird install's folders as they are | Core — forked from FileBird Pro v6.5.7, synced with 6.5.9 (GPL-2.0+) |
+| `media-manager` | Virtual folders for the media library — drag and drop, upload into a folder, sorting, counters, folder gallery (block editor, Elementor, WPBakery), ACF folder field. Reads an existing FileBird install's folders as they are | Core — forked from FileBird Pro v6.5.7, synced with 6.5.9 (GPL-2.0+) |
 | `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; adds a review queue under Media and can read provenance from XMP and C2PA on upload | Core — written in-house |
 
 ---
@@ -56,16 +56,9 @@ Save field groups from the ACF admin, not from WP-CLI: saving a field group from
 
 ## Media Manager
 
-Folders live in FileBird's own tables (`wp_fbv`, `wp_fbv_attachment_folder`) and taxonomies (`fbv_pt_tax_<post type>`), so a site moving off FileBird keeps its folders: deactivate FileBird, enable the module. The two cannot run together — the module stays off while FileBird is active.
+Folders live in FileBird's own tables (`wp_fbv`, `wp_fbv_attachment_folder`), so a site moving off FileBird keeps its media folders: deactivate FileBird, enable the module. The two cannot run together — the module stays off while FileBird is active.
 
-There is no settings page. The breadcrumb is always on, the default folder theme is the only one, SVG upload is left to the toolkit, and every post type with an admin UI gets a folder tree. To keep folders off some types:
-
-```php
-add_filter( 'bizen_media_manager_post_types', function ( $types ) {
-    unset( $types['product'] );
-    return $types;
-} );
-```
+There is no settings page: the breadcrumb is always on, the default folder theme is the only one, and SVG upload is left to the toolkit. Folders are for the media library only; FileBird's folders for posts, pages and custom post types are not carried over (their terms stay in the database, unused).
 
 "Calculate file sizes" (needed by *Sort by size*) and "Clear all folders" are under **⋮ → Tools** in the folder sidebar, for administrators. With WPML, the `wpml-media-sync` module puts translated media into the original's folder (the old *Sync WPML* tool): on every new translation, at the end of its daily sweep, and on demand from **⋮ → Tools → Sync WPML folders** or `wp bizen-wpml sync-media`.
 

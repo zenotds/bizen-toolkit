@@ -8,24 +8,23 @@
  * up to 6.5.9 by hand: its sidebar bundle, folder download, permission checks and
  * folder-cycle guard; its backup management was left out.
  *
- * Virtual folders for the media library and for the list screen of every post
- * type: the folder tree beside the grid, list and media modal, drag and drop,
- * upload into a folder, sorting, counters, colours, folder download as a zip,
- * the folder field for ACF, the folder column for Admin Columns, the folder
- * gallery for the block editor, Elementor and WPBakery, WPML and Polylang
- * aware counts.
+ * Virtual folders for the media library: the folder tree beside the grid, list
+ * and media modal, drag and drop, upload into a folder, sorting, counters,
+ * colours, folder download as a zip, the folder field for ACF, the folder column
+ * for Admin Columns, the folder gallery for the block editor, Elementor and
+ * WPBakery, WPML and Polylang aware counts.
  *
  * Data stays where FileBird keeps it — the wp_fbv and wp_fbv_attachment_folder
- * tables, the fbv_pt_tax_* taxonomies, the fbv_* options and user meta — so a
- * site moving off FileBird keeps its folders, and the fbv_* hooks still fire for
- * code written against them. The REST namespace is the module's own.
+ * tables, the fbv_* options and user meta — so a site moving off FileBird keeps
+ * its media folders, and the fbv_* hooks still fire for code written against
+ * them. The REST namespace is the module's own.
  *
  * What went: the licence and its updater, review and feedback prompts, the
- * settings page (breadcrumb always on, default theme only, folders on every post
- * type — narrow them with bizen_media_manager_post_types), the Windows and
- * Dropbox themes, CSV import/export and the twice-daily backups, import from
- * other folder plugins and from FileBird 3, the public REST API and its key,
- * and SVG upload (the toolkit's business). "Calculate file sizes" and "Clear all
+ * settings page (breadcrumb always on, default theme only), folders for posts,
+ * pages and custom post types (FileBird's fbv_pt_tax_* terms are left in the
+ * database, unused), the Windows and Dropbox themes, CSV import/export and the
+ * twice-daily backups, import from other folder plugins and from FileBird 3, the
+ * public REST API and its key, and SVG upload (the toolkit's business). "Calculate file sizes" and "Clear all
  * folders" sit in the Tools submenu of the sidebar's ⋮ menu; the WPML folder
  * sync belongs to the wpml-media-sync module, which adds its own entry there.
  *
@@ -57,7 +56,7 @@ return new class extends Bizen_Module {
 	}
 
 	public function get_description(): string {
-		return __( 'Folders for the media library and for every post type list, with drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are.', 'bizen-toolkit' );
+		return __( 'Folders for the media library, with drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the media folders of an existing FileBird install as they are.', 'bizen-toolkit' );
 	}
 
 	public function get_category(): string {
@@ -83,7 +82,6 @@ return new class extends Bizen_Module {
 
 		\Bizen\MediaManager\Classes\Core::getInstance();
 		\Bizen\MediaManager\Rest\RestApi::getInstance();
-		\Bizen\MediaManager\Addons\PostType\Init::getInstance();
 		new \Bizen\MediaManager\Support\SupportController();
 		new \Bizen\MediaManager\Classes\Schedule();
 		\Bizen\MediaManager\PageBuilders\WPBakery\Init::getInstance();
