@@ -4,7 +4,9 @@
  *
  * Bizen module — maintained by Bizen (https://bizen.it). Started as FileBird Pro
  * 6.5.7 by Ninja Team (GPL-2.0+), stripped of its branding and of everything that
- * is not the media library itself, and maintained in-house from here on.
+ * is not the media library itself, and maintained in-house from here on. Brought
+ * up to 6.5.9 by hand: its sidebar bundle, folder download, permission checks and
+ * folder-cycle guard; its backup management was left out.
  *
  * Virtual folders for the media library and for the list screen of every post
  * type: the folder tree beside the grid, list and media modal, drag and drop,
@@ -27,20 +29,19 @@
  * folders" sit in the Tools submenu of the sidebar's ⋮ menu; the WPML folder
  * sync belongs to the wpml-media-sync module, which adds its own entry there.
  *
- * The sidebar is FileBird's compiled React bundle; there is no source to rebuild
- * it from, so assets/dist/main-*.js carries string patches, and its file name
- * hash was recomputed after them:
+ * The sidebar is FileBird 6.5.9's compiled React bundle; there is no source to
+ * rebuild it from, so assets/dist/main-*.js carries string patches, and its file
+ * name hash was recomputed after them:
  *  - sidebar title reads i18n.media_manager instead of "FileBird";
  *  - the settings modal no longer renders the theme picker and breadcrumb switch;
  *  - the ⋮ menu ends with a Tools submenu (admins, media library only) whose
  *    bizen_* keys are handed with the bundle's toast to window.bizenMediaManager
  *    (assets/js/tools.js); "Sync WPML folders" joins it when fbv_data carries
  *    wpml_folder_sync, set by the wpml-media-sync module;
- *  - list rows drag by any .check-column: WordPress 7.1 renders that cell as a
- *    <td>, and the th.check-column handle left rows undraggable;
- *  - the media-new.php folder select is named "fbv", so the browser uploader
- *    (plain form post) files uploads into the chosen folder;
  *  - the never-mounted deactivation feedback dialog lost its vendor URLs.
+ * tools/media-manager-patch-bundle.py applies them to an upstream dist folder;
+ * each anchor must match exactly once or the run stops, so a new upstream bundle
+ * shows at once which patches need a new anchor.
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -93,16 +94,34 @@ return new class extends Bizen_Module {
 		}
 	}
 
-	/** Bizen\MediaManager\Foo\Bar → includes/Foo/Bar.php */
+	/**
+	 * Bizen\MediaManager\Foo\Bar → includes/Foo/Bar.php, plus the libraries behind
+	 * "Download folder" in vendor/: ZipStream 2.2.6 and what it requires. Another
+	 * plugin that already loaded the same namespaces wins, as with Composer.
+	 */
 	public function autoload( string $class ): void {
-		$prefix = 'Bizen\\MediaManager\\';
-		if ( strncmp( $prefix, $class, strlen( $prefix ) ) !== 0 ) {
-			return;
-		}
+		static $map = [
+			'Bizen\\MediaManager\\'          => 'includes/',
+			'ZipStream\\'                    => 'vendor/zipstream/src/',
+			'MyCLabs\\Enum\\'                => 'vendor/php-enum/src/',
+			'Psr\\Http\\Message\\'           => 'vendor/http-message/src/',
+			'Symfony\\Polyfill\\Mbstring\\'  => 'vendor/polyfill-mbstring/',
+		];
 
-		$file = __DIR__ . '/includes/' . str_replace( '\\', '/', substr( $class, strlen( $prefix ) ) ) . '.php';
-		if ( file_exists( $file ) ) {
-			require $file;
+		foreach ( $map as $prefix => $dir ) {
+			if ( strncmp( $prefix, $class, strlen( $prefix ) ) !== 0 ) {
+				continue;
+			}
+
+			if ( 'ZipStream\\' === $prefix && ! extension_loaded( 'mbstring' ) ) {
+				require_once __DIR__ . '/vendor/polyfill-mbstring/bootstrap.php';
+			}
+
+			$file = __DIR__ . '/' . $dir . str_replace( '\\', '/', substr( $class, strlen( $prefix ) ) ) . '.php';
+			if ( file_exists( $file ) ) {
+				require $file;
+			}
+			return;
 		}
 	}
 };

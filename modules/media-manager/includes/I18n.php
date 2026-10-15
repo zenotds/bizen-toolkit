@@ -92,6 +92,24 @@ class I18n {
 			'folder_duplicated'                 => __( 'Folder duplicated!', 'bizen-toolkit' ),
 			'duplicating_folder'                => __( 'Duplicating folder...', 'bizen-toolkit' ),
 
+			'folders'                           => __( 'Folders', 'bizen-toolkit' ),
+			'size_ascending'                    => __( 'Size Ascending', 'bizen-toolkit' ),
+			'size_descending'                   => __( 'Size Descending', 'bizen-toolkit' ),
+			'no_posts_found'                    => __( 'No posts found!', 'bizen-toolkit' ),
+			'clear'                             => __( 'Clear', 'bizen-toolkit' ),
+
+			// Screen reader labels of the folder tree.
+			'folders_panel'                     => __( 'Folders panel', 'bizen-toolkit' ),
+			'default_folders'                   => __( 'Default folders', 'bizen-toolkit' ),
+			'search_folders'                    => __( 'Search folders', 'bizen-toolkit' ),
+			'breadcrumb'                        => __( 'Breadcrumb', 'bizen-toolkit' ),
+
+			// Moving files and posts on touch screens, where dragging is not available.
+			'move_here'                         => __( 'Move here', 'bizen-toolkit' ),
+			'select_destination_folder'         => __( 'Select a destination folder', 'bizen-toolkit' ),
+			'already_in_this_folder'            => __( 'Already in this folder', 'bizen-toolkit' ),
+			'cannot_move_to_all_files'          => __( 'All Files is not a folder', 'bizen-toolkit' ),
+
 			// Read by the patched bundle: the sidebar title and the Tools submenu.
 			'media_manager'                     => __( 'Media Manager', 'bizen-toolkit' ),
 			'tools'                             => __( 'Tools', 'bizen-toolkit' ),

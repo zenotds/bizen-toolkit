@@ -8,6 +8,7 @@
 /.gitignore
 /.buildignore
 /Makefile
+/tools
 
 # Build output (avoid nesting)
 /dist

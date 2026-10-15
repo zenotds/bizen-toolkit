@@ -1127,3 +1127,63 @@ msgid "%d translation put into its folder."
 msgid_plural "%d translations put into their folder."
 msgstr[0] "%d traduzione spostata nella sua cartella."
 msgstr[1] "%d traduzioni spostate nella loro cartella."
+
+#: modules/media-manager/includes/I18n.php
+msgid "Size Ascending"
+msgstr "Dimensione crescente"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Size Descending"
+msgstr "Dimensione decrescente"
+
+#: modules/media-manager/includes/I18n.php
+msgid "No posts found!"
+msgstr "Nessun contenuto trovato."
+
+#: modules/media-manager/includes/I18n.php
+msgid "Clear"
+msgstr "Cancella"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Folders panel"
+msgstr "Pannello cartelle"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Default folders"
+msgstr "Cartelle predefinite"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Search folders"
+msgstr "Cerca cartelle"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Breadcrumb"
+msgstr "Percorso"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Move here"
+msgstr "Sposta qui"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Select a destination folder"
+msgstr "Scegli la cartella di destinazione"
+
+#: modules/media-manager/includes/I18n.php
+msgid "Already in this folder"
+msgstr "Già in questa cartella"
+
+#: modules/media-manager/includes/I18n.php
+msgid "All Files is not a folder"
+msgstr "Tutti i file non è una cartella"
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "A folder cannot be moved into itself or into one of its subfolders."
+msgstr "Una cartella non può essere spostata dentro se stessa o in una sua sottocartella."
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Sorry, you are not allowed to edit one or more of these files."
+msgstr "Non hai i permessi per modificare uno o più di questi file."
+
+#: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
+msgid "Sorry, you are not allowed to edit one or more of these items."
+msgstr "Non hai i permessi per modificare uno o più di questi elementi."

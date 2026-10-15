@@ -147,18 +147,26 @@ class PageBuilders {
 	}
 
 	public function registerForDivi() {
-		add_action(
-			'et_fb_enqueue_assets',
-			function() {
-				$this->enqueueScripts();
-			}
-		);
-		add_action(
-			'divi_visual_builder_assets_before_enqueue_scripts',
-			function() {
-				$this->enqueueScripts();
-			}
-		);
+		/*
+		 * Array callbacks rather than closures: Divi's "D5 Readiness" screen
+		 * reflects over $wp_filter to work out which plugin each callback belongs
+		 * to, and ReflectionFunction cannot name a plugin for a closure. With one
+		 * here FileBird's use of the Divi 5 hook below was invisible to that
+		 * check, and the plugin was reported as Divi 4 only.
+		 *
+		 * enqueueScripts() takes arguments, so it is not hooked directly: an
+		 * action passes its own first argument into the callback, which would
+		 * read as $is_enqueue_media.
+		 */
+		add_action( 'et_fb_enqueue_assets', array( $this, 'enqueueDiviScripts' ) );
+		add_action( 'divi_visual_builder_assets_before_enqueue_scripts', array( $this, 'enqueueDiviScripts' ) );
+	}
+
+	/**
+	 * Loads the media library scripts for either generation of the Divi builder.
+	 */
+	public function enqueueDiviScripts() {
+		$this->enqueueScripts();
 	}
 
 	public function registerForThrive() {
@@ -205,7 +213,7 @@ class PageBuilders {
 		if ( function_exists( 'bricks_is_builder' ) && \bricks_is_builder() ) {
 			add_action( 'bricks_after_footer', array( $this, 'enqueueScripts' ) );
 			if( class_exists( 'Advanced_Themer_Bricks\\BricksAdvancedThemer' ) ) {
-				wp_enqueue_style( 'filebird-ui', BIZEN_MM_PLUGIN_URL . 'assets/dist/style.css', array(), BIZEN_MM_VERSION );
+				wp_enqueue_style( 'bizen-media-manager', BIZEN_MM_PLUGIN_URL . 'assets/dist/style.css', array(), BIZEN_MM_VERSION );
 			}
 		}
 	}

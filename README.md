@@ -19,7 +19,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `disable-comments` | Disables the comment system site-wide — closes comments everywhere and hides the Comments menu and Discussion settings | Core — written in-house |
 | `disable-flamingo-addressbook` | Stops Flamingo from saving contact data to its address book (inbound messages are kept) | [Disable Flamingo Addressbook v1.0](https://wordpress.org/plugins/disable-flamingo-addressbook/) (GPL-2.0+) |
 | `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
-| `media-manager` | Virtual folders for the media library and for every post type list — drag and drop, upload into a folder, sorting, counters, folder gallery (block editor, Elementor, WPBakery), ACF folder field. Reads an existing FileBird install's folders as they are | Core — forked from FileBird Pro v6.5.7 (GPL-2.0+) |
+| `media-manager` | Virtual folders for the media library and for every post type list — drag and drop, upload into a folder, sorting, counters, folder gallery (block editor, Elementor, WPBakery), ACF folder field. Reads an existing FileBird install's folders as they are | Core — forked from FileBird Pro v6.5.7, synced with 6.5.9 (GPL-2.0+) |
 | `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; adds a review queue under Media and can read provenance from XMP and C2PA on upload | Core — written in-house |
 
 ---
@@ -69,7 +69,7 @@ add_filter( 'bizen_media_manager_post_types', function ( $types ) {
 
 "Calculate file sizes" (needed by *Sort by size*) and "Clear all folders" are under **⋮ → Tools** in the folder sidebar, for administrators. With WPML, the `wpml-media-sync` module puts translated media into the original's folder (the old *Sync WPML* tool): on every new translation, at the end of its daily sweep, and on demand from **⋮ → Tools → Sync WPML folders** or `wp bizen-wpml sync-media`.
 
-The sidebar is FileBird's compiled React bundle, with no source to rebuild it from. The changes to it are string patches on `assets/dist/main-*.js`, listed in the module's docblock; the file name hash is recomputed after patching, so browsers never keep a stale copy.
+The sidebar is FileBird 6.5.9's compiled React bundle, with no source to rebuild it from. The changes to it are string patches on `assets/dist/main-*.js`, listed in the module's docblock; the file name hash is recomputed after patching, so browsers never keep a stale copy.
 
 ---
 

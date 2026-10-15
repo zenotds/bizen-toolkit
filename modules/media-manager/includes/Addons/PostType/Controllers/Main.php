@@ -182,13 +182,21 @@ class Main {
         //TODO user mode
         $ids = isset( $ids ) ? Helpers::sanitize_array( $ids ) : '';
         if ( $folder > 0 && ! self::hasAccess( $folder ) ) {
-            wp_send_json_error(
-                array(
-                    'mess' => __( 'Author Error', 'bizen-toolkit' ),
-                )
+            return new \WP_Error(
+                'rest_forbidden',
+                __( 'Permisson Denied.', 'bizen-toolkit' ),
+                array( 'status' => rest_authorization_required_code() )
             );
         }
         if ( $ids != '' && is_array( $ids ) ) {
+            if ( ! Helpers::canEditObjects( $ids, $post_type ) ) {
+                return new \WP_Error(
+                    'rest_forbidden',
+                    __( 'Sorry, you are not allowed to edit one or more of these items.', 'bizen-toolkit' ),
+                    array( 'status' => rest_authorization_required_code() )
+                );
+            }
+
             $this->model->assignFolder( $folder, $post_type, $ids );
             return rest_ensure_response( self::getCountFromTerms( $post_type, $lang ) );
         }
@@ -218,12 +226,20 @@ class Main {
     }
 
     public function restSetFolderColor( \WP_REST_Request $request ) {
-        $id        = sanitize_key( $request->get_param( 'folderId' ) );
+        $id        = (int) $request->get_param( 'folderId' );
 		$color     = sanitize_hex_color( $request->get_param( 'color' ) );
         $post_type = sanitize_text_field( $request->get_param( 'post_type' ) );
 
         if ( ! Init::getInstance()->isPostTypeAvailable( $post_type ) ) {
             return new \WP_Error( 'post_type_not_enable', __( 'Post Type not enabled.', 'bizen-toolkit' ) );
+        }
+
+        if ( $id <= 0 || ! self::hasAccess( $id ) ) {
+            return new \WP_Error(
+                'rest_forbidden',
+                __( 'Permisson Denied.', 'bizen-toolkit' ),
+                array( 'status' => rest_authorization_required_code() )
+            );
         }
 
         $option_key    = "fbv_{$post_type}_folder_colors";
@@ -258,6 +274,29 @@ class Main {
 
             // Form-encoded requests carry strings; the drop logic below compares strictly.
             $data = array_map( 'intval', $data );
+
+            $new_parent_id = ( 0 === (int) $data['dropPosition'] )
+                ? (int) $data['dropNodeId']
+                : (int) $data['toParentId'];
+
+            if ( ! self::hasAccess( (int) $data['dragNodeId'] )
+                || ( $new_parent_id > 0 && ! self::hasAccess( $new_parent_id ) ) ) {
+                return new \WP_Error(
+                    'rest_forbidden',
+                    __( 'Permisson Denied.', 'bizen-toolkit' ),
+                    array( 'status' => rest_authorization_required_code() )
+                );
+            }
+
+            // wp_update_term() would silently drop such a move; reject it here
+            // so the caller gets an explicit error instead of a success response.
+            if ( self::isSelfOrDescendant( (int) $data['dragNodeId'], $new_parent_id, $post_type ) ) {
+                return new \WP_Error(
+                    'invalid_parent',
+                    __( 'A folder cannot be moved into itself or into one of its subfolders.', 'bizen-toolkit' ),
+                    array( 'status' => 400 )
+                );
+            }
 
             // Drop folder inside another folder
             if ( 0 === $data['dropPosition'] ) {
@@ -387,9 +426,17 @@ class Main {
 	}
 
     public function restPtDuplicateFolder( \WP_REST_Request $request ) {
-        $folder_id = sanitize_key( $request->get_param( 'folder_id' ) );
+        $folder_id = (int) $request->get_param( 'folder_id' );
         $post_type = sanitize_text_field( $request->get_param( 'post_type' ) );
         $lang      = sanitize_key( $request->get_param( 'language' ) );
+
+        if ( $folder_id <= 0 || ! self::hasAccess( $folder_id ) ) {
+            return new \WP_Error(
+                'rest_forbidden',
+                __( 'Permisson Denied.', 'bizen-toolkit' ),
+                array( 'status' => rest_authorization_required_code() )
+            );
+        }
 
         $new_folder = $this->model->duplicateFolder( $folder_id, $post_type, $lang );
 
@@ -525,6 +572,31 @@ class Main {
 			)
         );
         return count( $terms ) > 0;
+    }
+
+    /**
+     * Whether $candidate_parent_id is $term_id itself or one of its descendants.
+     *
+     * @param int    $term_id             Term being moved.
+     * @param int    $candidate_parent_id Proposed new parent (0 for root).
+     * @param string $post_type           Post type owning the taxonomy.
+     * @return bool
+     */
+    private static function isSelfOrDescendant( $term_id, $candidate_parent_id, $post_type ) {
+        $term_id             = (int) $term_id;
+        $candidate_parent_id = (int) $candidate_parent_id;
+
+        if ( $candidate_parent_id <= 0 ) {
+            return false;
+        }
+
+        if ( $term_id === $candidate_parent_id ) {
+            return true;
+        }
+
+        $ancestors = get_ancestors( $candidate_parent_id, MainModel::getTaxonomyName( $post_type ), 'taxonomy' );
+
+        return in_array( $term_id, array_map( 'intval', $ancestors ), true );
     }
 
     private static function hasAccess( $folder_id ) {

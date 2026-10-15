@@ -1,11 +1,11 @@
 {
-  "_index-960b4f2b.js": {
-    "file": "index-960b4f2b.js"
+  "_index-387a00d9.js": {
+    "file": "index-387a00d9.js"
   },
   "main.tsx": {
-    "file": "main-c924a38d.js",
+    "file": "main-7367079b.js",
     "imports": [
-      "_index-960b4f2b.js"
+      "_index-387a00d9.js"
     ],
     "isEntry": true,
     "src": "main.tsx"

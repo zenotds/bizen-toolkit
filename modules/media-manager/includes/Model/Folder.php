@@ -102,6 +102,44 @@ class Folder {
 			return $created_by == 0;
 		}
 	}
+	/**
+	 * Whether $candidate_parent_id is $node_id itself or one of its descendants.
+	 *
+	 * Walking up from the proposed parent is enough: if we reach $node_id the
+	 * move would close a cycle. A visited set keeps the walk finite even when
+	 * the stored tree already contains one.
+	 *
+	 * @param int $node_id             Folder being moved.
+	 * @param int $candidate_parent_id Proposed new parent (0 for root).
+	 * @return bool
+	 */
+	public static function isSelfOrDescendant( $node_id, $candidate_parent_id ) {
+		global $wpdb;
+
+		$node_id = (int) $node_id;
+		$current = (int) $candidate_parent_id;
+		$seen    = array();
+
+		while ( $current > 0 ) {
+			if ( $current === $node_id ) {
+				return true;
+			}
+
+			if ( isset( $seen[ $current ] ) ) {
+				// Pre-existing cycle; refuse to build on top of it.
+				return true;
+			}
+
+			$seen[ $current ] = true;
+
+			$current = (int) $wpdb->get_var(
+				$wpdb->prepare( "SELECT `parent` FROM {$wpdb->prefix}fbv WHERE `id` = %d", $current )
+			);
+		}
+
+		return false;
+	}
+
 	public static function updateAuthor( $from_author, $to_author ) {
 		global $wpdb;
 		$wpdb->update(

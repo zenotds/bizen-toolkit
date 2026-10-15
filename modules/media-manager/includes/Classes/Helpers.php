@@ -24,19 +24,69 @@ class Helpers {
     }
 
     public static function sanitize_for_excel( $input ) {
+        $input               = (string) $input;
         $dangerousCharacters = array( '=', '+', '-', '@', '|' );
 
-        if ( empty( $input ) || !is_string( $input ) ) {
-            return '';
-        }
+        // Strip leading whitespace and formula sigils repeatedly, e.g. " \t =1+1".
+        while ( '' !== $input ) {
+            $trimmed = ltrim( $input, " \t\r\n\0\x0B" );
 
-        while ( strlen( $input ) > 0 && in_array( $input[0], $dangerousCharacters ) ) {
-            $input = substr( $input, 1 );
+            if ( $trimmed !== $input ) {
+                $input = $trimmed;
+                continue;
+            }
+
+            if ( in_array( $input[0], $dangerousCharacters, true ) ) {
+                $input = substr( $input, 1 );
+                continue;
+            }
+
+            break;
         }
 
         return $input;
     }
 
+
+    /**
+     * Whether the current user may edit every supplied object.
+     *
+     * The whole batch is validated before any caller mutates anything, so a
+     * request mixing authorized and unauthorized IDs is rejected atomically.
+     *
+     * @param array|int   $ids                Object IDs.
+     * @param string|null $expected_post_type Required post type, or null to accept any.
+     * @return bool
+     */
+    public static function canEditObjects( $ids, $expected_post_type = null ) {
+        $ids = array_map( 'intval', (array) $ids );
+
+        if ( count( $ids ) === 0 ) {
+            return false;
+        }
+
+        foreach ( $ids as $id ) {
+            if ( $id <= 0 ) {
+                return false;
+            }
+
+            $post = get_post( $id );
+
+            if ( ! $post ) {
+                return false;
+            }
+
+            if ( null !== $expected_post_type && $post->post_type !== $expected_post_type ) {
+                return false;
+            }
+
+            if ( ! current_user_can( 'edit_post', $id ) ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static function sanitize_intval_array( $var ) {
         if ( is_array( $var ) ) {

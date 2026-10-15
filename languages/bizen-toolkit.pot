@@ -1124,3 +1124,63 @@ msgid "%d translation put into its folder."
 msgid_plural "%d translations put into their folder."
 msgstr[0] ""
 msgstr[1] ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Size Ascending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Size Descending"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "No posts found!"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Clear"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Folders panel"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Default folders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Search folders"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Breadcrumb"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Move here"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Select a destination folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "Already in this folder"
+msgstr ""
+
+#: modules/media-manager/includes/I18n.php
+msgid "All Files is not a folder"
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "A folder cannot be moved into itself or into one of its subfolders."
+msgstr ""
+
+#: modules/media-manager/includes/Controller/FolderController.php
+msgid "Sorry, you are not allowed to edit one or more of these files."
+msgstr ""
+
+#: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
+msgid "Sorry, you are not allowed to edit one or more of these items."
+msgstr ""

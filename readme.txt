@@ -30,6 +30,14 @@ Included modules:
 
 == Changelog ==
 
+= 1.5.1 =
+* Media Manager: folder downloads stream the zip again. 1.5.0 left out the zip library, so downloads fell back to building the archive on disk with ZipArchive — slower, kept in uploads for a day, and failing on hosts without the zip extension
+* Media Manager, from FileBird 6.5.9: folder downloads stream without compression and skip unreadable files, so large folders no longer produce a corrupted zip; All Files and Uncategorized can be downloaded too, and empty folders are kept in the archive
+* Media Manager, from FileBird 6.5.9: a folder can no longer be dragged into itself or one of its subfolders, which detached the branch from the tree
+* Media Manager, from FileBird 6.5.9, security: moving files or posts into a folder checks that the user may edit every one of them — WPML translations included — before anything moves; folder colours and post type folders check folder ownership
+* Media Manager, from FileBird 6.5.9: the folder sidebar is usable with a screen reader and the keyboard, and files and posts can be moved on touch screens through a "Move here" picker
+* Media Manager, from FileBird 6.5.9: Divi 5 lists the module's builder integration correctly in its readiness check. A saved "Auto sort files by: Name" preference becomes "Title"
+
 = 1.5.0 =
 * New core module, Media Manager: FileBird Pro 6.5.7 without its branding, licence, updater, review and feedback prompts, settings page, Windows/Dropbox themes, CSV import/export, backups, import from other folder plugins, public REST API and SVG upload. Folders stay in FileBird's tables, so a site switching from FileBird keeps them; FileBird is flagged as a conflict while it is active
 * Media Manager: the breadcrumb is always shown, and every post type with an admin UI gets folders (narrow with the bizen_media_manager_post_types filter). "Calculate file sizes" and "Clear all folders" are in the Tools submenu of the folder sidebar's ⋮ menu
