@@ -44,8 +44,12 @@ return new class extends Bizen_Module {
 		return __( 'Turns WPML "Duplicate" into a one-off copy: the duplicate is unlinked from the original right away, so it opens in the WordPress editor and is no longer overwritten when the original is saved.', 'bizen-toolkit' );
 	}
 
+	public function get_summary(): string {
+		return __( 'WPML "Duplicate" makes a one-off copy that opens in the WordPress editor and is no longer overwritten by the original.', 'bizen-toolkit' );
+	}
+
 	public function get_category(): string {
-		return 'admin';
+		return 'multilingual';
 	}
 
 	public function get_dependencies(): array {

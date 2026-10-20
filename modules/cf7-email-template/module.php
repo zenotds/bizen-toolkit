@@ -33,6 +33,10 @@ return new class extends Bizen_Module {
 		return __( 'Wraps Contact Form 7 emails in a custom HTML header/footer template with a live Ace editor preview.', 'bizen-toolkit' );
 	}
 
+	public function get_summary(): string {
+		return __( 'Custom HTML header and footer for Contact Form 7 emails, with a live preview.', 'bizen-toolkit' );
+	}
+
 	public function get_category(): string {
 		return 'form';
 	}

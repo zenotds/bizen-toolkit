@@ -9,6 +9,14 @@ abstract class Bizen_Module {
 	abstract public function boot(): void;
 
 	/**
+	 * One line shown in the modules list; the full description sits behind
+	 * "Details". Falls back to the description.
+	 */
+	public function get_summary(): string {
+		return $this->get_description();
+	}
+
+	/**
 	 * Section of the modules list this module is shown under: one of the keys of
 	 * Bizen_Admin_Panel::categories(). Anything else lands under "Other", so a
 	 * module that does not say is still listed rather than lost.

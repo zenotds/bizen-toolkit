@@ -38,6 +38,10 @@ return new class extends Bizen_Module {
 		return __( 'Disables the comment system site-wide — closes comments on all posts and pages (new and existing), hides existing ones, and removes the Comments menu and Discussion settings from the admin.', 'bizen-toolkit' );
 	}
 
+	public function get_summary(): string {
+		return __( 'Turns comments off site-wide and removes them from the admin.', 'bizen-toolkit' );
+	}
+
 	public function get_category(): string {
 		return 'admin';
 	}

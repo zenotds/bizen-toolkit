@@ -30,6 +30,14 @@ Included modules:
 
 == Changelog ==
 
+= 1.6.0 =
+* New admin page: categories in a sidebar (Form, Media, Multilingual, Admin, Updates), a search box and status filters, all without reloading the page. Module switches save on their own; each module shows one line, with the full description, dependencies and upstream version under "Details"
+* The ACFML and WPML modules (Copy once, repeater sync, independent duplicates, media in every language) are grouped under the new Multilingual category
+* A module whose original plugin is still active is flagged before it is switched on, not only after
+* Disable Sync Repeater for ACFML depends on WPML and ACFML, which provide the checkbox it removes, instead of ACF Pro and WPML String Translation
+* Italian translation completed
+* ACFML Copy once: the field group screen no longer shows ACFML's help and "Set here" boxes under every field's translation preference
+
 = 1.5.2 =
 * Media Manager: folders are for the media library only. The folder sidebar, the Folder column and the folder box on the edit screen are gone from posts, pages, custom post types and admin lists such as ACF field groups. Folders a site made for posts under FileBird stay in the database, unused
 * Media Manager: "Clear all folders" clears media folders only

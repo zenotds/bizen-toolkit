@@ -81,8 +81,12 @@ return new class extends Bizen_Module {
 		return __( 'Puts every ACF field group in Expert mode with every field set to "Copy once", and realigns the WPML custom field settings when a field group is saved: saving the original no longer overwrites the translations, and pages can still be duplicated in bulk.', 'bizen-toolkit' );
 	}
 
+	public function get_summary(): string {
+		return __( 'Every ACF field is set to "Copy once": translations start as a copy of the original and saving the original no longer overwrites them.', 'bizen-toolkit' );
+	}
+
 	public function get_category(): string {
-		return 'admin';
+		return 'multilingual';
 	}
 
 	public function get_dependencies(): array {
@@ -106,6 +110,9 @@ return new class extends Bizen_Module {
 
 		// After ACFML (priority 9), which rewrites the field preferences.
 		add_action( 'acf/update_field_group', [ $this, 'realign_group' ], 20 );
+
+		// Every field is Copy once anyway: ACFML's per-field help and source boxes are just noise.
+		add_action( 'acf/field_group/admin_head', [ $this, 'hide_preference_help' ] );
 
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			WP_CLI::add_command( 'bizen-acfml realign', [ $this, 'cli_realign' ] );
@@ -134,6 +141,10 @@ return new class extends Bizen_Module {
 
 	private function wants_copy_once( array $field ): bool {
 		return ! empty( $field['name'] ) && apply_filters( 'bizen_acfml_copy_once_field', true, $field );
+	}
+
+	public function hide_preference_help(): void {
+		echo '<style>.acfml-cf-preferences-help, .acfml-cf-source { display: none; }</style>';
 	}
 
 	public function realign_group( $field_group ): void {

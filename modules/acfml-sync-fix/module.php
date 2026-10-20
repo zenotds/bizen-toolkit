@@ -21,14 +21,19 @@ return new class extends Bizen_Module {
 		return __( 'Disables the ACFML repeater sync checkbox and its stored option — prevents accidental field sync across languages.', 'bizen-toolkit' );
 	}
 
-	public function get_category(): string {
-		return 'admin';
+	public function get_summary(): string {
+		return __( 'Removes the ACFML repeater sync checkbox, so repeater rows are never synced across languages by accident.', 'bizen-toolkit' );
 	}
 
+	public function get_category(): string {
+		return 'multilingual';
+	}
+
+	// The checkbox and its option belong to ACFML (ACFML\Repeater\Sync).
 	public function get_dependencies(): array {
 		return [
-			'advanced-custom-fields-pro/acf.php',
-			'wpml-string-translation/plugin.php',
+			'sitepress-multilingual-cms/sitepress.php',
+			'acfml/wpml-acf.php',
 		];
 	}
 
