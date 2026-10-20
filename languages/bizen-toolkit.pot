@@ -27,10 +27,6 @@ msgid "Version check completed."
 msgstr ""
 
 #: includes/class-admin-panel.php
-msgid "Modules"
-msgstr ""
-
-#: includes/class-admin-panel.php
 msgid "Updates"
 msgstr ""
 
@@ -48,10 +44,6 @@ msgstr ""
 
 #: includes/class-admin-panel.php
 msgid "Other"
-msgstr ""
-
-#: includes/class-admin-panel.php
-msgid "Enable or disable individual modules. Modules with unmet dependencies are shown but cannot be booted."
 msgstr ""
 
 #: includes/class-admin-panel.php
@@ -75,33 +67,6 @@ msgid "No modules found."
 msgstr ""
 
 #: includes/class-admin-panel.php
-msgid "CONFLICT"
-msgstr ""
-
-#: includes/class-admin-panel.php
-#. translators: 1: plugin slug, 2: version number
-msgid "Based on %1$s v%2$s (WP.org)"
-msgstr ""
-
-#: includes/class-admin-panel.php
-#. translators: 1: GitHub repo, 2: version number
-msgid "Based on %1$s v%2$s (GitHub)"
-msgstr ""
-
-#: includes/class-admin-panel.php
-msgid "Loaded"
-msgstr ""
-
-#: includes/class-admin-panel.php
-msgid "Missing"
-msgstr ""
-
-#: includes/class-admin-panel.php
-#. translators: 1: upstream version, 2: vendored version
-msgid "Upstream: %s — Vendored: %s"
-msgstr ""
-
-#: includes/class-admin-panel.php
 msgid "Update available"
 msgstr ""
 
@@ -114,29 +79,7 @@ msgid "Save settings"
 msgstr ""
 
 #: includes/class-admin-panel.php
-msgid "Version Monitor"
-msgstr ""
-
-#: includes/class-admin-panel.php
-msgid "Weekly background check against the WordPress.org plugin API. When an upstream version is newer than the vendored one, a flag appears in the table above."
-msgstr ""
-
-#: includes/class-admin-panel.php
-#. translators: %s: human-readable time
-msgid "Next scheduled check: %s"
-msgstr ""
-
-#: includes/class-admin-panel.php
-msgid "from now"
-msgstr ""
-
-#: includes/class-admin-panel.php
 msgid "Cron not scheduled — deactivate and reactivate the plugin to fix this."
-msgstr ""
-
-#: includes/class-admin-panel.php
-#. translators: %s: date and time of last check
-msgid "Last checked: %s"
 msgstr ""
 
 #: includes/class-admin-panel.php
@@ -146,6 +89,120 @@ msgstr ""
 #: includes/class-admin-panel.php
 #. translators: 1: plugin name, 2: deactivation URL
 msgid "Conflicts with active plugin: <strong>%1$s</strong>. <a href=\"%2$s\">Deactivate it</a> to enable this module."
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: module name
+msgid "%s enabled. It takes effect on the next page load."
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: module name
+msgid "%s disabled. It takes effect on the next page load."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Could not save. Reload the page and try again."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Checking upstream versions…"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Multilingual"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Search modules"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Search modules…"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Categories"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "All modules"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Needs attention"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Filter by status"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "All"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Inactive"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "No modules match this filter."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Made with love by"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Core"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Conflict"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: comma-separated plugin names
+msgid "Missing: %s"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: upstream version
+msgid "Upstream %s"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Details"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Based on"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: upstream version
+msgid "%s available upstream"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Weekly background check of the plugins some modules are based on. When the original has a newer version, the module is flagged in the list."
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Next check"
+msgstr ""
+
+#: includes/class-admin-panel.php
+#. translators: %s: human-readable time difference, e.g. "3 days"
+msgid "in %s"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Last check"
+msgstr ""
+
+#: includes/class-admin-panel.php
+msgid "Bundled"
 msgstr ""
 
 #: includes/class-conflict-checker.php
@@ -1183,4 +1240,52 @@ msgstr ""
 
 #: modules/media-manager/includes/Addons/PostType/Controllers/Main.php
 msgid "Sorry, you are not allowed to edit one or more of these items."
+msgstr ""
+
+#: modules/acfml-copy-once/module.php
+msgid "Every ACF field is set to \"Copy once\": translations start as a copy of the original and saving the original no longer overwrites them."
+msgstr ""
+
+#: modules/acfml-sync-fix/module.php
+msgid "Removes the ACFML repeater sync checkbox, so repeater rows are never synced across languages by accident."
+msgstr ""
+
+#: modules/wpml-independent-duplicates/module.php
+msgid "WPML \"Duplicate\" makes a one-off copy that opens in the WordPress editor and is no longer overwritten by the original."
+msgstr ""
+
+#: modules/wpml-media-sync/module.php
+msgid "Every media file uploaded in one language shows up in the media library of all the others, in the same folder."
+msgstr ""
+
+#: modules/cf7-html-editor/module.php
+msgid "HTML code editor, test mode, redirect after submit and GA/GTM events for Contact Form 7."
+msgstr ""
+
+#: modules/cf7-email-template/module.php
+msgid "Custom HTML header and footer for Contact Form 7 emails, with a live preview."
+msgstr ""
+
+#: modules/disable-flamingo-addressbook/module.php
+msgid "Flamingo stops filling its address book; inbound messages are still stored."
+msgstr ""
+
+#: modules/media-manager/module.php
+msgid "Folders for the media library, with drag and drop, upload into a folder and a folder gallery."
+msgstr ""
+
+#: modules/svg-flatten/module.php
+msgid "Uploaded SVGs can be inlined side by side without their styles and ids colliding."
+msgstr ""
+
+#: modules/ai-disclosure/module.php
+msgid "Flags AI-generated and AI-modified images and shows the official EU label next to them."
+msgstr ""
+
+#: modules/menu-enhancer/module.php
+msgid "Expand and collapse menu trees and highlight item groups in Appearance → Menus."
+msgstr ""
+
+#: modules/disable-comments/module.php
+msgid "Turns comments off site-wide and removes them from the admin."
 msgstr ""

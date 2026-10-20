@@ -58,8 +58,12 @@ return new class extends Bizen_Module {
 		return __( 'Every media file uploaded in one language shows up in the media library of all the others. Locks WPML media translation on "Configure manually" with duplication of new media on, and fills in existing media that is missing from a language, once a day and whenever a language is added. With media folders (Media Manager or FileBird), the copies go into the same folder as the original.', 'bizen-toolkit' );
 	}
 
+	public function get_summary(): string {
+		return __( 'Every media file uploaded in one language shows up in the media library of all the others, in the same folder.', 'bizen-toolkit' );
+	}
+
 	public function get_category(): string {
-		return 'media';
+		return 'multilingual';
 	}
 
 	public function get_dependencies(): array {

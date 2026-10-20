@@ -81,6 +81,12 @@ class Bizen_Module_Loader {
 		$this->enabled = $states;
 	}
 
+	/** Turns one module on or off, leaving the others as they are. */
+	public function set_enabled( string $id, bool $enabled ): void {
+		$this->enabled[ $id ] = $enabled;
+		update_option( 'bizen_toolkit_modules', $this->enabled );
+	}
+
 	private function show_dependency_notice( Bizen_Module $module ): void {
 		if ( ! is_admin() ) {
 			return;

@@ -28,6 +28,11 @@ return new class extends Bizen_Module {
 		return __('Expand/collapse menu trees, jump between top-level items, and highlight item groups in Appearance → Menus.', 'bizen-toolkit');
 	}
 
+	public function get_summary(): string
+	{
+		return __('Expand and collapse menu trees and highlight item groups in Appearance → Menus.', 'bizen-toolkit');
+	}
+
 	public function get_category(): string
 	{
 		return 'admin';

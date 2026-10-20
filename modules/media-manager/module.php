@@ -59,6 +59,10 @@ return new class extends Bizen_Module {
 		return __( 'Folders for the media library, with drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the media folders of an existing FileBird install as they are.', 'bizen-toolkit' );
 	}
 
+	public function get_summary(): string {
+		return __( 'Folders for the media library, with drag and drop, upload into a folder and a folder gallery.', 'bizen-toolkit' );
+	}
+
 	public function get_category(): string {
 		return 'media';
 	}
