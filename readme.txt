@@ -27,8 +27,12 @@ Included modules:
 * **Flatten SVG on Upload** — Rewrites uploaded SVGs so several of them can be inlined on the same page without their styles and ids colliding.
 * **Media Manager** — Folders for the media library: drag and drop, upload into a folder, sorting, counters and a folder gallery. Reads the folders of an existing FileBird install as they are.
 * **AI Disclosure** — Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them on the front end, with a review queue under Media.
+* **Term Order** — Drag-and-drop ordering of categories, tags and custom taxonomy terms, with an Order column. Keeps the order saved by Category Order and Taxonomy Terms Order and similar plugins.
 
 == Changelog ==
+
+= 1.6.1 =
+* New module: Term Order — drag-and-drop ordering of taxonomy terms with an Order column, applied wherever terms are listed by default. Uses the term_order column of Category Order and Taxonomy Terms Order and similar plugins, so existing orders are kept. With WPML each language has its own order; "Sync order across languages" copies the order of the language shown to the others
 
 = 1.6.0 =
 * New admin page: categories in a sidebar (Form, Media, Multilingual, Admin, Updates), a search box and status filters, all without reloading the page. Module switches save on their own; each module shows one line, with the full description, dependencies and upstream version under "Details"

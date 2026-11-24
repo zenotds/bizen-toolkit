@@ -1071,6 +1071,7 @@ msgid "Order images by"
 msgstr "Ordine delle immagini"
 
 #: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+#: modules/term-order/module.php
 msgid "Order"
 msgstr "Ordine"
 
@@ -1292,3 +1293,30 @@ msgstr "Espandi e comprimi l’albero dei menu ed evidenzia i gruppi di voci in 
 #: modules/disable-comments/module.php
 msgid "Turns comments off site-wide and removes them from the admin."
 msgstr "Disattiva i commenti su tutto il sito e li toglie dall’admin."
+
+#: modules/term-order/module.php
+msgid "Term Order"
+msgstr "Ordine termini"
+
+#: modules/term-order/module.php
+msgid "Drag-and-drop ordering of categories, tags and custom taxonomy terms, with an Order column on the term list. The order applies wherever terms are listed by default, front end included; with WPML each language has its own order, and a button copies the order of one language to the others. Uses the same term_order column as Category Order and Taxonomy Terms Order, Simple Custom Post Order and Intuitive Custom Post Order, so existing orders are kept."
+msgstr "Ordinamento drag and drop di categorie, tag e termini delle tassonomie personalizzate, con una colonna Ordine nell’elenco dei termini. L’ordine vale ovunque i termini sono elencati con l’ordinamento predefinito, frontend compreso; con WPML ogni lingua ha il suo ordine e un pulsante copia l’ordine di una lingua sulle altre. Usa la stessa colonna term_order di Category Order and Taxonomy Terms Order, Simple Custom Post Order e Intuitive Custom Post Order, quindi gli ordinamenti esistenti vengono mantenuti."
+
+#: modules/term-order/module.php
+msgid "Drag-and-drop ordering of taxonomy terms, with an Order column."
+msgstr "Ordinamento drag and drop dei termini delle tassonomie, con colonna Ordine."
+
+#: modules/term-order/module.php
+msgid "Sync order across languages"
+msgstr "Sincronizza ordine tra le lingue"
+
+#: modules/term-order/module.php
+msgid "Replace the term order of the other languages with the order of this one?"
+msgstr "Sostituire l’ordine dei termini delle altre lingue con quello di questa lingua?"
+
+#: modules/term-order/module.php
+#, php-format
+msgid "Order synced across languages: %d term updated."
+msgid_plural "Order synced across languages: %d terms updated."
+msgstr[0] "Ordine sincronizzato tra le lingue: %d termine aggiornato."
+msgstr[1] "Ordine sincronizzato tra le lingue: %d termini aggiornati."

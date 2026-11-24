@@ -1,0 +1,30 @@
+.column-term_order {
+	width: 4.5em;
+}
+
+.bizen-term-order {
+	color: #646970;
+	white-space: nowrap;
+}
+
+.ui-sortable .bizen-term-order {
+	cursor: move;
+}
+
+.bizen-term-order .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	vertical-align: text-bottom;
+}
+
+.bizen-term-order-placeholder {
+	background: #f0f6fc;
+	outline: 1px dashed #72aee6;
+	outline-offset: -1px;
+}
+
+#the-list.bizen-term-order-saving {
+	opacity: 0.6;
+	pointer-events: none;
+}

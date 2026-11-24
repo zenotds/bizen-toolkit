@@ -21,6 +21,7 @@ A WordPress agency plugin that consolidates multiple third-party tools into a si
 | `svg-flatten` | Flattens uploaded SVGs — CSS moves onto the elements as presentation attributes and ids are namespaced, so two Illustrator exports can be inlined on the same page | Core — written in-house |
 | `media-manager` | Virtual folders for the media library — drag and drop, upload into a folder, sorting, counters, folder gallery (block editor, Elementor, WPBakery), ACF folder field. Reads an existing FileBird install's folders as they are | Core — forked from FileBird Pro v6.5.7, synced with 6.5.9 (GPL-2.0+) |
 | `ai-disclosure` | Flags AI-generated and AI-modified images and prints the official EU disclosure label beside them; adds a review queue under Media and can read provenance from XMP and C2PA on upload | Core — written in-house |
+| `term-order` | Drag-and-drop ordering of taxonomy terms with an Order column; the order applies to every default term query, front end included; with WPML each language keeps its own order, and "Sync order across languages" under the term list copies the order of the language shown to the others. Uses the `wp_terms.term_order` column of Category Order and Taxonomy Terms Order, Simple/Intuitive Custom Post Order and Custom Taxonomy Order, so existing orders are kept | Core — written in-house |
 
 ---
 

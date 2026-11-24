@@ -1068,6 +1068,7 @@ msgid "Order images by"
 msgstr ""
 
 #: modules/media-manager/includes/PageBuilders/WPBakery/Init.php
+#: modules/term-order/module.php
 msgid "Order"
 msgstr ""
 
@@ -1289,3 +1290,30 @@ msgstr ""
 #: modules/disable-comments/module.php
 msgid "Turns comments off site-wide and removes them from the admin."
 msgstr ""
+
+#: modules/term-order/module.php
+msgid "Term Order"
+msgstr ""
+
+#: modules/term-order/module.php
+msgid "Drag-and-drop ordering of categories, tags and custom taxonomy terms, with an Order column on the term list. The order applies wherever terms are listed by default, front end included; with WPML each language has its own order, and a button copies the order of one language to the others. Uses the same term_order column as Category Order and Taxonomy Terms Order, Simple Custom Post Order and Intuitive Custom Post Order, so existing orders are kept."
+msgstr ""
+
+#: modules/term-order/module.php
+msgid "Drag-and-drop ordering of taxonomy terms, with an Order column."
+msgstr ""
+
+#: modules/term-order/module.php
+msgid "Sync order across languages"
+msgstr ""
+
+#: modules/term-order/module.php
+msgid "Replace the term order of the other languages with the order of this one?"
+msgstr ""
+
+#: modules/term-order/module.php
+#, php-format
+msgid "Order synced across languages: %d term updated."
+msgid_plural "Order synced across languages: %d terms updated."
+msgstr[0] ""
+msgstr[1] ""
